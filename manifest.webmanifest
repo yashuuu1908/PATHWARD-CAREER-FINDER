@@ -1,0 +1,16 @@
+{
+  "name": "Pathward - Career Roadmap",
+  "short_name": "Pathward",
+  "description": "Pick where you are today and get a personalised roadmap to your career.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f9f9fb",
+  "theme_color": "#f9f9fb",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
