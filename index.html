@@ -8,6 +8,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Pathward">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pathward">
 <title>Pathward — Career Roadmap</title>
 <style>
   :root{
@@ -966,29 +972,29 @@ img,svg{ -webkit-user-drag:none; user-drag:none; }
       <span>🎨 Theme</span><span style="color:var(--dim);">›</span>
     </button>
     <button class="settingsRow" id="openDbRowBtn" style="width:100%; text-align:left; display:flex; align-items:center; justify-content:space-between; padding:0.9rem 0; background:none; border:none; border-bottom:1px solid var(--edge); font-family:inherit; font-size:1rem; color:var(--ink); cursor:pointer;">
-      <span>🗄️ Database (Firebase)</span><span style="color:var(--dim);">›</span>
+      <span>☁️ Cloud save</span><span style="color:var(--dim);">›</span>
     </button>
     <div id="cloudStatus" style="font-size:0.82rem;color:var(--dim);margin-top:1rem;line-height:1.5;">Checking cloud…</div>
     <button class="ghostBtn" id="settingsCloseBtn" style="margin-top:1.3rem;">Close</button>
   </div>
 </div>
 
-<!-- DATABASE / FIREBASE -->
+<!-- SHARED CLOUD SAVE (Firebase Realtime Database) -->
 <div id="dbOverlay" class="sheetOverlay" aria-hidden="true">
   <div class="sheetPanel">
     <div class="sheetHandle"></div>
-    <h3 style="font-weight:400; margin:0 0 0.5rem;">🗄️ Connect a Database</h3>
-    <p style="color:var(--dim); font-size:0.82rem; margin:0 0 1rem; line-height:1.5;">Optional — connect your own Firebase project so progress syncs to the cloud instead of staying only in this browser. Paste the config from Firebase Console → Project Settings → General → Your apps → SDK setup.</p>
-    <input class="dbInput" id="dbApiKey" placeholder="apiKey">
-    <input class="dbInput" id="dbAuthDomain" placeholder="authDomain">
-    <input class="dbInput" id="dbProjectId" placeholder="projectId">
-    <input class="dbInput" id="dbStorageBucket" placeholder="storageBucket (optional)">
-    <input class="dbInput" id="dbMessagingSenderId" placeholder="messagingSenderId (optional)">
-    <input class="dbInput" id="dbAppId" placeholder="appId">
+    <h3 style="font-weight:400; margin:0 0 0.5rem;">☁️ Cloud save</h3>
+    <p style="color:var(--dim); font-size:0.82rem; margin:0 0 1rem; line-height:1.5;">Sync your progress across your phone, laptop and any browser. Uses a free Firebase Realtime Database. Setup takes about 3 minutes, once.</p>
+    <label style="font-size:0.85rem; font-weight:600;">Database URL</label>
+    <input class="dbInput" id="dbUrl" placeholder="https://your-project-default-rtdb.firebaseio.com" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <label style="font-size:0.85rem; font-weight:600;">Secret room code <span style="font-weight:400; color:var(--dim);">(same on every device, keep it private)</span></label>
+    <input class="dbInput" id="dbRoom" placeholder="e.g. tr8ngbhh8a6g4c" autocapitalize="off" autocorrect="off" spellcheck="false">
     <div id="dbStatus" style="font-size:0.82rem; margin:0.6rem 0; color:var(--dim);">Not connected — using this browser's local storage only.</div>
-    <button class="solidBtn" id="dbConnectBtn" style="width:100%; margin-bottom:0.6rem;">🔌 Connect &amp; Sync</button>
-    <button class="ghostBtn" id="dbDisconnectBtn" style="width:100%; margin-bottom:0.6rem;">Disconnect</button>
+    <button class="solidBtn" id="dbConnectBtn" style="width:100%; margin-bottom:0.6rem;">🔌 Test &amp; connect</button>
+    <button class="ghostBtn" id="dbInviteBtn" style="width:100%; margin-bottom:0.6rem;">🔗 Copy link to open on another device</button>
+    <button class="ghostBtn" id="dbDisconnectBtn" style="width:100%; margin-bottom:0.6rem;">Disconnect (data stays on this device)</button>
     <button class="ghostBtn" id="dbCloseBtn">Close</button>
+    <p style="border:1px dashed var(--edge); border-radius:12px; padding:0.8rem; margin:1rem 0 0; font-size:0.78rem; color:var(--dim); line-height:1.5;">Your room code works like a password: anyone who has the database URL and the code can read and write your progress. Only share the link with yourself.</p>
   </div>
 </div>
 
@@ -1778,61 +1784,65 @@ function saveState(){
   syncStateToCloud();
 }
 
-/* ---------------- OPTIONAL FIREBASE SYNC ---------------- */
-var fbDb = null;
-function loadFirebaseSdk(){
-  return new Promise((resolve,reject)=>{
-    if(window.firebase && window.firebase.firestore){ resolve(); return; }
-    const s1=document.createElement('script');
-    s1.src='https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js';
-    s1.onload=()=>{
-      const s2=document.createElement('script');
-      s2.src='https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js';
-      s2.onload=()=>resolve();
-      s2.onerror=()=>reject(new Error('Could not load Firestore SDK'));
-      document.head.appendChild(s2);
-    };
-    s1.onerror=()=>reject(new Error('Could not load Firebase SDK'));
-    document.head.appendChild(s1);
-  });
-}
-function getClientId(){
-  let id = localStorage.getItem('pathward_client_id');
-  if(!id){ id='user_'+Math.random().toString(36).slice(2,10); localStorage.setItem('pathward_client_id', id); }
-  return id;
-}
+/* ---------------- CLOUD SAVE (Firebase Realtime Database, REST) ---------------- */
+const SYNC_KEY='pathward_sync';
+function getSyncCfg(){ try{ return JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ return null; } }
+function cleanDbUrl(u){ u=(u||'').trim().replace(/\/+$/,''); return u; }
+function syncEndpoint(cfg){ return cleanDbUrl(cfg.url)+'/pathward/'+encodeURIComponent(cfg.room)+'.json'; }
+function newRoomCode(){ return Math.random().toString(36).slice(2,8)+Math.random().toString(36).slice(2,8)+'x'; }
+let syncActive=false, syncTimer=null;
+
 function syncStateToCloud(){
-  if(!fbDb) return;
-  try{
-    fbDb.collection('pathward_users').doc(getClientId()).set({ state: JSON.stringify(state), updatedAt: Date.now() }, {merge:true});
-  }catch(e){ /* best-effort only */ }
+  localStorage.setItem('pathward_local_updated', String(Date.now()));
+  const cfg=getSyncCfg(); if(!cfg||!syncActive) return;
+  clearTimeout(syncTimer);
+  syncTimer=setTimeout(()=>{
+    const t=Number(localStorage.getItem('pathward_local_updated'))||Date.now();
+    fetch(syncEndpoint(cfg),{method:'PUT',body:JSON.stringify({state:JSON.stringify(state),updatedAt:t})}).catch(()=>{});
+  },800);
 }
-async function connectFirebase(cfg){
-  await loadFirebaseSdk();
-  const app = window.firebase.apps.length ? window.firebase.app() : window.firebase.initializeApp(cfg);
-  fbDb = window.firebase.firestore();
-  await fbDb.collection('pathward_users').doc(getClientId()).set({ state: JSON.stringify(state), updatedAt: Date.now() }, {merge:true});
-  localStorage.setItem('pathward_firebase_config', JSON.stringify(cfg));
+/* returns 'pushed' | 'pulled' | 'same' ; throws on failure */
+async function syncNow(cfg){
+  const url=syncEndpoint(cfg);
+  const r=await fetch(url);
+  if(!r.ok) throw new Error(r.status===401||r.status===403?'Database rules block access — set rules to allow read/write.':'Could not reach the database (HTTP '+r.status+').');
+  const remote=await r.json();
+  const localT=Number(localStorage.getItem('pathward_local_updated'))||0;
+  if(remote && remote.state && remote.updatedAt>localT){
+    localStorage.setItem('pathward_state', remote.state);
+    localStorage.setItem('pathward_local_updated', String(remote.updatedAt));
+    return 'pulled';
+  }
+  const t=localT||Date.now();
+  const w=await fetch(url,{method:'PUT',body:JSON.stringify({state:JSON.stringify(state),updatedAt:t})});
+  if(!w.ok) throw new Error('Could not write to the database (HTTP '+w.status+').');
+  localStorage.setItem('pathward_local_updated', String(t));
+  return 'pushed';
 }
-(function tryReconnectFirebase(){
-  const cfg = JSON.parse(localStorage.getItem('pathward_firebase_config')||'null');
-  if(cfg) connectFirebase(cfg).catch(()=>{ fbDb=null; });
+async function connectCloud(cfg){
+  const res=await syncNow(cfg);
+  localStorage.setItem(SYNC_KEY, JSON.stringify(cfg));
+  syncActive=true;
+  if(res==='pulled'){ location.reload(); }
+  return res;
+}
+(function initCloudSave(){
+  // open-on-another-device link: #sync=<url>|<room>
+  const m=location.hash.match(/#sync=([^|]+)\|(.+)$/);
+  if(m){
+    try{ localStorage.setItem(SYNC_KEY, JSON.stringify({url:decodeURIComponent(m[1]), room:decodeURIComponent(m[2])})); }catch(e){}
+    history.replaceState(null,'',location.pathname+location.search);
+  }
+  const cfg=getSyncCfg(); if(!cfg) return;
+  syncNow(cfg).then(res=>{ syncActive=true; if(res==='pulled') location.reload(); }).catch(()=>{ syncActive=false; });
 })();
 
 function loadDbConfigIntoForm(){
-  const cfg = JSON.parse(localStorage.getItem('pathward_firebase_config')||'null');
-  const st = document.getElementById('dbStatus');
-  if(cfg){
-    document.getElementById('dbApiKey').value=cfg.apiKey||'';
-    document.getElementById('dbAuthDomain').value=cfg.authDomain||'';
-    document.getElementById('dbProjectId').value=cfg.projectId||'';
-    document.getElementById('dbStorageBucket').value=cfg.storageBucket||'';
-    document.getElementById('dbMessagingSenderId').value=cfg.messagingSenderId||'';
-    document.getElementById('dbAppId').value=cfg.appId||'';
-    st.textContent = (fbDb?'✅ Connected & syncing':'🔄 Reconnecting…') + ' — project: '+cfg.projectId;
-  } else {
-    st.textContent = "Not connected — using this browser's local storage only.";
-  }
+  const cfg=getSyncCfg();
+  const st=document.getElementById('dbStatus');
+  document.getElementById('dbUrl').value=cfg?cfg.url:'';
+  document.getElementById('dbRoom').value=cfg?cfg.room:newRoomCode();
+  st.textContent = cfg ? (syncActive?'✅ Connected & syncing':'🔄 Saved — reconnecting…') : "Not connected — using this browser's local storage only.";
 }
 document.getElementById('openDbRowBtn').addEventListener('click', ()=>{
   document.getElementById('settingsOverlay').classList.remove('open');
@@ -1841,28 +1851,27 @@ document.getElementById('openDbRowBtn').addEventListener('click', ()=>{
 });
 document.getElementById('dbCloseBtn').addEventListener('click', ()=> document.getElementById('dbOverlay').classList.remove('open'));
 document.getElementById('dbConnectBtn').addEventListener('click', async ()=>{
-  const cfg = {
-    apiKey: document.getElementById('dbApiKey').value.trim(),
-    authDomain: document.getElementById('dbAuthDomain').value.trim(),
-    projectId: document.getElementById('dbProjectId').value.trim(),
-    storageBucket: document.getElementById('dbStorageBucket').value.trim(),
-    messagingSenderId: document.getElementById('dbMessagingSenderId').value.trim(),
-    appId: document.getElementById('dbAppId').value.trim()
-  };
-  if(!cfg.apiKey || !cfg.projectId || !cfg.appId){ showToast('⚠️ apiKey, projectId and appId are required.'); return; }
+  const cfg={url:cleanDbUrl(document.getElementById('dbUrl').value), room:document.getElementById('dbRoom').value.trim()};
+  if(!/^https:\/\/.+/.test(cfg.url) || cfg.room.length<8){ showToast('⚠️ Enter the https:// database URL and a room code of 8+ characters.'); return; }
   const st=document.getElementById('dbStatus');
   st.textContent='Connecting…';
   try{
-    await connectFirebase(cfg);
-    st.textContent = '✅ Connected & synced — project: '+cfg.projectId;
-    showToast('🎉 Database connected — your progress now syncs here too.');
+    const res=await connectCloud(cfg);
+    st.textContent = res==='pulled' ? '✅ Loaded your saved progress from the cloud.' : '✅ Connected — progress saved to the cloud.';
+    showToast('🎉 Cloud save connected.');
   }catch(err){
-    st.textContent = '⚠️ Could not connect: '+(err && err.message ? err.message : 'check your config values.');
+    st.textContent='⚠️ Could not connect: '+(err&&err.message?err.message:'check the URL and your database rules.');
   }
 });
+document.getElementById('dbInviteBtn').addEventListener('click', async ()=>{
+  const cfg=getSyncCfg();
+  if(!cfg){ showToast('Connect first, then copy the link.'); return; }
+  const link=location.origin+location.pathname+'#sync='+encodeURIComponent(cfg.url)+'|'+encodeURIComponent(cfg.room);
+  try{ await navigator.clipboard.writeText(link); showToast('🔗 Link copied — open it on your other device.'); }
+  catch(e){ prompt('Copy this link:',link); }
+});
 document.getElementById('dbDisconnectBtn').addEventListener('click', ()=>{
-  localStorage.removeItem('pathward_firebase_config');
-  fbDb=null;
+  localStorage.removeItem(SYNC_KEY); syncActive=false;
   document.getElementById('dbStatus').textContent = "Not connected — using this browser's local storage only.";
   showToast('Disconnected. Progress now saves locally only.');
 });
@@ -4005,5 +4014,10 @@ syncChrome();
 })();
 </script>
 
+<script>
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  window.addEventListener('load',()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+}
+</script>
 </body>
 </html>
