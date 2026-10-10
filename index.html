@@ -738,11 +738,67 @@ img,svg{ -webkit-user-drag:none; user-drag:none; }
   @media (max-width:600px){ .heroImg{ border-radius:18px; margin-bottom:1.2rem; } }
 </style>
 <script>try{var st=JSON.parse(localStorage.getItem("pathward_state")||"{}"),M={"burnt-amber":["light","#f9f9fb","#ffffff","#221f1f"],"emerald-fresh":["light","#f6faf8","#ffffff","#1c2422"],"navy-trust":["light","#f5f7fa","#ffffff","#1b2330"],"rose-quartz":["light","#fdf7f8","#ffffff","#2b2024"],"sunrise-coral":["light","#fff8f5","#ffffff","#2b211c"],"midnight-indigo":["dark","#0a0a1a","#14142a","#f0eefc"],"deep-teal":["dark","#071515","#0e2323","#eafaf6"],"executive-slate":["dark","#0e1216","#171c22","#f2ede9"],"burgundy-ember":["dark","#160608","#22090f","#f5e9ea"],"forest-night":["dark","#0a1410","#10201a","#eaf5ee"]},t=M[st.theme];if(t){var r=document.documentElement;r.style.colorScheme=t[0];r.style.setProperty("--bg",t[1]);r.style.setProperty("--panel",t[2]);r.style.setProperty("--ink",t[3]);r.style.background=t[1];}}catch(e){}</script>
+
 <style id="qstatus">
   .qStatus{ display:flex; gap:.5rem; margin:0 0 1.1rem; padding:.3rem; border:1px solid var(--edge); border-radius:14px; background:var(--fill); }
   .qsBtn{ flex:1; padding:.7rem .6rem; border:0; border-radius:10px; background:transparent; color:var(--dim); font:inherit; font-weight:700; font-size:.92rem; cursor:pointer; }
   .qsBtn.active{ background:var(--accent); color:var(--accent-ink); }
   .qCard .sub{ display:block; margin-top:.2rem; font-size:.78rem; color:var(--dim); font-weight:600; }
+</style>
+
+<style id="profileUI">
+#settingsBtn.avatarBtn{ width:2.4rem; height:2.4rem; min-width:2.4rem; padding:0 !important; border-radius:50% !important; display:inline-flex; align-items:center; justify-content:center; font-size:1rem !important; line-height:1; overflow:hidden; background:var(--accent) !important; color:var(--accent-ink) !important; border:2px solid var(--edge) !important; font-weight:700; }
+#settingsBtn.avatarBtn::before{ content:none !important; }
+#settingsBtn.avatarBtn img{ width:100%; height:100%; object-fit:cover; display:block; }
+.acctCard{ display:flex; gap:.85rem; align-items:center; padding:.9rem; border:1px solid var(--edge); border-radius:16px; background:var(--fill); margin:0 0 1rem; }
+.acctAvatar{ width:3rem; height:3rem; flex:0 0 3rem; border-radius:50%; background:var(--accent); color:var(--accent-ink); display:flex; align-items:center; justify-content:center; font-size:1.25rem; font-weight:700; overflow:hidden; }
+.acctAvatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+.acctInfo{ min-width:0; flex:1; }
+.acctName{ font-weight:700; font-size:1rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.acctSub{ color:var(--dim); font-size:.82rem; line-height:1.45; margin-top:.15rem; }
+.acctMsg{ font-size:.82rem; line-height:1.45; margin:-.4rem 0 1rem; color:var(--dim); }
+.acctMsg.err{ color:var(--bad); }
+.googleBtn{ display:flex; align-items:center; justify-content:center; gap:.6rem; width:100%; padding:.8rem 1rem; border-radius:14px; border:1px solid var(--edge); background:var(--panel); color:var(--ink); font-family:inherit; font-size:.95rem; font-weight:600; cursor:pointer; }
+.googleBtn svg{ width:1.15rem; height:1.15rem; flex:0 0 auto; }
+.rulesBox{ background:var(--fill); border:1px solid var(--edge); border-radius:12px; padding:.7rem .8rem; font-family:ui-monospace,Menlo,Consolas,monospace !important; font-size:.72rem; line-height:1.45; white-space:pre-wrap; overflow-x:auto; margin:.4rem 0 .8rem; user-select:text; -webkit-user-select:text; }
+.setupSteps{ color:var(--dim); font-size:.84rem; line-height:1.55; margin:0 0 .9rem; padding-left:1.1rem; }
+.setupSteps li{ margin-bottom:.35rem; }
+textarea.dbInput{ min-height:7.5rem; resize:vertical; font-family:ui-monospace,Menlo,Consolas,monospace !important; font-size:.78rem; user-select:text; -webkit-user-select:text; }
+</style>
+<style id="cleanup">
+/* calm, flat background: no drifting blobs, no fixed gradients, no floating emoji */
+html,body{ background:var(--bg) !important; background-attachment:scroll !important; }
+body::before,body::after{ content:none !important; display:none !important; animation:none !important; }
+.hero::before,.hero::after{ content:none !important; display:none !important; }
+.topbar{ background:var(--bg) !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
+.brand{ text-shadow:none !important; }
+.brand b{ animation:none !important; text-shadow:none !important; }
+.hero h1{ background:none !important; -webkit-background-clip:border-box !important; background-clip:border-box !important; color:var(--ink) !important; -webkit-text-fill-color:currentColor !important; text-shadow:none !important; animation:viewIn .6s var(--ease) both !important; }
+.hero .bigBtn{ animation:bounceIn .9s var(--spring) .45s both !important; }
+.heroImg{ box-shadow:0 8px 22px -14px rgba(0,0,0,.28) !important; }
+/* developer-only screens stay hidden unless the page is opened once with #setup */
+html:not(.dev) #openDbRowBtn, html:not(.dev) #cloudStatus, html:not(.dev) #aiTabs [data-t="key"]{ display:none !important; }
+html:not(.aiOn) #aiBtn{ display:none !important; }
+</style>
+<style id="gateUI">
+#gate{ position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center; padding:1.2rem; background:rgba(10,8,6,.55); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+#gate.open{ display:flex; animation:gateIn .35s ease both; }
+@keyframes gateIn{ from{ opacity:0; } to{ opacity:1; } }
+#gate .gateCard{ max-height:92vh; overflow-y:auto; width:100%; max-width:380px; background:var(--panel); color:var(--ink); border:1px solid var(--edge); border-radius:24px; padding:1.6rem 1.3rem 1.2rem; text-align:center; box-shadow:0 24px 60px -20px rgba(0,0,0,.5); animation:gateUp .45s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes gateUp{ from{ transform:translateY(24px); opacity:0; } to{ transform:none; opacity:1; } }
+#gate .gateBrand{ font-size:1.5rem; font-weight:800; letter-spacing:-.03em; margin-bottom:.9rem; }
+#gate .gateBrand b{ color:var(--accent); font-weight:800; }
+#gate h2{ margin:0 0 .45rem; font-size:1.3rem; font-weight:700; line-height:1.25; }
+#gate p{ margin:0 0 1.2rem; color:var(--dim); font-size:.9rem; line-height:1.5; }
+#gate .googleBtn{ margin-bottom:.6rem; }
+#gate .gIco{ display:inline-flex; width:1.15rem; height:1.15rem; flex:0 0 auto; }
+#gate .dbInput{ margin-bottom:.55rem; text-align:left; }
+#gate .gateGuest{ display:block; margin:0 auto; }
+#gate .gateDivider{ display:flex; align-items:center; gap:.7rem; color:var(--dim); font-size:.78rem; margin:.5rem 0 .2rem; }
+#gate .gateDivider::before,#gate .gateDivider::after{ content:''; flex:1; height:1px; background:var(--edge); }
+#gate .gateGuest{ background:none; border:none; color:var(--dim); font-family:inherit; font-size:.88rem; padding:.6rem; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+#gate .gateMsg{ min-height:1.2em; font-size:.82rem; line-height:1.4; color:var(--dim); margin:0 0 .6rem; }
+#gate .gateMsg.err{ color:var(--bad); }
 </style>
 </head>
 <body>
@@ -753,7 +809,7 @@ img,svg{ -webkit-user-drag:none; user-drag:none; }
     <div style="display:flex; gap:0.5rem; align-items:center;">
       <button class="backBtn" id="backBtn" hidden>← Back</button>
       <button class="backBtn" id="aiBtn">🤖 AI Studio</button>
-      <button class="backBtn" id="settingsBtn">⚙️ Settings</button>
+      <button class="backBtn avatarBtn" id="settingsBtn" aria-label="Profile and settings"><span id="avatarInner">👤</span></button>
     </div>
   </div>
 
@@ -967,7 +1023,8 @@ img,svg{ -webkit-user-drag:none; user-drag:none; }
 <div id="settingsOverlay" class="sheetOverlay" aria-hidden="true">
   <div class="sheetPanel">
     <div class="sheetHandle"></div>
-    <h3 style="font-weight:400; margin:0 0 0.9rem;">Settings</h3>
+    <h3 style="font-weight:400; margin:0 0 0.9rem;">Profile</h3>
+    <div id="acctSlot"></div>
     <button class="settingsRow" id="openThemeRowBtn" style="width:100%; text-align:left; display:flex; align-items:center; justify-content:space-between; padding:0.9rem 0; background:none; border:none; border-top:1px solid var(--edge); border-bottom:1px solid var(--edge); font-family:inherit; font-size:1rem; color:var(--ink); cursor:pointer;">
       <span>🎨 Theme</span><span style="color:var(--dim);">›</span>
     </button>
@@ -1008,6 +1065,54 @@ img,svg{ -webkit-user-drag:none; user-drag:none; }
     <p style="color:var(--dim); font-size:0.82rem; margin:1.3rem 0 0.6rem;">Dark</p>
     <div class="themeGrid" id="themeGridDark"></div>
     <button class="ghostBtn" id="themeCloseBtn" style="margin-top:1.3rem;">Close</button>
+  </div>
+</div>
+
+<!-- LOGIN POPUP -->
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="gateCard">
+    <div class="gateBrand"><b>Path</b>ward</div>
+    <h2 id="gateTitle">Sign in to save your roadmap</h2>
+    <p>Your progress, plans and mock scores follow you to any phone or laptop.</p>
+    <div class="gateMsg" id="gateMsg" aria-live="polite"></div>
+    <div id="gateProviders">
+      <button class="googleBtn" id="gateGoogleBtn"><span class="gIco" id="gateG"></span><span>Continue with Google</span></button>
+      <button class="googleBtn" id="gateFbBtn"><span class="gIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span><span>Continue with Facebook</span></button>
+      <button class="googleBtn" id="gateEmailBtn"><span class="gIco"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7.5l8.5 6 8.5-6"/></svg></span><span>Continue with email</span></button>
+    </div>
+    <form id="gateEmailForm" hidden novalidate>
+      <input class="dbInput" id="gateEmail" type="email" autocomplete="email" placeholder="Email address" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <input class="dbInput" id="gatePass" type="password" autocomplete="current-password" placeholder="Password">
+      <button class="solidBtn" type="submit" style="width:100%; margin-bottom:.6rem;">Sign in</button>
+      <button class="ghostBtn" type="button" id="gateSignUpBtn" style="width:100%; margin-bottom:.4rem;">Create account</button>
+      <button class="gateGuest" type="button" id="gateForgotBtn">Forgot password?</button>
+      <button class="gateGuest" type="button" id="gateBackBtn">Back to all options</button>
+    </form>
+    <div class="gateDivider"><span>or</span></div>
+    <button class="gateGuest" id="gateGuestBtn">Continue as guest</button>
+  </div>
+</div>
+
+<!-- GOOGLE SIGN-IN SETUP -->
+<div id="authOverlay" class="sheetOverlay" aria-hidden="true">
+  <div class="sheetPanel" style="max-height:90vh;overflow:auto;">
+    <div class="sheetHandle"></div>
+    <h3 style="font-weight:400; margin:0 0 0.5rem;">Set up Google sign-in</h3>
+    <p style="color:var(--dim); font-size:0.84rem; margin:0 0 0.8rem; line-height:1.5;">One-time setup in your free Firebase project. Guests can keep using the app without this.</p>
+    <ol class="setupSteps">
+      <li>Firebase console → <b>Authentication</b> → Get started → Sign-in method → turn on <b>Google</b>, <b>Email/Password</b> and (optional) <b>Facebook</b>. Facebook needs an App ID and secret from Meta for Developers.</li>
+      <li>Authentication → Settings → <b>Authorized domains</b> → add the domain this app is hosted on (for example <i>yourname.github.io</i>).</li>
+      <li>Project settings → Your apps → add a <b>Web app</b> → copy its <b>firebaseConfig</b> and paste it below.</li>
+      <li>Realtime Database → Rules → make sure the <b>pathward_users</b> block below is in your rules, then Publish.</li>
+    </ol>
+    <textarea class="dbInput" id="fbCfgInput" placeholder='{ "apiKey": "...", "authDomain": "your-project.firebaseapp.com", "databaseURL": "https://your-project-default-rtdb.firebaseio.com", "projectId": "...", "appId": "..." }' autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+    <div id="authSetupMsg" class="acctMsg"></div>
+    <button class="solidBtn" id="fbCfgSaveBtn" style="width:100%; margin-bottom:0.6rem;">Save &amp; continue with Google</button>
+    <p style="font-size:0.82rem; font-weight:600; margin:0.9rem 0 0;">Rules to add</p>
+    <div class="rulesBox" id="rulesBox"></div>
+    <button class="ghostBtn" id="rulesCopyBtn" style="width:100%; margin-bottom:0.6rem;">Copy rules</button>
+    <button class="ghostBtn" id="fbCfgClearBtn" style="width:100%; margin-bottom:0.6rem;">Remove saved config</button>
+    <button class="ghostBtn" id="authCloseBtn">Close</button>
   </div>
 </div>
 
@@ -1794,16 +1899,19 @@ let syncActive=false, syncTimer=null;
 
 function syncStateToCloud(){
   localStorage.setItem('pathward_local_updated', String(Date.now()));
-  const cfg=getSyncCfg(); if(!cfg||!syncActive) return;
+  const cfg=activeCfg(); if(!cfg||!syncActive) return;
   clearTimeout(syncTimer);
-  syncTimer=setTimeout(()=>{
-    const t=Number(localStorage.getItem('pathward_local_updated'))||Date.now();
-    fetch(syncEndpoint(cfg),{method:'PUT',body:JSON.stringify({state:JSON.stringify(state),updatedAt:t})}).catch(()=>{});
+  syncTimer=setTimeout(async()=>{
+    try{
+      const t=Number(localStorage.getItem('pathward_local_updated'))||Date.now();
+      const url=await syncEndpointA(cfg);
+      fetch(url,{method:'PUT',body:JSON.stringify({state:JSON.stringify(state),updatedAt:t})}).catch(()=>{});
+    }catch(e){}
   },800);
 }
 /* returns 'pushed' | 'pulled' | 'same' ; throws on failure */
 async function syncNow(cfg){
-  const url=syncEndpoint(cfg);
+  const url=await syncEndpointA(cfg);
   const r=await fetch(url);
   if(!r.ok) throw new Error(r.status===401||r.status===403?'Database rules block access — set rules to allow read/write.':'Could not reach the database (HTTP '+r.status+').');
   const remote=await r.json();
@@ -1833,9 +1941,241 @@ async function connectCloud(cfg){
     try{ localStorage.setItem(SYNC_KEY, JSON.stringify({url:decodeURIComponent(m[1]), room:decodeURIComponent(m[2])})); }catch(e){}
     history.replaceState(null,'',location.pathname+location.search);
   }
+  if(localStorage.getItem('pathward_profile')) return; /* signed-in users sync through their account */
   const cfg=getSyncCfg(); if(!cfg) return;
   syncNow(cfg).then(res=>{ syncActive=true; if(res==='pulled') location.reload(); }).catch(()=>{ syncActive=false; });
 })();
+
+/* ---------------- ACCOUNT (Google sign-in via Firebase Auth) + PROFILE UI ---------------- */
+(function(){
+  var h=location.hash;
+  try{ if(/#setup-off/.test(h)) localStorage.removeItem('pathward_dev'); else if(/#setup/.test(h)) localStorage.setItem('pathward_dev','1'); }catch(e){}
+  if(/#setup/.test(h)) history.replaceState(null,'',location.pathname+location.search);
+  try{ if(localStorage.getItem('pathward_dev')==='1') document.documentElement.classList.add('dev','aiOn'); }catch(e){}
+})();
+const IS_DEV=document.documentElement.classList.contains('dev');
+var authUser=null, fb=null;
+const FB_CFG_KEY='pathward_fbcfg', PROFILE_KEY='pathward_profile', FB_VER='10.12.2';
+/* ===== FIREBASE CONFIG — fill these in once (Firebase console → Project settings → Your apps → Web app) ===== */
+const FIREBASE_CONFIG={
+  apiKey:"",
+  authDomain:"",
+  databaseURL:"",
+  projectId:"",
+  appId:""
+};
+/* ===== end of config ===== */
+const RULES_SNIPPET='"pathward_users": {\n  "$uid": {\n    ".read": "auth != null && auth.uid === $uid",\n    ".write": "auth != null && auth.uid === $uid"\n  }\n}';
+const GOOGLE_G='<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>';
+let acctMsgText='', acctMsgErr=false;
+
+const pwEsc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function getFbCfg(){ if(FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey) return FIREBASE_CONFIG; try{ return JSON.parse(localStorage.getItem(FB_CFG_KEY)||'null'); }catch(e){ return null; } }
+function getProfile(){ try{ return JSON.parse(localStorage.getItem(PROFILE_KEY)||'null'); }catch(e){ return null; } }
+function parseFbCfg(txt){
+  let t=(txt||'').trim(); const i=t.indexOf('{'), j=t.lastIndexOf('}');
+  if(i<0||j<i) throw new Error('Paste the whole firebaseConfig block, curly brackets included.');
+  t=t.slice(i,j+1); let o;
+  try{ o=JSON.parse(t); }
+  catch(e){
+    try{ o=JSON.parse(t.replace(/([{,]\s*)([A-Za-z_]\w*)\s*:/g,'$1"$2":').replace(/'/g,'"').replace(/,\s*}/g,'}')); }
+    catch(e2){ throw new Error('Could not read that config. Copy it again from Firebase project settings.'); }
+  }
+  if(!o.apiKey||!o.authDomain||!o.projectId) throw new Error('Config needs apiKey, authDomain and projectId.');
+  return o;
+}
+function activeCfg(){
+  if(authUser && fb && fb.cfg.databaseURL) return {url:fb.cfg.databaseURL, uid:authUser.uid, auth:true};
+  return getSyncCfg();
+}
+async function syncEndpointA(cfg){
+  if(cfg.auth){
+    const tok=await authUser.getIdToken();
+    return cleanDbUrl(cfg.url)+'/pathward_users/'+encodeURIComponent(cfg.uid)+'.json?auth='+encodeURIComponent(tok);
+  }
+  return syncEndpoint(cfg);
+}
+async function loadFb(){
+  if(fb) return fb;
+  const cfg=getFbCfg(); if(!cfg) return null;
+  const base='https://www.gstatic.com/firebasejs/'+FB_VER+'/';
+  const [appM,authM]=await Promise.all([import(base+'firebase-app.js'), import(base+'firebase-auth.js')]);
+  const app=appM.getApps().length?appM.getApp():appM.initializeApp(cfg);
+  fb={cfg, auth:authM.getAuth(app), M:authM};
+  fb.M.onAuthStateChanged(fb.auth, onAuthChange);
+  const endRedirect=(msg)=>{
+    let was=false; try{ was=sessionStorage.getItem('pw_redirecting')==='1'; sessionStorage.removeItem('pw_redirecting'); }catch(e){}
+    if(!was) return;
+    setTimeout(()=>{ if(!authUser && !getProfile()){ gateShow(); gateMsg(msg||'Sign-in did not finish. Tap Continue with Google to try again.',true); } },1500);
+  };
+  fb.M.getRedirectResult(fb.auth).then(res=>{ if(res&&res.user){ try{ sessionStorage.removeItem('pw_redirecting'); }catch(e){} } else endRedirect(); }).catch(e=>{ setAcctMsg(authErrText(e),true); endRedirect(authErrText(e)); });
+  return fb;
+}
+function authErrText(e){
+  const c=(e&&e.code)||'';
+  if(c==='auth/unauthorized-domain') return 'This site is not an authorized domain yet. Add it in Firebase → Authentication → Settings → Authorized domains.';
+  if(c==='auth/operation-not-allowed') return 'This sign-in method is switched off. Turn it on in Firebase → Authentication → Sign-in method.';
+  if(c==='auth/account-exists-with-different-credential') return 'This email already has an account with another sign-in method. Use that one instead.';
+  if(c==='auth/invalid-credential'||c==='auth/wrong-password'||c==='auth/user-not-found') return 'Email or password is not correct.';
+  if(c==='auth/email-already-in-use') return 'An account with this email already exists. Try signing in instead.';
+  if(c==='auth/weak-password') return 'Choose a password with at least 6 characters.';
+  if(c==='auth/invalid-email') return 'Enter a valid email address.';
+  if(c==='auth/missing-password') return 'Enter your password.';
+  if(c==='auth/too-many-requests') return 'Too many attempts. Wait a moment and try again.';
+  if(c==='auth/user-disabled') return 'This account has been disabled.';
+  if(c==='auth/network-request-failed') return 'No internet connection. Try again when you are online.';
+  if(c==='auth/invalid-api-key'||c==='auth/api-key-not-valid') return 'The API key in your Firebase config is not valid. Paste the config again.';
+  return c?('Sign-in failed ('+c+'). Try again.'):'Could not reach sign-in. Check your connection and try again.';
+}
+function setAcctMsg(t,err){ acctMsgText=t||''; acctMsgErr=!!err; renderAccount(); const el=document.getElementById('authSetupMsg'); if(el){ el.textContent=t||''; el.className='acctMsg'+(err?' err':''); } }
+async function onAuthChange(u){
+  authUser=u||null;
+  if(u){
+    try{ localStorage.setItem(PROFILE_KEY, JSON.stringify({name:u.displayName||(u.email||'').split('@')[0], email:u.email||'', photo:u.photoURL||''})); localStorage.removeItem(GUEST_KEY); sessionStorage.removeItem('pw_redirecting'); }catch(e){}
+    gateHide();
+    renderAccount();
+    if(fb.cfg.databaseURL){
+      try{
+        const res=await syncNow(activeCfg()); syncActive=true;
+        if(res==='pulled'){ location.reload(); return; }
+        setAcctMsg('',false);
+      }catch(e){ syncActive=false; setAcctMsg((e&&e.message)||'Could not sync to your account.',true); }
+    }
+  } else {
+    try{ localStorage.removeItem(PROFILE_KEY); }catch(e){}
+    syncActive=false;
+  }
+  renderAccount();
+}
+function signInGoogle(){ return signInWith('google'); }
+const PROVIDER_NAMES={google:'Google',facebook:'Facebook'};
+function noConfigNotice(){
+  if(IS_DEV){ gateHide(); openAuthSetup(); return; }
+  gateMsg("Sign-in isn't switched on for this app yet. You can continue as a guest for now.",true);
+}
+async function signInWith(kind){
+  if(!getFbCfg()){ noConfigNotice(); return; }
+  const label=PROVIDER_NAMES[kind]||'your account';
+  gateMsg('Opening '+label+'…',false); setAcctMsg('Opening '+label+'…',false);
+  try{
+    const f=await loadFb();
+    const prov=kind==='facebook'?new f.M.FacebookAuthProvider():new f.M.GoogleAuthProvider();
+    try{ await f.M.signInWithPopup(f.auth, prov); setAcctMsg('',false); }
+    catch(e){
+      const c=(e&&e.code)||'';
+      if(c==='auth/popup-closed-by-user'||c==='auth/cancelled-popup-request'){ setAcctMsg('',false); return; }
+      if(c==='auth/popup-blocked'||c==='auth/operation-not-supported-in-this-environment'||c==='auth/web-storage-unsupported'){ try{ sessionStorage.setItem('pw_redirecting','1'); }catch(e2){} await f.M.signInWithRedirect(f.auth, prov); return; }
+      setAcctMsg(authErrText(e),true);
+    }
+  }catch(e){ setAcctMsg(authErrText(e),true); }
+}
+async function signOutNow(){
+  try{ if(fb) await fb.M.signOut(fb.auth); }catch(e){}
+  authUser=null; try{ localStorage.removeItem(PROFILE_KEY); }catch(e){}
+  syncActive=false; setAcctMsg('',false);
+  try{ localStorage.removeItem(GUEST_KEY); }catch(e){}
+  document.getElementById('settingsOverlay').classList.remove('open'); gateShow();
+}
+function avatarHtml(p){
+  if(p&&p.photo) return '<img src="'+pwEsc(p.photo)+'" alt="" referrerpolicy="no-referrer">';
+  const n=(p&&(p.name||p.email))||''; return n?pwEsc(n.trim().charAt(0).toUpperCase()):'👤';
+}
+function renderAccount(){
+  const p=getProfile(), signed=!!p;
+  const ai=document.getElementById('avatarInner'); if(ai) ai.innerHTML=avatarHtml(p);
+  const slot=document.getElementById('acctSlot'); if(!slot) return;
+  const cfg=getFbCfg();
+  let sub, btn;
+  if(signed){
+    const cloud=cfg&&cfg.databaseURL;
+    sub=pwEsc(p.email||'')+(cloud?'<br>'+(syncActive?'☁️ Progress is synced to your account':'☁️ Syncing…'):'');
+    btn='<button class="ghostBtn" id="signOutBtn" style="width:100%;">Sign out</button>';
+  } else {
+    sub='Your progress is saved on this device. Sign in to keep it across devices.';
+    btn='<button class="googleBtn" id="signInBtn"><span>Sign in or create account</span></button>';
+  }
+  slot.innerHTML='<div class="acctCard"><div class="acctAvatar">'+avatarHtml(p)+'</div><div class="acctInfo"><div class="acctName">'+pwEsc(signed?(p.name||'Signed in'):'Guest')+'</div><div class="acctSub">'+sub+'</div></div></div>'
+    +(acctMsgText?'<div class="acctMsg'+(acctMsgErr?' err':'')+'">'+pwEsc(acctMsgText)+'</div>':'')
+    +btn+'<div style="height:1rem"></div>';
+  const si=document.getElementById('signInBtn'); if(si) si.onclick=()=>{ document.getElementById('settingsOverlay').classList.remove('open'); gateShow(); if(getFbCfg()) loadFb().catch(()=>{}); };
+  const so=document.getElementById('signOutBtn'); if(so) so.onclick=signOutNow;
+}
+function openAuthSetup(){
+  document.getElementById('settingsOverlay').classList.remove('open');
+  document.getElementById('rulesBox').textContent=RULES_SNIPPET;
+  const c=localStorage.getItem(FB_CFG_KEY); document.getElementById('fbCfgInput').value=c?JSON.stringify(JSON.parse(c),null,2):'';
+  document.getElementById('authSetupMsg').textContent=''; document.getElementById('authSetupMsg').className='acctMsg';
+  document.getElementById('authOverlay').classList.add('open');
+}
+function closeAuthSetup(back){
+  document.getElementById('authOverlay').classList.remove('open');
+  if(back){ renderAccount(); document.getElementById('settingsOverlay').classList.add('open'); }
+}
+document.getElementById('authCloseBtn').addEventListener('click',()=>closeAuthSetup(true));
+document.getElementById('authOverlay').addEventListener('click',e=>{ if(e.target.id==='authOverlay') closeAuthSetup(true); });
+document.getElementById('fbCfgSaveBtn').addEventListener('click',()=>{
+  const msg=document.getElementById('authSetupMsg');
+  try{
+    const cfg=parseFbCfg(document.getElementById('fbCfgInput').value);
+    localStorage.setItem(FB_CFG_KEY, JSON.stringify(cfg)); fb=null;
+    closeAuthSetup(true); signInGoogle();
+  }catch(e){ msg.textContent=e.message; msg.className='acctMsg err'; }
+});
+document.getElementById('fbCfgClearBtn').addEventListener('click',()=>{
+  localStorage.removeItem(FB_CFG_KEY); document.getElementById('fbCfgInput').value='';
+  const msg=document.getElementById('authSetupMsg'); msg.textContent='Saved config removed.'; msg.className='acctMsg';
+});
+document.getElementById('rulesCopyBtn').addEventListener('click',async()=>{
+  const b=document.getElementById('rulesCopyBtn');
+  try{ await navigator.clipboard.writeText(RULES_SNIPPET); b.textContent='Copied'; }catch(e){ b.textContent='Press and hold the rules above to copy'; }
+  setTimeout(()=>{ b.textContent='Copy rules'; },2000);
+});
+document.getElementById('settingsBtn').addEventListener('click',renderAccount);
+
+/* ---- login popup ---- */
+const GUEST_KEY='pathward_guest2';
+function gateEmailMode(on){ document.getElementById('gateEmailForm').hidden=!on; document.getElementById('gateProviders').hidden=!!on; }
+function gateShow(){ const g=document.getElementById('gate'); if(!g) return; gateMsg('',false); gateEmailMode(false); g.classList.add('open'); }
+function gateHide(){ const g=document.getElementById('gate'); if(g) g.classList.remove('open'); }
+function gateMsg(t,err){ const el=document.getElementById('gateMsg'); if(el){ el.textContent=t||''; el.className='gateMsg'+(err?' err':''); } }
+function gateMaybeShow(){
+  let guest=false, redirecting=false;
+  try{ guest=localStorage.getItem(GUEST_KEY)==='1'; redirecting=sessionStorage.getItem('pw_redirecting')==='1'; }catch(e){}
+  if(!getProfile() && !guest && !redirecting){ gateShow(); if(getFbCfg()) loadFb().catch(()=>{}); }
+}
+async function gateProvider(kind){
+  await signInWith(kind);
+  if(getProfile()) gateHide();
+  else if(acctMsgText && acctMsgErr) gateMsg(acctMsgText,true);
+  else if(!getFbCfg()){ /* notice already shown */ }
+  else gateMsg('',false);
+}
+async function emailAuth(mode){
+  if(!getFbCfg()){ noConfigNotice(); return; }
+  const em=document.getElementById('gateEmail').value.trim(), pw=document.getElementById('gatePass').value;
+  if(!em){ gateMsg('Enter your email address.',true); return; }
+  if(mode!=='reset' && !pw){ gateMsg('Enter your password.',true); return; }
+  gateMsg(mode==='reset'?'Sending reset link…':'Please wait…',false);
+  try{
+    const f=await loadFb();
+    if(mode==='reset'){ await f.M.sendPasswordResetEmail(f.auth,em); gateMsg('Password reset link sent. Check your inbox.',false); return; }
+    if(mode==='up') await f.M.createUserWithEmailAndPassword(f.auth,em,pw); else await f.M.signInWithEmailAndPassword(f.auth,em,pw);
+    if(getProfile()) gateHide(); else gateMsg('',false);
+  }catch(e){ gateMsg(authErrText(e),true); }
+}
+document.getElementById('gateG').innerHTML=GOOGLE_G;
+document.getElementById('gateGuestBtn').addEventListener('click',()=>{ try{ localStorage.setItem(GUEST_KEY,'1'); }catch(e){} gateHide(); });
+document.getElementById('gateGoogleBtn').addEventListener('click',()=>gateProvider('google'));
+document.getElementById('gateFbBtn').addEventListener('click',()=>gateProvider('facebook'));
+document.getElementById('gateEmailBtn').addEventListener('click',()=>{ gateMsg('',false); gateEmailMode(true); const e=document.getElementById('gateEmail'); if(e) e.focus(); });
+document.getElementById('gateBackBtn').addEventListener('click',()=>{ gateMsg('',false); gateEmailMode(false); });
+document.getElementById('gateEmailForm').addEventListener('submit',e=>{ e.preventDefault(); emailAuth('in'); });
+document.getElementById('gateSignUpBtn').addEventListener('click',()=>emailAuth('up'));
+document.getElementById('gateForgotBtn').addEventListener('click',()=>emailAuth('reset'));
+/* ---- start-up: restore a previous sign-in without loading the SDK for guests ---- */
+renderAccount();
+if(getProfile() && getFbCfg()) loadFb().catch(()=>{});
+gateMaybeShow();
 
 function loadDbConfigIntoForm(){
   const cfg=getSyncCfg();
@@ -3585,6 +3925,7 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;',
 const cloudCol=()=>cloud.db.collection('data/users/'+cloud.uid);
 const dval=s=>s&&(typeof s.data==='function'?s.data():s.data);
 function setCloudStatus(){
+  if(cloud.sample) document.documentElement.classList.add('aiOn');
   const el=document.getElementById('cloudStatus'); if(!el) return;
   el.innerHTML=(cloud.db?'☁️ Cloud database: <b>connected</b> — progress, mocks, roadmaps and portfolio reviews are saved to your account.':'☁️ Cloud database: not available here — using this browser only. Open the published page to enable it.')+'<br>'+(cloud.sample?'🤖 AI: <b>ready</b>':'🤖 AI: not available here');
 }
@@ -3687,6 +4028,7 @@ const PROV={
   custom:{n:'Custom (OpenAI-compatible URL)',m:'',u:''}
 };
 const aiCfg=()=>{ try{ const c=JSON.parse(localStorage.getItem('pathward_ai')||'{}'); if(c.key&&!c.provider) c.provider='anthropic'; return c; }catch(e){ return {}; } };
+if(aiCfg().key) document.documentElement.classList.add('aiOn');
 const aiCanSearch=()=>{ const c=aiCfg(); return !!(c.key&&PROV[c.provider]&&PROV[c.provider].s); };
 async function saveAiKey(){
   const prov=document.getElementById('aiProv').value;
