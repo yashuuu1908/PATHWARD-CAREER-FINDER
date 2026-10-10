@@ -777,8 +777,7 @@ body::before,body::after{ content:none !important; display:none !important; anim
 .hero .bigBtn{ animation:bounceIn .9s var(--spring) .45s both !important; }
 .heroImg{ box-shadow:0 8px 22px -14px rgba(0,0,0,.28) !important; }
 /* developer-only screens stay hidden unless the page is opened once with #setup */
-html:not(.dev) #openDbRowBtn, html:not(.dev) #cloudStatus, html:not(.dev) #aiTabs [data-t="key"]{ display:none !important; }
-html:not(.aiOn) #aiBtn{ display:none !important; }
+html:not(.dev) #openDbRowBtn, html:not(.dev) #cloudStatus{ display:none !important; }
 </style>
 <style id="gateUI">
 #gate{ position:fixed; inset:0; z-index:10000; display:none; align-items:center; justify-content:center; padding:1.2rem; background:rgba(10,8,6,.55); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
@@ -4011,7 +4010,7 @@ function renderAiTab(){
   const goBtn=document.getElementById('aiGo'); if(goBtn) goBtn.onclick=({mock:aiMock,road:aiRoad,port:aiPortfolio,key:saveAiKey})[aiTab];
 }
 document.getElementById('aiTabs').addEventListener('click',e=>{ const t=e.target.dataset&&e.target.dataset.t; if(t){ aiTab=t; renderAiTab(); }});
-document.getElementById('aiBtn').addEventListener('click',()=>{ aiTab='mock'; renderAiTab(); document.getElementById('aiOverlay').classList.add('open'); });
+document.getElementById('aiBtn').addEventListener('click',()=>{ aiTab=(cloud.sample||aiCfg().key)?'mock':'key'; renderAiTab(); document.getElementById('aiOverlay').classList.add('open'); });
 const closeAi=()=>document.getElementById('aiOverlay').classList.remove('open');
 document.getElementById('aiCloseBtn').addEventListener('click',closeAi);
 document.getElementById('aiOverlay').addEventListener('click',e=>{ if(e.target.id==='aiOverlay') closeAi(); });
