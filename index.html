@@ -799,6 +799,77 @@ html:not(.dev) #cloudStatus{ display:none !important; }
 #gate .gateMsg{ min-height:1.2em; font-size:.82rem; line-height:1.4; color:var(--dim); margin:0 0 .6rem; }
 #gate .gateMsg.err{ color:var(--bad); }
 </style>
+<style id="smartCSS">
+html.smLock{overflow:hidden}
+#smSheet{position:fixed;inset:0;z-index:9000;background:var(--bg);color:var(--ink);display:none;flex-direction:column;font-family:inherit}
+#smSheet.open{display:flex}
+.smHead{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--edge);background:var(--panel);padding-top:max(10px,env(safe-area-inset-top))}
+.smTitle{flex:1;font-weight:700;font-size:1.02rem;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.smBack{border:1px solid var(--edge);background:var(--fill);color:var(--ink);border-radius:12px;width:40px;height:40px;font-size:1.05rem;cursor:pointer}
+.smBody{flex:1;overflow-y:auto;padding:14px 14px calc(30px + env(safe-area-inset-bottom));max-width:760px;width:100%;margin:0 auto;-webkit-overflow-scrolling:touch}
+.smCard{background:var(--panel);border:1px solid var(--edge);border-radius:18px;padding:14px;margin-bottom:12px}
+.smCard h3{margin:0 0 6px;font-size:1.05rem}.smCard h4{margin:12px 0 6px;font-size:.92rem}
+.smCard p{margin:6px 0;line-height:1.5}.smCard ul,.smCard ol{margin:6px 0;padding-left:20px;line-height:1.55}
+.smDim{color:var(--dim);font-size:.85rem;line-height:1.45}
+.smWarn{color:var(--bad,#c0392b);font-size:.88rem}
+.smLocked{opacity:.6}
+.smBtn{border:1px solid var(--edge);background:var(--fill);color:var(--ink);border-radius:12px;padding:10px 14px;font:inherit;font-size:.9rem;cursor:pointer;margin:4px 4px 0 0;min-height:40px}
+.smBtn.smPrimary{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent);font-weight:700;width:100%;margin:10px 0 0}
+.smBtn.smSm{padding:6px 12px;min-height:34px;font-size:.82rem}.smBtn[disabled]{opacity:.5;cursor:not-allowed}
+.smRow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.smLink,.smRes{color:var(--accent);text-decoration:none}
+.smGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:10px}
+.smRes{display:block;background:var(--panel);border:1px solid var(--edge);border-radius:16px;padding:12px;color:var(--ink)}
+.smRes:hover{border-color:var(--accent)}.smResT{font-size:.74rem;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px}.smResL{font-weight:600;margin-bottom:4px;line-height:1.35}
+.smIn{width:100%;box-sizing:border-box;background:var(--fill);color:var(--ink);border:1px solid var(--edge);border-radius:12px;padding:10px;font:inherit;font-size:.95rem;margin-top:4px}
+.smLbl{display:block;font-size:.8rem;color:var(--dim);margin-top:8px}
+.smForm{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.smForm label{font-size:.78rem;color:var(--dim)}
+.smLine{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0}
+.smBar{height:7px;border-radius:99px;background:var(--fill);overflow:hidden;margin:2px 0 6px;border:1px solid var(--edge)}.smBar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.smChip{display:inline-block;font-size:.74rem;padding:3px 9px;border-radius:99px;border:1px solid var(--edge);background:var(--fill);color:var(--ink);margin:2px 4px 2px 0}
+.smChip.good{border-color:var(--good,#2a9d5c);color:var(--good,#2a9d5c)}.smChip.bad{border-color:var(--bad,#c0392b);color:var(--bad,#c0392b)}.smChip.warn{border-color:#d9a400;color:#b58500}
+.smBtnChip{cursor:pointer;font:inherit;font-size:.78rem}.smChips{display:flex;flex-wrap:wrap}
+.smMeta{display:flex;flex-wrap:wrap;gap:2px;margin-bottom:6px}
+.smQ{font-size:1.05rem;margin:12px 0;line-height:1.45}
+.smOpt{display:block;width:100%;text-align:left;border:1px solid var(--edge);background:var(--fill);color:var(--ink);border-radius:14px;padding:12px;margin:8px 0;font:inherit;cursor:pointer;line-height:1.4}
+.smOpt:hover:not([disabled]){border-color:var(--accent)}.smOpt.good{border-color:var(--good,#2a9d5c);background:color-mix(in srgb,var(--good,#2a9d5c) 16%,transparent)}.smOpt.bad{border-color:var(--bad,#c0392b);background:color-mix(in srgb,var(--bad,#c0392b) 14%,transparent)}
+.smExp{margin:10px 0;padding:10px;border-radius:12px;background:var(--fill);line-height:1.5}
+.smSelf{margin:12px 0}.smSeg{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.smSeg label{flex:1;min-width:76px}.smSeg input,.smRadio input{position:absolute;opacity:0;pointer-events:none}
+.smSeg span{display:block;text-align:center;border:1px solid var(--edge);border-radius:10px;padding:8px 6px;font-size:.8rem;cursor:pointer;background:var(--fill)}
+.smSeg input:checked+span{background:var(--accent);color:var(--accent-ink,#fff);border-color:var(--accent)}
+.smRadio{display:block;position:relative;margin:6px 0}.smRadio span{display:block;border:1px solid var(--edge);border-radius:12px;padding:10px;background:var(--fill);cursor:pointer}
+.smRadio input:checked+span{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.smChk{display:flex;gap:10px;align-items:flex-start;flex:1;cursor:pointer}.smChk input{margin-top:4px;width:18px;height:18px;accent-color:var(--accent)}
+.smDone b{text-decoration:line-through;opacity:.6}
+.smDay{padding:6px 0;border-bottom:1px dashed var(--edge)}
+.smRing{--p:0;width:74px;height:74px;border-radius:50%;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--fill) 0);display:grid;place-items:center;flex:none;position:relative}
+.smRing:before{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--panel)}.smRing b{position:relative;font-size:1.05rem}
+.smResultHead{display:flex;gap:14px;align-items:center}.smResultHead h3{margin:0 0 2px}
+.smTwo{display:grid;grid-template-columns:1fr 1fr;gap:10px}.smC{text-align:center}.smC .smRing{margin:0 auto 6px}
+.smTiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.smTile{display:flex;flex-direction:column;gap:3px;text-align:left;border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:18px;padding:13px;font:inherit;cursor:pointer;min-height:104px}
+.smTile:hover{border-color:var(--accent)}.smTileI{font-size:1.5rem}.smTile b{font-size:.95rem}
+.smGap{border-left:4px solid var(--edge);padding:6px 10px;margin:8px 0;background:var(--fill);border-radius:0 10px 10px 0}.smGap.bad{border-color:var(--bad,#c0392b)}.smGap.warn{border-color:#d9a400}
+.smFile{display:block;border:2px dashed var(--edge);border-radius:14px;padding:16px;text-align:center;cursor:pointer;margin:10px 0}.smFile input{display:none}
+.smCode{width:100%;box-sizing:border-box;min-height:200px;background:#0f1218;color:#e7ecf3;border:1px solid var(--edge);border-radius:12px;padding:12px;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:8px 0;tab-size:2;resize:vertical}
+.smPre{background:#0f1218;color:#e7ecf3;border-radius:10px;padding:10px;overflow:auto;font-size:12.5px}
+.smTest{font-size:.84rem;padding:4px 0;font-family:ui-monospace,Menlo,monospace}.smTest.good{color:var(--good,#2a9d5c)}.smTest.bad{color:var(--bad,#c0392b)}
+.smChat{max-height:260px;overflow-y:auto;margin-bottom:8px}.smMsg{padding:9px 12px;border-radius:14px;margin:6px 0;max-width:92%;line-height:1.5;font-size:.92rem}
+.smMsg.me{background:var(--accent);color:var(--accent-ink,#fff);margin-left:auto}.smMsg.bot{background:var(--fill);border:1px solid var(--edge)}
+.smPath{padding:8px 0;border-bottom:1px solid var(--edge)}
+.smKpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:12px}.smKpi{background:var(--panel);border:1px solid var(--edge);border-radius:16px;padding:12px;text-align:center}.smKpi b{display:block;font-size:1.3rem}.smKpi span{font-size:.76rem;color:var(--dim)}
+.smChart{width:100%;height:auto;color:var(--ink);display:block}.smDonut{width:130px;height:130px;display:block;margin:0 auto;color:var(--ink)}.smMap{width:100%;max-width:360px;display:block;margin:0 auto;color:var(--ink)}
+.smLegend{display:flex;gap:12px;justify-content:center;font-size:.8rem;margin-top:6px;flex-wrap:wrap}.smLegend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+.smTrend.up{color:var(--good,#2a9d5c)}.smTrend.down{color:var(--bad,#c0392b)}
+.smTabs{margin-bottom:12px}
+.smTblWrap{overflow-x:auto}.smTbl{width:100%;border-collapse:collapse;font-size:.84rem}.smTbl th,.smTbl td{padding:7px 6px;text-align:left;border-bottom:1px solid var(--edge);white-space:nowrap}.smTbl tr.risk td{background:color-mix(in srgb,var(--bad,#c0392b) 10%,transparent)}
+.smSpin{width:30px;height:30px;border:3px solid var(--edge);border-top-color:var(--accent);border-radius:50%;animation:smspin .8s linear infinite;margin:14px auto}@keyframes smspin{to{transform:rotate(360deg)}}
+#smOffline{position:fixed;left:0;right:0;top:0;z-index:9500;background:#b45309;color:#fff;font-size:.74rem;line-height:1.2;text-align:center;padding:5px 10px;display:none;pointer-events:none;height:28px;box-sizing:border-box;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}#smOffline.on{display:block}html.smOff body{padding-top:28px}html.smOff #smSheet{top:28px}
+#panel-coach{padding-bottom:6rem}
+@media(max-width:420px){.smTiles{grid-template-columns:1fr 1fr}.smForm{grid-template-columns:1fr 1fr 1fr}#coachBtn{padding-left:.55rem;padding-right:.55rem}}
+@media print{body>*:not(#smSheet){display:none!important}#smSheet{position:static;display:block}.smHead,.smRow{display:none}.smBody{overflow:visible}}
+</style>
 </head>
 <body>
 
@@ -807,6 +878,7 @@ html:not(.dev) #cloudStatus{ display:none !important; }
     <div class="brand"><b>Path</b>ward</div>
     <div style="display:flex; gap:0.5rem; align-items:center;">
       <button class="backBtn" id="backBtn" hidden>← Back</button>
+      <button class="backBtn" id="coachBtn">🧠 Coach</button>
       <button class="backBtn" id="aiBtn">🤖 AI Studio</button>
       <button class="backBtn avatarBtn" id="settingsBtn" aria-label="Profile and settings"><span id="avatarInner">👤</span></button>
     </div>
@@ -972,6 +1044,7 @@ html:not(.dev) #cloudStatus{ display:none !important; }
     </div>
 
     <!-- PROGRESS PANEL -->
+    <div class="dashPanel" id="panel-coach" style="display:none;"></div>
     <div class="dashPanel" id="panel-progress" style="display:none;">
       <div class="statRow">
         <div class="statCard"><div class="n" id="statStreak">0</div><div class="l">Day streak</div></div>
@@ -988,6 +1061,7 @@ html:not(.dev) #cloudStatus{ display:none !important; }
       <button class="tabBtn" data-tab="syllabus"><span class="ic">📚</span>Syllabus</button>
       <button class="tabBtn" data-tab="mocks"><span class="ic">🎯</span>Mocks</button>
       <button class="tabBtn" data-tab="progress"><span class="ic">📊</span>Progress</button>
+      <button class="tabBtn" data-tab="coach"><span class="ic">🧠</span>Coach</button>
     </div>
   </section>
 
@@ -1030,6 +1104,8 @@ html:not(.dev) #cloudStatus{ display:none !important; }
     <button class="settingsRow" id="openDbRowBtn" style="width:100%; text-align:left; display:flex; align-items:center; justify-content:space-between; padding:0.9rem 0; background:none; border:none; border-bottom:1px solid var(--edge); font-family:inherit; font-size:1rem; color:var(--ink); cursor:pointer;">
       <span>☁️ Cloud save</span><span style="color:var(--dim);">›</span>
     </button>
+    <button class="settingsRow" id="coachRowBtn" style="width:100%; text-align:left; display:flex; align-items:center; justify-content:space-between; padding:0.9rem 0; background:none; border:none; border-bottom:1px solid var(--edge); font-family:inherit; font-size:1rem; color:var(--ink); cursor:pointer;"><span>🧠 Smart Coach</span><span style="color:var(--dim);">›</span></button>
+    <button class="settingsRow" id="langRowBtn" style="width:100%; text-align:left; display:flex; align-items:center; justify-content:space-between; padding:0.9rem 0; background:none; border:none; border-bottom:1px solid var(--edge); font-family:inherit; font-size:1rem; color:var(--ink); cursor:pointer;"><span>🌐 Language</span><span style="color:var(--dim);"><span id="langCur">English</span></span></button>
     <div id="cloudStatus" style="font-size:0.82rem;color:var(--dim);margin-top:1rem;line-height:1.5;">Checking cloud…</div>
     <button class="ghostBtn" id="settingsCloseBtn" style="margin-top:1.3rem;">Close</button>
   </div>
@@ -3998,7 +4074,7 @@ function renderAiTab(){
       <button class="solidBtn" id="aiGo" style="width:100%">🔍 Review My Portfolio</button>`;
   } else if(aiTab==='key'){
     const k=aiCfg(), pv=k.provider||'anthropic';
-    body.innerHTML=cloud.sample?'<p class="stepSub">✅ AI is built in on this page — no key needed.</p>':`<p class="stepSub" style="margin:0 0 .7rem">Pick any AI provider and paste your own key. It is stored only in this browser — never share or publish the file after saving a key.</p>
+    body.innerHTML=cloud.sample?'<p class="stepSub">✅ AI is built in on this page — no key needed.</p>':`${AI_PROXY_URL?'<p class="stepSub" style="margin:0 0 .9rem">✅ AI is provided by this app. Just sign in and use it. Adding your own key below is optional.</p>':''}<p class="stepSub" style="margin:0 0 .7rem">Pick any AI provider and paste your own key. It is stored only in this browser — never share or publish the file after saving a key.</p>
       <select class="dbInput" id="aiProv">${Object.keys(PROV).map(x=>`<option value="${x}"${x===pv?' selected':''}>${PROV[x].n}</option>`).join('')}</select>
       <input class="dbInput" id="aiKey" type="password" placeholder="API key" value="${esc(k.key||'')}">
       <input class="dbInput" id="aiModel" placeholder="Model" value="${esc(k.model||'')}">
@@ -4010,13 +4086,29 @@ function renderAiTab(){
   const goBtn=document.getElementById('aiGo'); if(goBtn) goBtn.onclick=({mock:aiMock,road:aiRoad,port:aiPortfolio,key:saveAiKey})[aiTab];
 }
 document.getElementById('aiTabs').addEventListener('click',e=>{ const t=e.target.dataset&&e.target.dataset.t; if(t){ aiTab=t; renderAiTab(); }});
-document.getElementById('aiBtn').addEventListener('click',()=>{ aiTab=(cloud.sample||aiCfg().key)?'mock':'key'; renderAiTab(); document.getElementById('aiOverlay').classList.add('open'); });
+document.getElementById('aiBtn').addEventListener('click',()=>{ aiTab=(cloud.sample||aiCfg().key||AI_PROXY_URL)?'mock':'key'; renderAiTab(); document.getElementById('aiOverlay').classList.add('open'); });
 const closeAi=()=>document.getElementById('aiOverlay').classList.remove('open');
 document.getElementById('aiCloseBtn').addEventListener('click',closeAi);
 document.getElementById('aiOverlay').addEventListener('click',e=>{ if(e.target.id==='aiOverlay') closeAi(); });
 document.getElementById('settingsBtn').addEventListener('click',setCloudStatus);
 
 /* ---- AI engine: built-in on the claude.ai page, or your own key in the standalone file ---- */
+/* ===== AI SERVER (set once by the admin) — paste the address of your deployed AI function, e.g. "https://your-project.vercel.app/api/ai" ===== */
+const AI_PROXY_URL='';
+async function llmServer(prompt,o){
+  const cfg=getFbCfg(); if(!cfg) throw new Error('Sign in to use AI Studio.');
+  let f; try{ f=await loadFb(); }catch(e){ throw new Error('Could not reach sign-in. Check your connection and try again.'); }
+  for(let i=0;i<30 && !authUser;i++) await new Promise(r=>setTimeout(r,100));
+  if(!authUser) throw new Error('Sign in to use AI Studio.');
+  const token=await authUser.getIdToken();
+  let r; try{ r=await fetch(AI_PROXY_URL,{method:'POST',headers:{'content-type':'application/json','authorization':'Bearer '+token},body:JSON.stringify({prompt:String(prompt),search:!!(o&&o.search)})}); }
+  catch(e){ throw new Error('The AI service could not be reached. Check your connection and try again.'); }
+  let j={}; try{ j=await r.json(); }catch(e){}
+  if(r.status===401) throw new Error('Please sign in again to use AI Studio.');
+  if(r.status===429) throw new Error('You have reached the hourly AI limit. Try again a little later.');
+  if(!r.ok) throw new Error((j&&j.error)||('The AI service is busy (HTTP '+r.status+'). Try again.'));
+  return parseJSON(j.text||'');
+}
 const PROV={
   anthropic:{n:'Anthropic (Claude)',m:'claude-sonnet-5-5',s:true},
   openai:{n:'OpenAI (ChatGPT)',m:'gpt-4o',u:'https://api.openai.com/v1'},
@@ -4028,7 +4120,7 @@ const PROV={
 };
 const aiCfg=()=>{ try{ const c=JSON.parse(localStorage.getItem('pathward_ai')||'{}'); if(c.key&&!c.provider) c.provider='anthropic'; return c; }catch(e){ return {}; } };
 if(aiCfg().key) document.documentElement.classList.add('aiOn');
-const aiCanSearch=()=>{ const c=aiCfg(); return !!(c.key&&PROV[c.provider]&&PROV[c.provider].s); };
+const aiCanSearch=()=>{ const c=aiCfg(); if(!c.key&&AI_PROXY_URL) return true; return !!(c.key&&PROV[c.provider]&&PROV[c.provider].s); };
 async function saveAiKey(){
   const prov=document.getElementById('aiProv').value;
   localStorage.setItem('pathward_ai',JSON.stringify({provider:prov,key:document.getElementById('aiKey').value.trim(),model:document.getElementById('aiModel').value.trim(),base:document.getElementById('aiBase').value.trim()}));
@@ -4036,34 +4128,10 @@ async function saveAiKey(){
   try{ await llm('Reply with ONLY this JSON: {"ok":true}'); aiOut('✅ Connected to '+esc(PROV[prov].n)+'. Saved in this browser.'); }
   catch(e){ aiOut('⚠️ Saved, but the test failed: '+esc(e.message||'unknown error')+'<br><small>Check the key, model name'+(prov==='custom'?', base URL':'')+' and that the provider allows browser requests.</small>'); }
 }
-function parseJSON(t){t = String(t)
-        .replace(/^\uFEFF/, "")
-        .replace(/```(?:json)?/gi, "")
-        .trim();
-
-    // Find the JSON object in the AI response.
-    const start = t.indexOf("{");
-    const end = t.lastIndexOf("}");
-
-    if (start === -1 || end === -1 || end < start) {
-        throw new Error("AI did not return a JSON object. Please try again.");
-    }
-
-    const jsonText = t.slice(start, end + 1);
-
-    try {
-        return JSON.parse(jsonText);
-    } catch (error) {
-        console.error("Invalid AI JSON:", jsonText);
-        console.error("JSON parsing error:", error);
-
-        throw new Error(
-            "The AI returned invalid JSON. Please click Generate again. " +
-            error.message
-        );
-    }}
+function parseJSON(t){ t=String(t).replace(/```json|```/g,''); return JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1)); }
 async function llm(prompt,o){
   if(cloud.sample) return cloud.sample.json(prompt,{modelTier:'complex',cache:false});
+  if(!aiCfg().key && AI_PROXY_URL) return llmServer(prompt,o);
   const k=aiCfg(); if(!k.key) throw new Error('Add your API key in AI Studio → 🔑 Setup first.');
   const pv=k.provider||'anthropic', P=PROV[pv]||PROV.custom, model=k.model||P.m, search=!!(o&&o.search&&P.s);
   let url,headers={'content-type':'application/json'},body,pick;
@@ -4099,16 +4167,7 @@ async function genMock(c,o){
   const scope=o.chapter?`the chapter "${o.chapter.title}" of the subject "${o.subject.title}"`:`the subject "${o.subject.title}", spread across: ${o.subject.chapters.map(x=>x.title).join('; ')}`;
   const g=await llm(`You are a senior paper-setter for ${c.name}. Write ${ask} ${o.diff} multiple-choice questions on ${scope}.
 Rules: mirror the latest exam pattern and trends of the last 5 years${live?' and use web search for anything recent or time-sensitive':' (state only facts you are certain of; avoid very recent events you cannot be sure about)'}; each question has exactly 4 options and ONE unambiguously correct answer; no "all of the above"; the explanation must give the reasoning or working and say why the other options are wrong; if you are unsure of a fact, do not use it. ${o.extra?'Extra instructions: '+o.extra:''}${o.slot?` This is mock #${o.slot} of 10 for this chapter at this level, so cover different sub-topics and angles than the other mocks.`:''}${o.avoid&&o.avoid.length?` Never repeat or rephrase any of these existing questions: ${o.avoid.slice(-60).map(x=>x.slice(0,90)).join(' | ')}`:''}
-Return ONLY one valid JSON object with this structure:
-{"questions":[{"q":"Question text","options":["Option A","Option B","Option C","Option D"],"correct":0,"topic":"Topic","explain":"Explanation"}]};
-
-Strict JSON rules:
-- Use double quotes for all JSON keys and string values.
-- Escape quotation marks inside strings as \".
-- Escape backslashes inside strings as \\.
-- Do not include literal line breaks inside JSON strings.
-- Do not include Markdown fences or text outside the JSON object.
-- "correct" must be an integer from 0 to 3.;
+Return ONLY JSON: {"questions":[{"q":"","options":["","","",""],"correct":0,"topic":"","explain":""}]} where "correct" is the 0-based index.`,{search:live});
   const qs=(g.questions||[]).filter(q=>q&&q.q&&Array.isArray(q.options)&&q.options.length===4&&Number.isInteger(q.correct)&&q.correct>=0&&q.correct<4);
   if(!qs.length) throw new Error('AI returned no usable questions. Try again.');
   const v=await llm(`Solve each multiple-choice question independently and carefully. Return ONLY JSON {"answers":[{"i":0,"pick":0,"conf":"high"}]} with pick = 0-based option index and conf = "high" or "low" (use "low" if the question is ambiguous, wrong, or you are unsure).\n`+JSON.stringify(qs.map((q,i)=>({i,q:q.q,options:q.options}))),{search:live});
@@ -4192,7 +4251,7 @@ async function aiPortfolio(){
   if(!text&&!f){ aiOut('Add a description or an image.'); return; }
   busy(b,true,'Reviewing…');
   try{
-    const opts={}; if(f){ const lim=await cloud.sample.limits(); if(lim&&lim.images) opts.images=[f]; }
+    const opts={}; if(f&&cloud.sample){ const lim=await cloud.sample.limits(); if(lim&&lim.images) opts.images=[f]; }
     const r=await askAI(`You are a strict but kind hiring manager for "${role}". Review this portfolio piece${opts.images?' (image attached)':''}:\n${text||'(image only)'}\nReturn ONLY JSON: {"score":0-100,"verdict":"one sentence","strengths":["..."],"improvements":["..."],"nextSteps":["3 concrete actions"]}`,opts);
     const li=a=>(a||[]).map(x=>`<li>${esc(x)}</li>`).join('');
     aiOut(`<div class="celebrate">Score: ${esc(r.score)}/100</div><p>${esc(r.verdict)}</p><b>Strengths</b><ul>${li(r.strengths)}</ul><b>Improve</b><ul>${li(r.improvements)}</ul><b>Next steps</b><ul>${li(r.nextSteps)}</ul>`);
@@ -4292,7 +4351,7 @@ function isDup(q,list){ const a=normW(q); if(a.size<3) return list.some(x=>Strin
 const BANK='pathward_aibank';
 const getBank=()=>{ try{ return JSON.parse(localStorage.getItem(BANK)||'{}'); }catch(e){ return {}; } };
 const putBank=b=>{ try{ localStorage.setItem(BANK,JSON.stringify(b)); }catch(e){ showToast('⚠️ Storage full — oldest AI mocks may not be saved.'); } };
-const aiReady=()=>!!cloud.sample||!!aiCfg().key;
+const aiReady=()=>!!cloud.sample||!!aiCfg().key||!!AI_PROXY_URL;
 async function genSlot(c,sub,ch,diff,n){
   const bk=getBank(), pre=c.id+'|'+sub.id+'-'+ch.id+'-';
   const avoid=Object.keys(bk).filter(k=>k.startsWith(pre)).flatMap(k=>bk[k].questions.map(q=>q.q));
@@ -4386,6 +4445,804 @@ syncChrome();
       saveState();
     }
   }
+})();
+</script>
+
+<script id="smartJS">
+(function(){'use strict';
+/* ===== Smart Coach data: offline question bank, challenges, projects, resources ===== */
+const BANK={
+python:{n:'Python',re:/python|\bpy\b/i,sub:['Syntax & data types','Control flow & functions','Data structures','OOP & modules'],q:[
+[1,0,'What does print(type(3/2)) show in Python 3?',['<class int>','<class float>','<class str>','<class decimal>'],1,'The / operator always returns a float in Python 3.'],
+[1,1,'Which keyword defines a function in Python?',['func','def','function','define'],1,'Functions are defined with def.'],
+[2,2,'Which of these built-in types is immutable?',['list','dict','tuple','set'],2,'Tuples cannot be changed after creation.'],
+[2,1,'What does [x*2 for x in range(3)] produce?',['[0, 2, 4]','[2, 4, 6]','[0, 1, 2]','[0, 2, 4, 6]'],0,'range(3) gives 0,1,2 and each is doubled.'],
+[3,3,'What happens with def f(a, b=[]): when f is called repeatedly without b?',['A fresh list is made each call','The same list object is shared across calls','SyntaxError','b becomes read-only'],1,'Default values are evaluated once, so a mutable default is shared.'],
+[3,2,'Average time complexity of "x in some_set" for a Python set?',['O(n)','O(log n)','O(1)','O(n log n)'],2,'Sets are hash tables, giving O(1) average lookup.']]},
+javascript:{n:'JavaScript',re:/javascript|\bjs\b|node|react|angular|vue|front-?end|web dev|full.?stack|mern/i,sub:['Types & variables','Functions & scope','Async & promises','DOM & ES6+'],q:[
+[1,0,'Which keyword declares a block-scoped variable that can be reassigned?',['var','let','const','static'],1,'let is block-scoped and reassignable; const cannot be reassigned.'],
+[1,0,'What does typeof null return?',['"null"','"undefined"','"object"','"number"'],2,'A long-standing quirk: typeof null is "object".'],
+[2,1,'What is a closure?',['A function that keeps access to its surrounding lexical scope','A way to close a browser window','A function with no parameters','A private class field'],0,'Closures remember variables from where they were created.'],
+[2,3,'What does [1,2,3].map(x => x*2) return?',['It changes the original array','A new array [2,4,6]','undefined','The number 6'],1,'map returns a new array and leaves the original untouched.'],
+[3,2,'Output order of: console.log(1); setTimeout(()=>console.log(2),0); Promise.resolve().then(()=>console.log(3)); console.log(4);',['1 2 3 4','1 4 3 2','1 3 4 2','1 4 2 3'],1,'Synchronous code first, then microtasks (promises), then timers.'],
+[3,0,'What is the result of 0.1 + 0.2 === 0.3 in JavaScript?',['true','false','TypeError','NaN'],1,'Floating-point rounding makes the sum 0.30000000000000004.']]},
+htmlcss:{n:'HTML & CSS',re:/html|css|web design|ui design|bootstrap|tailwind/i,sub:['HTML structure','Selectors & box model','Flexbox & grid','Responsive & accessibility'],q:[
+[1,0,'Which tag holds the visible content of a web page?',['<head>','<body>','<meta>','<title>'],1,'<body> contains everything the user sees.'],
+[1,1,'Which CSS property changes text colour?',['font-color','text-color','color','foreground'],2,'The color property sets text colour.'],
+[2,1,'With default box-sizing, width:100px with padding:10px (no border) renders a box this wide:',['100px','110px','120px','140px'],2,'content-box adds padding on both sides: 100 + 10 + 10.'],
+[2,2,'Which declaration turns a container into a flexbox?',['display:flex','flex:container','position:flex','layout:flex'],0,'display:flex creates a flex container.'],
+[3,3,'What does @media (max-width:600px) do?',['Applies the rules only when the viewport is 600px wide or less','Limits image width to 600px','Hides the page in print','Loads a script'],0,'It is a responsive breakpoint.'],
+[3,2,'grid-template-columns: repeat(3, 1fr) creates:',['Three equal flexible columns','Three 1px columns','One column, three rows','Three rows'],0,'Each 1fr is an equal share of free space.']]},
+sql:{n:'SQL & Databases',re:/sql|dbms|database|mongo|data ?base/i,sub:['Basic queries','Joins & aggregation','Keys & normalization','Transactions & indexing'],q:[
+[1,0,'Which SQL clause filters rows before grouping?',['HAVING','WHERE','ORDER BY','LIMIT'],1,'WHERE filters rows; HAVING filters groups afterwards.'],
+[1,0,'Which command retrieves data from a table?',['GET','SELECT','FETCH TABLE','OPEN'],1,'SELECT reads rows.'],
+[2,1,'Which join returns all rows from the left table plus matches from the right?',['INNER JOIN','LEFT JOIN','CROSS JOIN','SELF ONLY'],1,'LEFT JOIN keeps every left row.'],
+[2,2,'A primary key must be:',['Unique and not null','Unique but may be null','Numeric','A foreign key'],0,'Primary keys uniquely identify rows and cannot be null.'],
+[3,3,'In ACID, what does the I stand for?',['Integrity','Isolation','Indexing','Inheritance'],1,'Isolation: concurrent transactions do not interfere.'],
+[3,2,'A table is in 3NF if it is in 2NF and:',['has no transitive dependency of non-key columns on the key','has no primary key','has only one column','has no foreign keys'],0,'3NF removes transitive dependencies.']]},
+dsa:{n:'Data Structures & Algorithms',re:/\bdsa\b|data structure|algorithm|coding interview|competitive|placement|software engineer|\bsde\b|arrays?|two pointers|recursion|trees?|graphs?|dynamic programming|sorting|linked list|stacks?|queues?|hash|heap|binary search|greedy|backtracking|complexity|system design/i,sub:['Complexity','Arrays & strings','Stacks, queues, lists','Trees, graphs, sorting'],q:[
+[1,0,'Binary search requires the array to be:',['Sorted','Unique','Integers only','Of even length'],0,'Binary search relies on sorted order.'],
+[1,2,'Which order does a stack follow?',['FIFO','LIFO','Random','Priority'],1,'Last in, first out.'],
+[2,0,'Time complexity of binary search?',['O(n)','O(log n)','O(n log n)','O(1)'],1,'The search space halves every step.'],
+[2,3,'Which traversal of a binary search tree gives sorted output?',['Preorder','Inorder','Postorder','Level order'],1,'Inorder visits left, node, right.'],
+[3,3,'Worst-case time complexity of quicksort?',['O(n log n)','O(n²)','O(n)','O(log n)'],1,'Bad pivots lead to O(n²).'],
+[3,3,'Which algorithm finds single-source shortest paths with non-negative weights?',['Dijkstra','Kruskal','Topological sort','Plain DFS'],0,'Dijkstra uses a priority queue on non-negative weights.']]},
+os:{n:'Operating Systems',re:/operating system|\bos\b|linux|kernel|systems/i,sub:['Processes & threads','CPU scheduling','Memory management','Deadlocks & sync'],q:[
+[1,0,'A process is best described as:',['A program in execution','A file on disk','A CPU core','A compiler'],0,'A process is a running instance of a program.'],
+[1,2,'Which storage is fastest?',['Hard disk','RAM','CPU registers','SSD'],2,'Registers sit inside the CPU.'],
+[2,1,'Which scheduling policy can starve long jobs?',['Round Robin','Shortest Job First','FCFS','None of these'],1,'Short jobs keep jumping ahead of long ones.'],
+[2,2,'Paging mainly removes which problem?',['Internal fragmentation completely','External fragmentation','Deadlock','Thrashing'],1,'Fixed-size frames avoid external fragmentation.'],
+[3,3,'Which is NOT a necessary condition for deadlock?',['Mutual exclusion','Hold and wait','Preemption of resources allowed','Circular wait'],2,'No-preemption is required; allowing preemption breaks deadlock.'],
+[3,3,'A semaphore initialised to 1 for mutual exclusion is called a:',['Counting semaphore','Binary semaphore','Spinlock','Monitor'],1,'Binary semaphore (mutex-like).']]},
+net:{n:'Computer Networks',re:/network|tcp|ip\b|ccna|protocol/i,sub:['Models & layers','IP & addressing','Transport (TCP/UDP)','Application protocols'],q:[
+[1,0,'How many layers are in the OSI model?',['4','5','7','9'],2,'OSI has seven layers.'],
+[1,3,'Which protocol loads web pages securely?',['HTTP','HTTPS','FTP','SMTP'],1,'HTTPS = HTTP over TLS.'],
+[2,2,'Which protocol is connection-oriented?',['UDP','TCP','IP','ICMP'],1,'TCP sets up a connection first.'],
+[2,1,'How many bits is an IPv4 address?',['16','32','64','128'],1,'IPv4 addresses are 32 bits.'],
+[3,2,'TCP connection set-up uses a:',['Two-way handshake','Three-way handshake','Four-way handshake','No handshake'],1,'SYN, SYN-ACK, ACK.'],
+[3,1,'How many usable host addresses does a /24 IPv4 subnet have?',['254','256','255','252'],0,'256 minus network and broadcast addresses.']]},
+git:{n:'Git & GitHub',re:/\bgit\b|github|version control/i,sub:['Basics','Branching','Remotes & collaboration','Workflows'],q:[
+[1,0,'Which command creates a new local repository?',['git start','git init','git new','git create'],1,'git init.'],
+[1,0,'Which command stages changes for the next commit?',['git add','git push','git save','git stage-all'],0,'git add.'],
+[2,1,'What does git merge do?',['Combines the histories of two branches','Deletes a branch','Uploads to the remote','Reverts the last commit'],0,'It joins the work from another branch.'],
+[2,2,'git clone does what?',['Copies a remote repository locally','Creates a branch','Compresses the repo','Stashes changes'],0,'Clone downloads the full repository.'],
+[3,3,'Compared with merge, rebase mainly:',['Replays commits onto a new base for a linear history','Deletes history','Pushes to remote','Is always safe on shared branches'],0,'Rebase rewrites commits, so avoid it on shared branches.'],
+[3,1,'What does git stash do?',['Temporarily shelves uncommitted changes','Deletes untracked files','Pushes to remote','Tags a release'],0,'Stash saves work in progress.']]},
+java:{n:'Java',re:/\bjava\b|spring|android|jvm/i,sub:['Syntax & OOP','Collections','Exceptions & generics','JVM & concurrency'],q:[
+[1,0,'What is the standard Java entry-point method?',['public static void main(String[] args)','start()','run()','main()'],0,'The JVM looks for public static void main.'],
+[1,0,'Which of these is NOT a primitive type?',['int','boolean','String','double'],2,'String is a class.'],
+[2,0,'Which keyword stops a class from being inherited?',['static','final','private','abstract'],1,'A final class cannot be extended.'],
+[2,1,'Which collection does not allow duplicates?',['ArrayList','HashSet','LinkedList','Vector'],1,'Sets hold unique elements.'],
+[3,3,'Where are Java objects allocated?',['Stack','Heap','CPU registers','Method area only'],1,'Objects live on the heap.'],
+[3,2,'Checked exceptions must be:',['Declared or handled','Ignored','Used only in main','Only at runtime'],0,'The compiler enforces handle-or-declare.']]},
+ml:{n:'Machine Learning',re:/machine learning|\bml\b|\bai\b|data scien|deep learning|neural|artificial/i,sub:['Core concepts','Supervised learning','Evaluation','Neural networks'],q:[
+[1,0,'Which is an example of supervised learning?',['Clustering','Classification using labelled data','Dimensionality reduction','Reinforcement learning'],1,'Supervised learning uses labelled examples.'],
+[1,0,'Overfitting means the model:',['Does well on training data but poorly on unseen data','Does badly on both','Is too simple','Has no parameters'],0,'It memorised the training data.'],
+[2,2,'Which metric balances precision and recall?',['Accuracy','F1 score','MSE','R squared'],1,'F1 is their harmonic mean.'],
+[2,1,'Linear regression predicts:',['A continuous value','A category','Clusters','Rules'],0,'Regression outputs numbers.'],
+[3,3,'An activation function mainly:',['Introduces non-linearity','Initialises weights','Normalises labels','Reduces the dataset'],0,'Without it, layers collapse into one linear map.'],
+[3,2,'Splitting data into folds to estimate generalisation is called:',['Cross-validation','Bagging','Dropout','Gradient descent'],0,'k-fold cross-validation.']]},
+c:{n:'C Programming',re:/\bc\b programming|c language|embedded|\bc\b$|pointers/i,sub:['Basics','Pointers','Dynamic memory','Structures'],q:[
+[1,0,'Which operator gives the address of a variable?',['*','&','#','@'],1,'& is the address-of operator.'],
+[1,0,'printf is declared in:',['stdlib.h','stdio.h','string.h','math.h'],1,'stdio.h.'],
+[2,1,'If int *p = &a; then *p is:',['The address of a','The value stored in a','The address of p','The size of a'],1,'* dereferences the pointer.'],
+[2,2,'malloc returns:',['Initialised memory','A pointer to uninitialised memory','Nothing','An int'],1,'calloc zero-fills; malloc does not.'],
+[3,2,'Forgetting to free dynamic memory causes a:',['Memory leak','Stack overflow','Compile error','Segmentation fault always'],0,'Allocated memory is never returned.'],
+[3,1,'For int arr[10], sizeof(arr)/sizeof(arr[0]) equals:',['10','40','4','1'],0,'Total bytes divided by element size.']]},
+data:{n:'Data Analysis & Statistics',re:/excel|statistic|analytic|data analy|business|power ?bi|tableau/i,sub:['Spreadsheets','Statistics basics','Visualisation','Data cleaning'],q:[
+[1,1,'The mean of a data set is its:',['Middle value','Average','Most frequent value','Spread'],1,'Sum divided by count.'],
+[1,2,'Which chart best shows a trend over time?',['Pie chart','Line chart','Radar chart','Treemap'],1,'Lines show change across time.'],
+[2,1,'Which measure is robust to outliers?',['Median','Mean','Range','Sum'],0,'The median ignores extreme values.'],
+[2,0,'Which Excel function counts cells that meet a condition?',['SUMIF','COUNTIF','VLOOKUP','INDEX'],1,'COUNTIF.'],
+[3,1,'A p-value below 0.05 usually means:',['The result would be unlikely if the null hypothesis were true','The null hypothesis is certainly true','The effect is large','The sample is biased'],0,'It measures compatibility with the null hypothesis, not truth.'],
+[3,3,'A common way to treat missing numeric values is to:',['Impute with the median or mean','Delete the whole data set','Replace with text','Ignore them silently'],0,'Imputation keeps rows usable; the right method depends on context.']]},
+cyber:{n:'Cyber Security',re:/cyber|security|hacking|infosec|pentest|soc analyst/i,sub:['Fundamentals','Network security','Web security','Cryptography'],q:[
+[1,0,'The CIA triad stands for:',['Confidentiality, Integrity, Availability','Control, Identity, Access','Cipher, Integrity, Authentication','Compliance, Inspection, Audit'],0,'The three core security goals.'],
+[1,0,'Phishing is:',['Social engineering with fake messages','A firewall rule','A type of encryption','A port scan'],0,'Tricking users into revealing data.'],
+[2,2,'The best defence against SQL injection is:',['Parameterised queries','Longer passwords','Bigger servers','HTTPS alone'],0,'Never concatenate user input into SQL.'],
+[2,1,'A firewall:',['Filters network traffic by rules','Encrypts disks','Backs up data','Scans PDFs'],0,'It allows or blocks traffic.'],
+[3,3,'Hashing differs from encryption because hashing is:',['One-way','Reversible with a key','Always symmetric','Slower'],0,'You cannot recover the input from a hash.'],
+[3,2,'Cross-site scripting (XSS) involves:',['Injecting scripts into pages other users view','Flooding a network','Brute-forcing passwords','Stealing hardware'],0,'Untrusted input is rendered as code.']]},
+cloud:{n:'Cloud & DevOps',re:/cloud|aws|azure|gcp|devops|docker|kubernetes|\bsre\b/i,sub:['Cloud basics','Compute & storage','Containers','CI/CD & security'],q:[
+[1,0,'IaaS provides:',['Virtualised infrastructure','Finished applications only','Only source code','Only databases'],0,'Infrastructure as a Service.'],
+[1,1,'Which is an object storage service?',['Amazon S3','Amazon EC2','Amazon RDS','AWS Lambda'],0,'S3 stores objects.'],
+[2,1,'Serverless functions are typically billed by:',['Execution time and requests','Monthly server uptime','A fixed licence','Disk size'],0,'You pay for what runs.'],
+[2,2,'Docker containers on one host share:',['The host OS kernel','A hypervisor each','Nothing','The BIOS'],0,'Containers are lighter than VMs because they share the kernel.'],
+[3,3,'CI/CD mainly aims to:',['Automate build, test and delivery','Replace developers','Store data','Monitor hardware'],0,'Faster, safer releases.'],
+[3,3,'The principle of least privilege means:',['Grant only the permissions needed','Give admin to everyone','Deny everything','Share keys freely'],0,'Limit access to the minimum.']]}
+};
+const BANK_KEYS=Object.keys(BANK);
+function bankKeyFor(text){ const t=String(text||''); let best=null;
+  for(const k of BANK_KEYS){ if(BANK[k].re.test(t)){ if(k==='java'&&/javascript/i.test(t)) continue; best=k; break; } } return best; }
+
+/* ---- coding challenges (run in a sandboxed worker) ---- */
+const CHALLENGES=[
+{id:'c1',lv:1,fn:'sumEven',t:'Sum of even numbers',d:'Return the sum of all even numbers in an array.',st:'function sumEven(arr){\n  // your code\n}',tests:[[[[1,2,3,4]],6],[[[]],0],[[[7,9]],0],[[[2,2,2]],6]],hint:'Loop and add when n % 2 === 0.',sol:'function sumEven(arr){ return arr.filter(n=>n%2===0).reduce((a,b)=>a+b,0); }'},
+{id:'c2',lv:1,fn:'reverseString',t:'Reverse a string',d:'Return the string reversed.',st:'function reverseString(s){\n  // your code\n}',tests:[[['abc'],'cba'],[[''],''],[['Hello'],'olleH']],hint:'Split into characters, reverse, join.',sol:'function reverseString(s){ return s.split("").reverse().join(""); }'},
+{id:'c3',lv:1,fn:'countVowels',t:'Count vowels',d:'Count the vowels (a, e, i, o, u, any case) in a string.',st:'function countVowels(s){\n  // your code\n}',tests:[[['hello'],2],[['XYZ'],0],[['AEIOU'],5]],hint:'Lower-case the string and test each character.',sol:'function countVowels(s){ return (s.toLowerCase().match(/[aeiou]/g)||[]).length; }'},
+{id:'c4',lv:1,fn:'findMax',t:'Largest number',d:'Return the largest number in a non-empty array.',st:'function findMax(arr){\n  // your code\n}',tests:[[[[3,9,2]],9],[[[-5,-1,-8]],-1],[[[4]],4]],hint:'Keep a running maximum.',sol:'function findMax(arr){ let m=arr[0]; for(const n of arr) if(n>m) m=n; return m; }'},
+{id:'c5',lv:2,fn:'isPalindrome',t:'Palindrome check',d:'Return true if the string reads the same backwards, ignoring case and non-alphanumeric characters.',st:'function isPalindrome(s){\n  // your code\n}',tests:[[['A man, a plan, a canal: Panama'],true],[['hello'],false],[[''],true],[['No lemon, no melon'],true]],hint:'Clean the string with a regex first.',sol:'function isPalindrome(s){ const t=s.toLowerCase().replace(/[^a-z0-9]/g,""); return t===t.split("").reverse().join(""); }'},
+{id:'c6',lv:2,fn:'fizzBuzz',t:'FizzBuzz',d:'Return an array for 1..n: "Fizz" for multiples of 3, "Buzz" for 5, "FizzBuzz" for both, otherwise the number as a string.',st:'function fizzBuzz(n){\n  // your code\n}',tests:[[[5],['1','2','Fizz','4','Buzz']],[[15],['1','2','Fizz','4','Buzz','Fizz','7','8','Fizz','Buzz','11','Fizz','13','14','FizzBuzz']]],hint:'Check divisibility by 15 first.',sol:'function fizzBuzz(n){ const r=[]; for(let i=1;i<=n;i++) r.push(i%15===0?"FizzBuzz":i%3===0?"Fizz":i%5===0?"Buzz":String(i)); return r; }'},
+{id:'c7',lv:2,fn:'twoSum',t:'Two sum',d:'Return the indices [i, j] (i < j) of the two numbers that add up to the target. Exactly one pair exists.',st:'function twoSum(nums, target){\n  // your code\n}',tests:[[[[2,7,11,15],9],[0,1]],[[[3,2,4],6],[1,2]],[[[3,3],6],[0,1]]],hint:'Store seen numbers in a Map from value to index.',sol:'function twoSum(nums,t){ const m=new Map(); for(let i=0;i<nums.length;i++){ if(m.has(t-nums[i])) return [m.get(t-nums[i]),i]; m.set(nums[i],i);} }'},
+{id:'c8',lv:2,fn:'isAnagram',t:'Anagram check',d:'Return true if the two strings contain the same letters in any order (ignore case).',st:'function isAnagram(a, b){\n  // your code\n}',tests:[[['listen','silent'],true],[['abc','abd'],false],[['Dormitory','dirtyroom'],true]],hint:'Sort the letters of both strings and compare.',sol:'function isAnagram(a,b){ const f=s=>s.toLowerCase().split("").sort().join(""); return f(a)===f(b); }'},
+{id:'c9',lv:3,fn:'maxSubarray',t:'Maximum subarray sum',d:'Return the largest sum of any contiguous subarray (Kadane).',st:'function maxSubarray(nums){\n  // your code\n}',tests:[[[[-2,1,-3,4,-1,2,1,-5,4]],6],[[[1]],1],[[[-3,-1,-2]],-1],[[[5,4,-1,7,8]],23]],hint:'At each element choose: extend the current run or start fresh.',sol:'function maxSubarray(a){ let cur=a[0],best=a[0]; for(let i=1;i<a.length;i++){ cur=Math.max(a[i],cur+a[i]); best=Math.max(best,cur);} return best; }'},
+{id:'c10',lv:3,fn:'validParentheses',t:'Valid brackets',d:'Return true if every (, [, { is closed in the correct order.',st:'function validParentheses(s){\n  // your code\n}',tests:[[['()[]{}'],true],[['(]'],false],[['([)]'],false],[['{[]}'],true],[[''],true]],hint:'Use a stack and match each closing bracket.',sol:'function validParentheses(s){ const st=[],m={")":"(","]":"[","}":"{"}; for(const c of s){ if("([{".includes(c)) st.push(c); else if(st.pop()!==m[c]) return false; } return st.length===0; }'},
+{id:'c11',lv:3,fn:'mergeIntervals',t:'Merge intervals',d:'Merge all overlapping [start, end] intervals and return them sorted by start.',st:'function mergeIntervals(intervals){\n  // your code\n}',tests:[[[[[1,3],[2,6],[8,10],[15,18]]],[[1,6],[8,10],[15,18]]],[[[[1,4],[4,5]]],[[1,5]]],[[[[5,6],[1,2]]],[[1,2],[5,6]]]],hint:'Sort by start, then extend the last merged interval when they overlap.',sol:'function mergeIntervals(a){ a=a.map(x=>x.slice()).sort((x,y)=>x[0]-y[0]); const r=[]; for(const i of a){ if(r.length&&i[0]<=r[r.length-1][1]) r[r.length-1][1]=Math.max(r[r.length-1][1],i[1]); else r.push(i);} return r; }'},
+{id:'c12',lv:3,fn:'longestUniqueSubstring',t:'Longest unique substring',d:'Return the length of the longest substring without repeating characters.',st:'function longestUniqueSubstring(s){\n  // your code\n}',tests:[[['abcabcbb'],3],[['bbbbb'],1],[['pwwkew'],3],[[''],0]],hint:'Sliding window with a Map of last-seen positions.',sol:'function longestUniqueSubstring(s){ const m=new Map(); let b=0,l=0; for(let i=0;i<s.length;i++){ if(m.has(s[i])&&m.get(s[i])>=l) l=m.get(s[i])+1; m.set(s[i],i); b=Math.max(b,i-l+1);} return b; }'}
+];
+
+/* ---- learning-style questionnaire (VARK) ---- */
+const VARK=[
+['When learning something new I prefer to…',['Look at diagrams, charts or videos','Listen to someone explain it','Read a clear written guide','Try it myself straight away']],
+['To remember a concept I usually…',['Picture it or sketch it','Say it aloud or discuss it','Write notes and re-read them','Do an example hands-on']],
+['In a class I learn most from…',['Slides, whiteboard drawings and demos','The teacher’s spoken explanation','Handouts and textbooks','Labs and practical exercises']],
+['When I get stuck on code I…',['Draw the flow or watch a tutorial','Ask a friend and talk it through','Read the documentation','Experiment until it works']],
+['I enjoy study material that is…',['Colourful, with maps and charts','Podcasts, lectures or audio','Detailed articles and books','Projects and challenges']],
+['Before an exam I…',['Review mind maps and diagrams','Explain the topics out loud','Rewrite and summarise my notes','Solve many practice problems']],
+['If I had to learn a new tool I would…',['Watch a screen-recorded walkthrough','Join a call and have it explained','Read the manual or a blog post','Open it and click around']],
+['I find it easiest to focus when…',['I can see the big picture visually','There is spoken guidance','I can read at my own pace','I am actively building something']]];
+const STYLE={V:{n:'Visual',e:'👁️',tip:'Learn from diagrams, mind maps, flowcharts and video walkthroughs.'},A:{n:'Auditory',e:'🎧',tip:'Learn by listening and discussing: lectures, podcasts, read-aloud notes and explaining topics out loud.'},R:{n:'Reading / Writing',e:'📖',tip:'Learn from docs, books and your own written notes and summaries.'},K:{n:'Kinesthetic',e:'🛠️',tip:'Learn by doing: coding challenges, projects and experiments first, theory after.'}};
+
+/* ---- project catalogue (levels 1 beginner → 4 industry) ---- */
+const PROJ={
+web:[
+[1,'Personal portfolio page','Build a responsive one-page portfolio with about, skills and contact sections.',['HTML','CSS','Responsive design'],['Plan sections on paper','Build semantic HTML','Style with Flexbox','Make it mobile-friendly','Deploy on GitHub Pages']],
+[2,'To-do app with local storage','An interactive task manager that remembers your tasks.',['JavaScript','DOM','Local storage'],['Design the UI','Add / edit / delete tasks','Persist to localStorage','Add filters','Write a README']],
+[3,'Weather dashboard using a public API','Fetch live data, handle loading/errors and render charts.',['REST APIs','Async/await','Error handling'],['Pick a free weather API','Fetch and render data','Handle errors and empty states','Add search history','Deploy and share link']],
+[4,'Full-stack job tracker (auth + database)','A production-style app with login, CRUD, validation and tests.',['Node/Express or similar','Database','Authentication','Testing','Deployment'],['Design schema and API','Build secure auth','Implement CRUD with validation','Write automated tests','Add CI and deploy','Document architecture']]],
+data:[
+[1,'Exploratory analysis of a CSV data set','Clean a public data set and summarise it with charts.',['Excel/Python','Statistics','Visualisation'],['Choose a data set','Clean missing values','Compute summary statistics','Create 3 charts','Write 5 insights']],
+[2,'Sales dashboard','Build an interactive dashboard answering business questions.',['SQL','Visualisation','Storytelling'],['Define 5 business questions','Write SQL queries','Build charts/filters','Add KPIs','Present findings']],
+[3,'Predictive model: house prices or churn','Train, compare and evaluate regression/classification models.',['Python','Pandas','scikit-learn','Evaluation'],['Prepare features','Train baseline model','Compare 3 models','Tune and cross-validate','Explain results']],
+[4,'End-to-end ML service','Package a model behind an API with monitoring and a front end.',['MLOps basics','APIs','Docker','Monitoring'],['Version data and code','Train reproducibly','Serve with an API','Containerise','Add logging and drift checks','Write a model card']]],
+core:[
+[1,'Command-line calculator / quiz','Practise control flow, functions and input validation.',['Programming basics','Functions'],['List features','Implement operations','Validate input','Add tests','Write usage notes']],
+[2,'Library or student management system','Model real entities with classes and file storage.',['OOP','File I/O','Data structures'],['Design classes','Implement CRUD','Persist to file','Search and sort','Add unit tests']],
+[3,'Mini database or search engine','Implement an index and query engine from scratch.',['Algorithms','Data structures','Complexity analysis'],['Choose data structures','Implement indexing','Implement queries','Benchmark','Optimise and document']],
+[4,'Distributed task queue','Design a fault-tolerant worker system with retries and observability.',['System design','Concurrency','Networking','Testing'],['Write design doc','Build producer/consumer','Add retries and persistence','Load-test','Add metrics','Present trade-offs']]],
+security:[
+[1,'Password strength checker','A tool that scores passwords and explains weaknesses.',['Security basics','Programming'],['Define rules','Implement scoring','Explain advice','Test edge cases']],
+[2,'Secure login system','Hash passwords, rate-limit attempts and prevent injection.',['Hashing','Input validation','OWASP basics'],['Design flow','Hash with salt','Parameterise queries','Add lockout','Review against OWASP Top 10']],
+[3,'Vulnerable lab and write-up','Set up a deliberately vulnerable app locally, exploit and patch it.',['Web security','Tools','Reporting'],['Set up lab','Find 3 vulnerabilities','Exploit safely','Patch them','Write a report']],
+[4,'Security monitoring pipeline','Collect logs, detect anomalies and raise alerts.',['Logging','Detection rules','Automation'],['Collect logs','Write detection rules','Build alerting','Simulate attacks','Document runbook']]],
+cloud:[
+[1,'Static site on cloud storage','Host a website using object storage and a CDN.',['Cloud basics','Storage'],['Create account','Upload site','Configure hosting','Add HTTPS','Document steps']],
+[2,'Containerised app','Dockerise an app and run it with compose.',['Docker','Networking'],['Write Dockerfile','Compose services','Persist data','Push image','Document']],
+[3,'CI/CD pipeline','Automatically test, build and deploy on every push.',['CI/CD','Testing','Automation'],['Add tests','Create pipeline','Build image','Deploy to staging','Add rollback']],
+[4,'Infrastructure as code platform','Provision a multi-tier environment with monitoring and cost controls.',['IaC','Kubernetes/Cloud','Observability'],['Design architecture','Write IaC','Add autoscaling','Add monitoring/alerts','Cost review','Disaster-recovery notes']]],
+general:[
+[1,'Skill journal and mini report','Document what you learn weekly and present one topic clearly.',['Communication','Research'],['Pick a topic','Collect 3 sources','Write one-page summary','Present to a friend']],
+[2,'Case study analysis','Analyse a real organisation problem in your field and propose a solution.',['Analysis','Writing'],['Choose a case','Collect facts','Analyse options','Recommend action','Share for feedback']],
+[3,'Capstone project with a real user','Solve a problem for a real person or club and measure the result.',['Problem solving','Project management'],['Interview a user','Define scope','Build a first version','Test with the user','Iterate']],
+[4,'Industry-style portfolio project','Deliver a documented, tested project with a demo and a public write-up.',['Execution','Documentation','Presentation'],['Define requirements','Plan milestones','Build and test','Record a demo','Publish write-up','Collect feedback']]]
+};
+const PROJ_DOMAIN=[['web',/web|front|full.?stack|software|app|ui|react|java|developer|engineer|it\b|cs\b/i],['data',/data|ml|ai|analy|machine|science|business|stat/i],['security',/cyber|secur|hack/i],['cloud',/cloud|devops|aws|azure|sre/i],['core',/gate|psu|dsa|algorithm|core|electronics|embedded|mechanical|civil|electrical/i]];
+function domainFor(text){ const t=String(text||''); for(const [d,re] of PROJ_DOMAIN) if(re.test(t)) return d; return 'general'; }
+
+/* ---- resource lookups ---- */
+const RES_DOC={python:'https://docs.python.org/3/tutorial/',javascript:'https://developer.mozilla.org/en-US/docs/Learn',htmlcss:'https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web',sql:'https://www.postgresql.org/docs/current/tutorial.html',dsa:'https://visualgo.net',os:'https://pages.cs.wisc.edu/~remzi/OSTEP/',net:'https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview',git:'https://git-scm.com/doc',java:'https://docs.oracle.com/javase/tutorial/',ml:'https://scikit-learn.org/stable/user_guide.html',c:'https://en.cppreference.com/w/c',data:'https://support.microsoft.com/excel',cyber:'https://owasp.org/www-project-top-ten/',cloud:'https://docs.aws.amazon.com/'};
+const RES_BOOK={python:'Automate the Boring Stuff with Python — Al Sweigart',javascript:'Eloquent JavaScript — Marijn Haverbeke',htmlcss:'HTML and CSS: Design and Build Websites — Jon Duckett',sql:'Database System Concepts — Silberschatz, Korth, Sudarshan',dsa:'Introduction to Algorithms — Cormen et al.',os:'Operating System Concepts — Silberschatz, Galvin, Gagne',net:'Computer Networking: A Top-Down Approach — Kurose & Ross',git:'Pro Git — Scott Chacon & Ben Straub (free online)',java:'Effective Java — Joshua Bloch',ml:'Hands-On Machine Learning — Aurélien Géron',c:'The C Programming Language — Kernighan & Ritchie',data:'Naked Statistics — Charles Wheelan',cyber:'The Web Application Hacker’s Handbook — Stuttard & Pinto',cloud:'The Phoenix Project — Gene Kim et al.'};
+const RES_PRACTICE={python:['Exercism Python track','https://exercism.org/tracks/python'],javascript:['freeCodeCamp','https://www.freecodecamp.org/learn'],htmlcss:['freeCodeCamp Responsive Web Design','https://www.freecodecamp.org/learn'],sql:['SQLZoo','https://sqlzoo.net'],dsa:['LeetCode','https://leetcode.com/problemset/'],os:['GeeksforGeeks OS practice','https://www.geeksforgeeks.org/operating-systems/'],net:['GeeksforGeeks Networks','https://www.geeksforgeeks.org/computer-network-tutorials/'],git:['Learn Git Branching','https://learngitbranching.js.org'],java:['HackerRank Java','https://www.hackerrank.com/domains/java'],ml:['Kaggle Learn','https://www.kaggle.com/learn'],c:['HackerRank C','https://www.hackerrank.com/domains/c'],data:['Kaggle Learn','https://www.kaggle.com/learn'],cyber:['TryHackMe','https://tryhackme.com'],cloud:['AWS Skill Builder','https://skillbuilder.aws']};
+const CERTS={web:['Meta Front-End Developer (Coursera)','freeCodeCamp Responsive Web Design','AWS Cloud Practitioner'],data:['Google Data Analytics Certificate','Microsoft PL-300 Power BI Analyst','IBM Data Science Professional Certificate'],security:['CompTIA Security+','Google Cybersecurity Certificate','CEH (Certified Ethical Hacker)'],cloud:['AWS Cloud Practitioner → Solutions Architect Associate','Microsoft AZ-900','Google Associate Cloud Engineer'],core:['NPTEL certification in your core subject','Oracle Java SE / Python (PCEP) certificate','AWS Cloud Practitioner'],general:['NPTEL / SWAYAM course certificate','Coursera or edX professional certificate in your field','Communication / presentation skills certificate']};
+const TECH_SKILLS=['python','java','javascript','typescript','c++','c#','c programming','html','css','react','angular','vue','node','express','django','flask','spring','sql','mysql','postgresql','mongodb','git','github','docker','kubernetes','aws','azure','gcp','linux','rest api','api','machine learning','deep learning','tensorflow','pytorch','pandas','numpy','scikit-learn','excel','power bi','tableau','statistics','data structures','algorithms','oop','dbms','operating systems','networking','cyber security','cryptography','testing','ci/cd','agile','scrum','jira','figma','ui/ux','matlab','autocad','solidworks','embedded','arduino','iot','verilog','vhdl','android','kotlin','swift','flutter','firebase','graphql','nlp','computer vision','data analysis','data visualization','seo','digital marketing','accounting','tally','research','technical writing','project management','communication'];
+const SOFT_SKILLS=['communication','teamwork','leadership','problem solving','time management','adaptability','critical thinking','creativity','presentation','collaboration','ownership','mentoring','initiative','negotiation'];
+const DOMAIN_SKILLS={web:['html','css','javascript','react','node','sql','git','rest api','testing'],data:['python','sql','statistics','pandas','excel','data visualization','machine learning'],security:['networking','linux','cryptography','cyber security','python'],cloud:['linux','docker','aws','ci/cd','git','kubernetes'],core:['data structures','algorithms','dbms','operating systems','networking','c programming','oop'],general:['communication','research','project management','excel','presentation']};
+
+/* ===== core ===== */
+const $=(s,r)=>(r||document).querySelector(s);
+const E=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ymd=d=>{const z=new Date(d.getTime()-d.getTimezoneOffset()*60000);return z.toISOString().slice(0,10);};
+const today=()=>ymd(new Date());
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x;};
+const keyOf=t=>String(t||'').toLowerCase().replace(/[^a-z0-9+#]+/g,' ').trim();
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const q=encodeURIComponent;
+function S(){
+  let s=state.smart; if(!s||typeof s!=='object') s=state.smart={};
+  s.lang=s.lang||'en'; s.know=s.know||{}; s.assess=s.assess||[]; s.skills=s.skills||{};
+  s.plan=s.plan||{hrs:1.5,days:5,pace:'steady',items:[],start:null,done:{}};
+  s.log=s.log||{}; s.proj=s.proj||{}; s.code=s.code||{}; s.chat=s.chat||[]; s.switches=s.switches||[];
+  if(s.style===undefined) s.style=null;
+  return s;
+}
+const persist=()=>{ try{ saveState(); }catch(e){} };
+function curCareer(){ try{ const c=curItem(); return c||null; }catch(e){ return null; } }
+function curTrack(){ try{ return state.tracks[state.activeTrack]||null; }catch(e){ return null; } }
+function careerLabel(){ const c=curCareer(); return c?c.name:'your chosen field'; }
+const online=()=>navigator.onLine!==false;
+const aiOk=()=>{ try{ return aiReady()&&online(); }catch(e){ return false; } };
+function toast(m){ try{ showToast(m); }catch(e){} }
+function addLog(min,what){ const s=S(),d=today(); s.log[d]=(s.log[d]||0)+min; persist(); }
+function updSkill(name,pct){ const s=S(),k=keyOf(name); if(!k) return; const o=s.skills[k];
+  s.skills[k]={name:name,score:o?Math.round(o.score*.4+pct*.6):Math.round(pct),n:(o?o.n:0)+1,at:Date.now()}; }
+function styleOrder(){ const st=S().style; if(!st) return ['V','A','R','K']; return st.order; }
+function styleKey(){ const st=S().style; return st?st.order[0]:null; }
+function level(score){ return score>=70?'Advanced':score>=40?'Intermediate':'Beginner'; }
+function dayStreak(){ const s=S(); let n=0,d=new Date(); if(!(s.log[ymd(d)]>0)) d=addDays(d,-1); while(s.log[ymd(d)]>0){ n++; d=addDays(d,-1); } return n; }
+
+/* ===== sheet UI ===== */
+let stack=[],H={},cur=null;
+function sheetEl(){ let el=$('#smSheet'); if(el) return el;
+  el=document.createElement('div'); el.id='smSheet'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true');
+  el.innerHTML='<div class="smHead"><button class="smBack" data-x="back" aria-label="Back">←</button><div class="smTitle" id="smTitle"></div><button class="smBack" data-x="close" aria-label="Close">✕</button></div><div class="smBody" id="smBody"></div>';
+  document.body.appendChild(el);
+  el.addEventListener('click',ev=>{ const x=ev.target.closest('[data-x]'); if(x){ if(x.dataset.x==='back') back(); else closeAll(); return; }
+    const a=ev.target.closest('[data-a]'); if(a&&H[a.dataset.a]){ ev.preventDefault(); H[a.dataset.a](a,ev); } });
+  el.addEventListener('change',ev=>{ const a=ev.target.closest('[data-c]'); if(a&&H[a.dataset.c]) H[a.dataset.c](a,ev); });
+  el.addEventListener('input',ev=>{ const a=ev.target.closest('[data-i]'); if(a&&H[a.dataset.i]) H[a.dataset.i](a,ev); });
+  document.addEventListener('keydown',ev=>{ if(ev.key==='Escape'&&el.classList.contains('open')) back(); });
+  return el; }
+function openView(title,fn){ stack.push({title,fn}); paint(); sheetEl().classList.add('open'); document.documentElement.classList.add('smLock'); }
+function paint(){ const t=stack[stack.length-1]; if(!t) return; cur=t; H={}; const el=sheetEl();
+  $('#smTitle').textContent=t.title; const b=$('#smBody'); b.innerHTML=''; const out=t.fn(b,H); if(typeof out==='string') b.innerHTML=out;
+  b.scrollTop=0; I18N.apply(el); el.querySelector('[data-x=back]').style.visibility=stack.length>1?'visible':'hidden'; }
+function repaint(keepScroll){ const b=$('#smBody'),y=b?b.scrollTop:0; paint(); if(keepScroll&&b) b.scrollTop=y; }
+function back(){ if(stack.length>1){ stack.pop(); paint(); } else closeAll(); }
+function closeAll(){ stack=[]; const el=$('#smSheet'); if(el) el.classList.remove('open'); document.documentElement.classList.remove('smLock'); renderCoachPanel(); }
+const card=(h,cls)=>`<div class="smCard ${cls||''}">${h}</div>`;
+const btn=(label,a,cls,extra)=>`<button class="smBtn ${cls||''}" data-a="${a}" ${extra||''}>${label}</button>`;
+const link=(label,url)=>`<a class="smLink" href="${E(url)}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+const bar=(pct,color)=>`<div class="smBar"><i style="width:${clamp(pct,0,100)}%;${color?'background:'+color:''}"></i></div>`;
+const chip=(t,c)=>`<span class="smChip ${c||''}">${E(t)}</span>`;
+
+/* ===== i18n (UI + generated content) ===== */
+const LANGS={en:'English',hi:'हिन्दी',te:'తెలుగు'};
+const LANG_AI={en:'English',hi:'Hindi (Devanagari script)',te:'Telugu (Telugu script)'};
+const I18N=(function(){
+  const dict={hi:{},te:{}},pats={hi:[],te:[]},orig=new WeakMap(),origA=new WeakMap();
+  function add(code,map){ for(const k in map){ const v=map[k]; if(k.includes('{')){ const names=[]; const re=new RegExp('^'+k.replace(/[.*+?^$()|[\]\\]/g,'\\$&').replace(/\{(\d)\}/g,(m,i)=>{names.push(+i);return '(.+?)';})+'$'); pats[code].push({re,v,names}); } else dict[code][k]=v; } }
+  function tr(str,code){ if(!dict[code]) return str; const t=str.trim(); if(!t) return str; let v=dict[code][t];
+    if(v===undefined){ for(const p of pats[code]){ const m=t.match(p.re); if(m){ v=p.v.replace(/\{(\d)\}/g,(x,i)=>{ const idx=p.names.indexOf(+i); return idx>=0?tr(m[idx+1],code):x; }); break; } } }
+    if(v===undefined) return str; return str.replace(t,v); }
+  function node(n,code){ if(n.nodeType===3){ const p=n.parentNode; if(p&&/^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/.test(p.nodeName)) return; if(p&&p.closest&&p.closest('[data-nt]')) return;
+      let r=orig.get(n); if(!r||n.nodeValue!==r.w){ r={o:n.nodeValue,w:n.nodeValue}; orig.set(n,r); }
+      const want=code==='en'?r.o:tr(r.o,code); if(n.nodeValue!==want) n.nodeValue=want; r.w=want; }
+    else if(n.nodeType===1){ if(/^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/.test(n.nodeName)||(n.closest&&n.closest('[data-nt]'))) return;
+      for(const at of ['placeholder','title','aria-label']){ if(n.hasAttribute&&n.hasAttribute(at)){ let m=origA.get(n); if(!m){ m={}; origA.set(n,m); } const cv=n.getAttribute(at); let r=m[at]; if(!r||cv!==r.w){ r={o:cv,w:cv}; m[at]=r; } const want=code==='en'?r.o:tr(r.o,code); if(cv!==want) n.setAttribute(at,want); r.w=want; } }
+      for(const c of n.childNodes) node(c,code); } }
+  let busy=false;
+  function apply(root){ const code=S().lang; if(code==='en'&&!apply.touched) return; apply.touched=true; busy=true; try{ node(root||document.body,code); }finally{ busy=false; } }
+  const mo=new MutationObserver(ms=>{ if(busy) return; const code=S().lang; if(code==='en'&&!apply.touched) return; busy=true; try{ for(const m of ms){ if(m.type==='characterData') node(m.target,code); else m.addedNodes.forEach(n=>node(n,code)); } }finally{ busy=false; } });
+  function start(){ mo.observe(document.body,{childList:true,subtree:true,characterData:true}); }
+  function set(code){ S().lang=code; document.documentElement.lang=code; persist(); apply(document.body); }
+  return {add,apply,start,set,tr:(s)=>tr(s,S().lang)};
+})();
+function langName(){ return LANG_AI[S().lang]||'English'; }
+/* generated content follows the chosen language */
+(function(){ if(typeof llm!=='function') return; const _llm=llm; llm=function(p,o){ const l=S().lang; const st=styleKey();
+  let extra=''; if(l!=='en') extra+='\n\nIMPORTANT: write every human-readable string value in '+LANG_AI[l]+'. Keep JSON keys, code and technical terms in English.';
+  if(st&&!(o&&o.noStyle)) extra+='\nThe learner prefers '+STYLE[st].n+' learning; adapt examples accordingly when relevant.';
+  return _llm(p+extra,o); }; })();
+
+/* ===== offline / sync ===== */
+const PEND='pw_pending_sync';
+(function(){
+  const _save=saveState; saveState=function(){ try{ if(!online()) localStorage.setItem(PEND,'1'); }catch(e){} return _save.apply(this,arguments); };
+  function banner(){ let b=$('#smOffline'); if(!b){ b=document.createElement('div'); b.id='smOffline'; document.body.appendChild(b); }
+    const off=!online(); b.className=off?'on':''; document.documentElement.classList.toggle('smOff',off); b.textContent=off?I18N.tr('Offline — progress saves on this device and syncs when you reconnect.'):''; }
+  window.addEventListener('offline',()=>{ banner(); toast(I18N.tr('You are offline — everything except AI still works.')); });
+  window.addEventListener('online',()=>{ banner(); let p=false; try{ p=localStorage.getItem(PEND)==='1'; }catch(e){}
+    try{ syncStateToCloud(); if(p){ localStorage.removeItem(PEND); toast(I18N.tr('Back online — syncing your progress.')); } else toast(I18N.tr('Back online.')); }catch(e){}
+    if($('#smSheet')&&$('#smSheet').classList.contains('open')) repaint(true); });
+  window.SM_banner=banner;
+})();
+
+I18N.add('hi',{"Today": "आज", "Calendar": "कैलेंडर", "Syllabus": "पाठ्यक्रम", "Mocks": "मॉक टेस्ट", "Progress": "प्रगति", "Coach": "कोच", "🧠 Coach": "🧠 कोच", "Profile": "प्रोफ़ाइल", "🎨 Theme": "🎨 थीम", "☁️ Cloud save": "☁️ क्लाउड सेव", "Close": "बंद करें", "← Back": "← वापस", "Back": "वापस", "🧠 Smart Coach": "🧠 स्मार्ट कोच", "🌐 Language": "🌐 भाषा", "Language": "भाषा", "🤖 AI Studio": "🤖 AI स्टूडियो", "English": "English", "Guest": "अतिथि", "Sign in or create account": "साइन इन करें या खाता बनाएँ", "Your progress is saved on this device. Sign in to keep it across devices.": "आपकी प्रगति इस डिवाइस पर सेव है। सभी डिवाइस पर रखने के लिए साइन इन करें।", "Smart Coach": "स्मार्ट कोच", "Know your level": "अपना स्तर जानें", "Diagnostic & adaptive tests": "निदान और अनुकूली टेस्ट", "Study plan": "अध्ययन योजना", "Daily & weekly schedule": "दैनिक व साप्ताहिक समय-सारणी", "Resources": "संसाधन", "Docs, videos, books, practice": "डॉक्स, वीडियो, किताबें, अभ्यास", "Projects": "प्रोजेक्ट", "Beginner → industry-level": "शुरुआती → उद्योग-स्तर", "Coding practice": "कोडिंग अभ्यास", "Challenges that adapt to you": "चुनौतियाँ जो आपके अनुसार ढलती हैं", "Resume analyzer": "रिज़्यूमे विश्लेषक", "ATS check & gap report": "ATS जाँच और कमी रिपोर्ट", "AI mentor": "AI मेंटर", "Careers, certifications, interviews": "करियर, प्रमाणपत्र, इंटरव्यू", "Analytics": "विश्लेषण", "Progress, consistency, trends": "प्रगति, निरंतरता, रुझान", "Learning style": "सीखने की शैली", "2-minute quiz": "2 मिनट की क्विज़", "Offline": "ऑफ़लाइन", "Tasks due today": "आज के कार्य", "Career readiness": "करियर तैयारी", "Career readiness · {0}": "करियर तैयारी · {0}", "{0} topic(s) assessed": "{0} विषयों का आकलन", "Score {0}/100": "स्कोर {0}/100", "Offline — progress saves on this device and syncs when you reconnect.": "ऑफ़लाइन — प्रगति इस डिवाइस पर सेव होती है और जुड़ने पर सिंक होगी।", "You are offline — everything except AI still works.": "आप ऑफ़लाइन हैं — AI को छोड़कर सब कुछ चलता रहेगा।", "Back online — syncing your progress.": "फिर से ऑनलाइन — प्रगति सिंक हो रही है।", "Back online.": "फिर से ऑनलाइन।", "Language updated.": "भाषा बदल दी गई।", "Choose your language": "अपनी भाषा चुनें", "Changes the interface. When AI is connected, generated questions, advice and explanations are written in this language too.": "इंटरफ़ेस बदलता है। AI जुड़ा होने पर प्रश्न, सलाह और स्पष्टीकरण भी इसी भाषा में बनते हैं।", "Assess your knowledge": "अपना ज्ञान जाँचें", "Know what you already know": "जो आप जानते हैं उसे पहचानें", "Pick a topic. A diagnostic asks what you have studied, then adapts question difficulty to find your real level — so you resume at the right stage instead of starting over.": "एक विषय चुनें। निदान परीक्षा पूछती है कि आपने क्या पढ़ा है, फिर प्रश्नों का स्तर बदलकर आपका असली स्तर खोजती है — ताकि आप शुरू से नहीं, सही चरण से आगे बढ़ें।", "Topic": "विषय", "Other (type your own)…": "अन्य (खुद लिखें)…", "e.g. Docker, Thermodynamics, Marketing": "जैसे Docker, ऊष्मागतिकी, मार्केटिंग", "🧭 Diagnostic": "🧭 निदान परीक्षा", "📝 Topic test": "📝 विषय टेस्ट", "Your results": "आपके परिणाम", "Retake": "दोबारा दें", "Type a topic first.": "पहले कोई विषय लिखें।", "Type a topic.": "कोई विषय लिखें।", "Preparing your questions…": "आपके प्रश्न तैयार हो रहे हैं…", "Could not start": "शुरू नहीं हो सका", "Guided questions": "मार्गदर्शी प्रश्न", "How well do you know each area of": "आप हर क्षेत्र को कितना जानते हैं:", "? Be honest — the quiz will check.": "? ईमानदार रहें — क्विज़ जाँच करेगी।", "Never studied": "कभी नहीं पढ़ा", "Heard of it": "सुना है", "Have used it": "उपयोग किया है", "Confident": "आत्मविश्वास है", "Start adaptive quiz": "अनुकूली क्विज़ शुरू करें", "Question {0} of {1}": "प्रश्न {0} / {1}", "Easy": "आसान", "Medium": "मध्यम", "Hard": "कठिन", "✅ Correct.": "✅ सही।", "❌ Not quite.": "❌ बिल्कुल सही नहीं।", "🔊 Listen": "🔊 सुनें", "Next question": "अगला प्रश्न", "See result": "परिणाम देखें", "Beginner": "शुरुआती", "Intermediate": "मध्यम", "Advanced": "उन्नत", "{0} level": "{0} स्तर", "✅ Mastery validated": "✅ दक्षता प्रमाणित", "Not yet validated": "अभी प्रमाणित नहीं", "🔁 Revise first": "🔁 पहले दोहराएँ", "⏭️ Skip ahead": "⏭️ आगे बढ़ें", "▶️ Continue from your level": "▶️ अपने स्तर से जारी रखें", "Resume at:": "यहाँ से शुरू करें:", "Your score (25%) shows the fundamentals are not solid yet. Revise from “Syntax & data types” first; a short re-test will validate mastery before new topics.": "आपका स्कोर बताता है कि बुनियाद अभी मज़बूत नहीं है। पहले दोहराएँ; नए विषयों से पहले एक छोटा री-टेस्ट दक्षता प्रमाणित करेगा।", "Mark matching roadmap topics done": "मिलते-जुलते रोडमैप विषय पूरे करें", "📚 Resources for my level": "📚 मेरे स्तर के संसाधन", "🗓 Build a plan": "🗓 योजना बनाएँ", "✨ Go deeper (AI)": "✨ और गहराई में (AI)", "Needs work: ": "सुधार चाहिए: ", "Strong: ": "मज़बूत: ", "No questions available": "कोई प्रश्न उपलब्ध नहीं", "Find how you learn best": "जानें आप कैसे सबसे अच्छा सीखते हैं", "Retake the quiz": "क्विज़ दोबारा दें", "See my style": "मेरी शैली देखें", "8 quick questions. Your result re-orders resources, study sessions and read-aloud features.": "8 छोटे प्रश्न। परिणाम से संसाधनों, अध्ययन सत्रों और पढ़कर सुनाने की सुविधा का क्रम बदलता है।", "Applied to: resource order, study-session mix, listen buttons, project steps.": "लागू: संसाधन क्रम, अध्ययन सत्र मिश्रण, सुनने के बटन, प्रोजेक्ट चरण।", "Visual": "दृश्य", "Auditory": "श्रवण", "Reading / Writing": "पढ़ना / लिखना", "Kinesthetic": "क्रियात्मक", "Learn from diagrams, mind maps, flowcharts and video walkthroughs.": "चित्रों, माइंड मैप, फ्लोचार्ट और वीडियो से सीखें।", "Learn by doing: coding challenges, projects and experiments first, theory after.": "करके सीखें: पहले कोडिंग चुनौतियाँ, प्रोजेक्ट और प्रयोग, फिर सिद्धांत।", "Learn by listening and discussing: lectures, podcasts, read-aloud notes and explaining topics out loud.": "सुनकर और चर्चा करके सीखें: लेक्चर, पॉडकास्ट, ज़ोर से पढ़े नोट्स और खुद समझाना।", "Learn from docs, books and your own written notes and summaries.": "डॉक्स, किताबों और अपने लिखे नोट्स व सारांश से सीखें।", "Start with a diagram or video, then practise.": "पहले चित्र या वीडियो देखें, फिर अभ्यास करें।", "Start by doing a small task, then read theory.": "पहले एक छोटा काम करें, फिर सिद्धांत पढ़ें।", "Read the docs, then write a short summary.": "डॉक्स पढ़ें, फिर छोटा सारांश लिखें।", "Listen or explain it out loud, then practise.": "सुनें या ज़ोर से समझाएँ, फिर अभ्यास करें।", "Your study time": "आपका अध्ययन समय", "Hours per day": "प्रति दिन घंटे", "Days per week": "प्रति सप्ताह दिन", "Pace": "गति", "Relaxed": "आराम से", "Steady": "स्थिर", "Intense": "तीव्र", "✨ Generate my plan": "✨ मेरी योजना बनाएँ", "🔄 Rebuild plan": "🔄 योजना दोबारा बनाएँ", "📅 Today": "📅 आज", "Catch up": "छूटा हुआ पूरा करें", "Nothing scheduled today — rest, or revise something.": "आज कुछ निर्धारित नहीं — आराम करें या कुछ दोहराएँ।", "🗓 Next 7 days": "🗓 अगले 7 दिन", "Nothing else scheduled this week.": "इस सप्ताह और कुछ निर्धारित नहीं।", "🏁 Milestones & revision": "🏁 मील के पत्थर और दोहराव", "Milestones appear after every 4 topics.": "हर 4 विषयों के बाद मील के पत्थर आते हैं।", "Pick a career first": "पहले करियर चुनें", "Choose a career": "करियर चुनें", "Learn": "सीखें", "Practice": "अभ्यास", "Mastery check": "दक्षता जाँच", "Revision": "दोहराव", "Milestone": "मील का पत्थर", "Start": "शुरू करें", "Plan ready.": "योजना तैयार।", "Topic complete — roadmap updated.": "विषय पूरा — रोडमैप अपडेट हुआ।", "Find the right material": "सही सामग्री खोजें", "Recommendations match your level and learning style.": "सुझाव आपके स्तर और सीखने की शैली के अनुसार हैं।", "Show resources": "संसाधन दिखाएँ", "Resources · {0}": "संसाधन · {0}", "Level: {0}": "स्तर: {0}", "Take the style quiz to personalise": "वैयक्तिकरण के लिए शैली क्विज़ दें", "{0} learner": "{0} शिक्षार्थी", "📘 Official documentation": "📘 आधिकारिक दस्तावेज़", "🎬 Video tutorial": "🎬 वीडियो ट्यूटोरियल", "🎓 Online course": "🎓 ऑनलाइन कोर्स", "📚 Book": "📚 पुस्तक", "🧪 Practice platform": "🧪 अभ्यास प्लेटफ़ॉर्म", "💻 Coding website": "💻 कोडिंग वेबसाइट", "🔬 Research paper": "🔬 शोध पत्र", "👥 Community": "👥 समुदाय", "Links open trusted sites or searches; check dates and reviews before you commit.": "लिंक भरोसेमंद साइट या खोज खोलते हैं; चुनने से पहले तारीख और समीक्षाएँ देखें।", "👁️ See it": "👁️ देखें", "🎧 Hear it": "🎧 सुनें", "🔊 Read overview aloud": "🔊 सारांश ज़ोर से पढ़ें", "🎧 Find lectures & podcasts": "🎧 लेक्चर और पॉडकास्ट खोजें", "Redraw this map from memory tomorrow.": "कल इस मैप को याद से दोबारा बनाएँ।", "Then explain each part out loud in your own words.": "फिर हर भाग अपने शब्दों में ज़ोर से समझाएँ।", "💻 Open coding challenges": "💻 कोडिंग चुनौतियाँ खोलें", "Project recommendations": "प्रोजेक्ट सुझाव", "Projects for {0}": "{0} के लिए प्रोजेक्ट", "Ordered from beginner to industry-level. Your current level:": "शुरुआती से उद्योग-स्तर तक क्रमित। आपका वर्तमान स्तर:", "(based on assessments and finished projects). Finish a project to unlock the next.": "(आकलन और पूरे प्रोजेक्ट के आधार पर)। अगला खोलने के लिए एक प्रोजेक्ट पूरा करें।", "Recommended": "अनुशंसित", "✅ Done": "✅ पूर्ण", "🔒 Locked": "🔒 लॉक", "Start project": "प्रोजेक्ट शुरू करें", "Continue": "जारी रखें", "Review": "समीक्षा", "Locked until you finish the previous project": "पिछला प्रोजेक्ट पूरा होने तक लॉक", "Level 1 · Foundation": "स्तर 1 · बुनियादी", "Level 2 · Portfolio-ready": "स्तर 2 · पोर्टफ़ोलियो-योग्य", "Level 3 · Interview-worthy": "स्तर 3 · इंटरव्यू-योग्य", "Level 4 · Industry-level": "स्तर 4 · उद्योग-स्तर", "Practical assignment — milestones": "व्यावहारिक असाइनमेंट — चरण", "Tick each milestone when finished. Completing all of them validates the project.": "हर चरण पूरा होने पर टिक करें। सभी पूरे होने पर प्रोजेक्ट प्रमाणित होता है।", "Learn what you need": "जो चाहिए वह सीखें", "Tip: sketch a wireframe or architecture diagram first.": "सुझाव: पहले वायरफ़्रेम या आर्किटेक्चर चित्र बनाएँ।", "Tip: start with a tiny working prototype.": "सुझाव: एक छोटे चालू प्रोटोटाइप से शुरू करें।", "Tip: write the README as you build.": "सुझाव: बनाते समय README लिखें।", "Tip: record a 2-minute voice walkthrough of each milestone.": "सुझाव: हर चरण का 2 मिनट का वॉइस वॉकथ्रू रिकॉर्ड करें।", "Project complete — skills updated and the next project unlocks.": "प्रोजेक्ट पूरा — कौशल अपडेट हुए और अगला प्रोजेक्ट खुल गया।", "Coding challenges": "कोडिंग चुनौतियाँ", "Practice in JavaScript": "JavaScript में अभ्यास", "Challenges unlock harder levels as you solve them. Your code runs safely on your device — it works offline.": "हल करने पर कठिन स्तर खुलते हैं। आपका कोड आपके डिवाइस पर सुरक्षित चलता है — ऑफ़लाइन भी।", "{0} / {1} solved": "{0} / {1} हल", "Current level: {0}": "वर्तमान स्तर: {0}", "Not tried": "प्रयास नहीं किया", "✅ Solved": "✅ हल किया", "Solve": "हल करें", "▶ Run tests": "▶ टेस्ट चलाएँ", "💡 Hint": "💡 संकेत", "Reset": "रीसेट", "❌ Not yet": "❌ अभी नहीं", "A reference solution unlocks after 3 attempts or when you pass.": "3 प्रयासों या पास होने पर संदर्भ समाधान खुलता है।", "Show a reference solution": "संदर्भ समाधान दिखाएँ", "Upload or paste your resume": "अपना रिज़्यूमे अपलोड या पेस्ट करें", "Target career": "लक्ष्य करियर", "📄 Choose PDF / DOCX / TXT": "📄 PDF / DOCX / TXT चुनें", "or paste text": "या टेक्स्ट पेस्ट करें", "Paste your resume text here": "अपना रिज़्यूमे टेक्स्ट यहाँ पेस्ट करें", "Analyze resume": "रिज़्यूमे विश्लेषित करें", "Your resume is analysed on this device. Only the scores and gaps are saved — never the resume text.": "आपका रिज़्यूमे इसी डिवाइस पर विश्लेषित होता है। केवल स्कोर और कमियाँ सेव होती हैं — रिज़्यूमे का टेक्स्ट कभी नहीं।", "Last analysis": "पिछला विश्लेषण", "Quality score": "गुणवत्ता स्कोर", "ATS compatibility": "ATS अनुकूलता", "Resume quality": "रिज़्यूमे की गुणवत्ता", "Resume report": "रिज़्यूमे रिपोर्ट", "Score breakdown": "स्कोर विवरण", "Contact info": "संपर्क जानकारी", "Structure & sections": "संरचना और अनुभाग", "Content quality": "सामग्री की गुणवत्ता", "Length": "लंबाई", "Role keywords": "भूमिका कीवर्ड", "Projects & certificates": "प्रोजेक्ट और प्रमाणपत्र", "Skills for {0}": "{0} के लिए कौशल", "Found": "मिला", "Missing technical skills": "अनुपस्थित तकनीकी कौशल", "Projects & certifications": "प्रोजेక్ట और प्रमाणन", "Projects found": "मिले प्रोजेक्ट", "Certifications / courses": "प्रमाणन / कोर्स", "Employability gaps ({0})": "रोज़गार-योग्यता की कमियाँ ({0})", "How to close the gaps": "कमियाँ कैसे भरें", "📚 Learn": "📚 सीखें", "🏅 Certifications": "🏅 प्रमाणन", "🛠 Projects": "🛠 प्रोजेక్ట", "🤝 Activities": "🤝 गतिविधियाँ", "Open project plan": "प्रोजेक्ट योजना खोलें", "Fix:": "समाधान:", "High:": "उच्च:", "Medium:": "मध्यम:", "Low:": "निम्न:", "Get AI feedback": "AI फ़ीडबैक पाएँ", "Skill gaps to close": "भरने योग्य कौशल कमियाँ", "🧭 Take a diagnostic": "🧭 निदान परीक्षा दें", "Ask your mentor": "अपने मेंटर से पूछें", "Ask": "पूछें", "e.g. Should I switch to data science?": "जैसे: क्या मुझे डेटा साइंस में जाना चाहिए?", "What should I learn next?": "मुझे आगे क्या सीखना चाहिए?", "Which career suits me?": "मेरे लिए कौन सा करियर सही है?", "Which certifications should I do?": "मुझे कौन से प्रमाणन करने चाहिए?", "How do I prepare for interviews?": "इंटरव्यू की तैयारी कैसे करूँ?", "Recommended career paths": "अनुशंसित करियर मार्ग", "Matched against the skills you have shown in assessments, your resume and completed topics. Not a job-market prediction.": "आकलन, रिज़्यूमे और पूरे विषयों में दिखे कौशल से मिलान। यह नौकरी-बाज़ार का अनुमान नहीं है।", "Switch": "बदलें", "Current": "वर्तमान", "Next steps": "अगले कदम", "🎤 Interview prep plan": "🎤 इंटरव्यू तैयारी योजना", "💼 Internships": "💼 इंटर्नशिप", "Why this recommendation?": "यह सुझाव क्यों?", "Next:": "आगे:", "No skills data yet — take a diagnostic or analyse your resume to unlock personalised matches.": "अभी कौशल डेटा नहीं — व्यक्तिगत मिलान के लिए निदान परीक्षा दें या रिज़्यूमे विश्लेषित करें।", "Interview prep": "इंटरव्यू तैयारी", "Practice questions": "अभ्यास प्रश्न", "Internships": "इंटर्नशिप", "Find internships": "इंटर्नशिप खोजें", "Before you apply": "आवेदन से पहले", "Certifications": "प्रमाणन", "7-day plan for {0}": "{0} के लिए 7 दिन की योजना", "Recommended for {0}": "{0} के लिए अनुशंसित", "Open resume analyzer": "रिज़्यूमे विश्लेषक खोलें", "Learning analytics": "सीखने का विश्लेषण", "👩‍🎓 Student": "👩‍🎓 विद्यार्थी", "👩‍🏫 Educator": "👩‍🏫 शिक्षक", "Readiness": "तैयारी", "Streak": "लगातार दिन", "Avg score": "औसत स्कोर", "Roadmap progress": "रोडमैप प्रगति", "Skill mastery": "कौशल दक्षता", "Resume readiness": "रिज़्यूमे तैयारी", "Consistency": "निरंतरता", "Topic completion": "विषय पूर्णता", "Study consistency": "अध्ययन निरंतरता", "Assessment performance": "आकलन प्रदर्शन", "Skill development": "कौशल विकास", "Done {0}": "पूर्ण {0}", "Pending {0}": "लंबित {0}", "Skipped {0}": "छोड़े {0}", "⬇ Download my report (JSON)": "⬇ मेरी रिपोर्ट डाउनलोड करें (JSON)", "🖨 Print / save PDF": "🖨 प्रिंट / PDF सेव", "Class dashboard": "कक्षा डैशबोर्ड", "📥 Import student reports": "📥 विद्यार्थी रिपोर्ट आयात करें", "➕ Add my own report": "➕ मेरी रिपोर्ट जोड़ें", "Students": "विद्यार्थी", "Avg readiness": "औसत तैयारी", "Need support": "सहायता चाहिए", "Students export their report from their Analytics screen and share the file with you. Import several files to compare progress and spot who needs help. Data stays on this device.": "विद्यार्थी अपनी रिपोर्ट Analytics स्क्रीन से निर्यात करके फ़ाइल आपको भेजते हैं। प्रगति की तुलना और मदद की ज़रूरत वाले छात्रों को पहचानने के लिए कई फ़ाइलें आयात करें। डेटा इसी डिवाइस पर रहता है।", "Common gaps across the class": "कक्षा में सामान्य कमियाँ", "Hear": "सुनें", "Mon": "सोम", "Tue": "मंगल", "Wed": "बुध", "Thu": "गुरु", "Fri": "शुक्र", "Sat": "शनि", "Sun": "रवि", "Diagnostic · {0}": "निदान · {0}", "Topic test · {0}": "विषय टेस्ट · {0}", "AI test · {0}": "AI टेस्ट · {0}", "Needs work:": "सुधार चाहिए:", "Strong:": "मज़बूत:", "Soft skills evidenced:": "दिखे सॉफ़्ट स्किल:", "Software Engineer": "सॉफ़्टवेयर इंजीनियर"});
+I18N.add('te',{"Today": "ఈ రోజు", "Calendar": "క్యాలెండర్", "Syllabus": "సిలబస్", "Mocks": "మాక్ టెస్టులు", "Progress": "పురోగతి", "Coach": "కోచ్", "🧠 Coach": "🧠 కోచ్", "Profile": "ప్రొఫైల్", "🎨 Theme": "🎨 థీమ్", "☁️ Cloud save": "☁️ క్లౌడ్ సేవ్", "Close": "మూసివేయి", "← Back": "← వెనుకకు", "Back": "వెనుకకు", "🧠 Smart Coach": "🧠 స్మార్ట్ కోచ్", "🌐 Language": "🌐 భాష", "Language": "భాష", "🤖 AI Studio": "🤖 AI స్టూడియో", "English": "English", "Guest": "అతిథి", "Sign in or create account": "సైన్ ఇన్ చేయండి లేదా ఖాతా సృష్టించండి", "Your progress is saved on this device. Sign in to keep it across devices.": "మీ పురోగతి ఈ పరికరంలో సేవ్ అవుతుంది. అన్ని పరికరాల్లో ఉంచడానికి సైన్ ఇన్ చేయండి.", "Smart Coach": "స్మార్ట్ కోచ్", "Know your level": "మీ స్థాయి తెలుసుకోండి", "Diagnostic & adaptive tests": "నిర్ధారణ & అనుకూల పరీక్షలు", "Study plan": "అధ్యయన ప్రణాళిక", "Daily & weekly schedule": "రోజువారీ & వారపు షెడ్యూల్", "Resources": "వనరులు", "Docs, videos, books, practice": "డాక్స్, వీడియోలు, పుస్తకాలు, ప్రాక్టీస్", "Projects": "ప్రాజెక్టులు", "Beginner → industry-level": "ప్రారంభ → పరిశ్రమ స్థాయి", "Coding practice": "కోడింగ్ ప్రాక్టీస్", "Challenges that adapt to you": "మీకు అనుగుణంగా మారే సవాళ్లు", "Resume analyzer": "రెజ్యూమె విశ్లేషణ", "ATS check & gap report": "ATS తనిఖీ & లోపాల నివేదిక", "AI mentor": "AI మెంటర్", "Careers, certifications, interviews": "కెరీర్లు, సర్టిఫికేషన్లు, ఇంటర్వ్యూలు", "Analytics": "విశ్లేషణ", "Progress, consistency, trends": "పురోగతి, స్థిరత్వం, ట్రెండ్లు", "Learning style": "నేర్చుకునే శైలి", "2-minute quiz": "2 నిమిషాల క్విజ్", "Offline": "ఆఫ్‌లైన్", "Tasks due today": "ఈ రోజు పనులు", "Career readiness": "కెరీర్ సంసిద్ధత", "Career readiness · {0}": "కెరీర్ సంసిద్ధత · {0}", "{0} topic(s) assessed": "{0} అంశాలు అంచనా వేశారు", "Score {0}/100": "స్కోరు {0}/100", "Offline — progress saves on this device and syncs when you reconnect.": "ఆఫ్‌లైన్ — పురోగతి ఈ పరికరంలో సేవ్ అవుతుంది, కనెక్ట్ అయ్యాక సింక్ అవుతుంది.", "You are offline — everything except AI still works.": "మీరు ఆఫ్‌లైన్‌లో ఉన్నారు — AI తప్ప అన్నీ పనిచేస్తాయి.", "Back online — syncing your progress.": "మళ్లీ ఆన్‌లైన్ — పురోగతి సింక్ అవుతోంది.", "Back online.": "మళ్లీ ఆన్‌లైన్.", "Language updated.": "భాష మార్చబడింది.", "Choose your language": "మీ భాషను ఎంచుకోండి", "Changes the interface. When AI is connected, generated questions, advice and explanations are written in this language too.": "ఇంటర్‌ఫేస్‌ను మారుస్తుంది. AI కనెక్ట్ అయితే ప్రశ్నలు, సలహాలు, వివరణలు కూడా ఈ భాషలోనే వస్తాయి.", "Assess your knowledge": "మీ జ్ఞానాన్ని పరీక్షించండి", "Know what you already know": "మీకు ఇప్పటికే తెలిసినది గుర్తించండి", "Pick a topic. A diagnostic asks what you have studied, then adapts question difficulty to find your real level — so you resume at the right stage instead of starting over.": "ఒక అంశాన్ని ఎంచుకోండి. మీరు ఏమి చదివారో అడిగి, ప్రశ్నల కష్టాన్ని మార్చి మీ నిజమైన స్థాయిని కనుగొంటుంది — మొదటి నుంచి కాకుండా సరైన దశ నుంచి కొనసాగవచ్చు.", "Topic": "అంశం", "Other (type your own)…": "ఇతర (మీరే టైప్ చేయండి)…", "e.g. Docker, Thermodynamics, Marketing": "ఉదా. Docker, థర్మోడైనమిక్స్, మార్కెటింగ్", "🧭 Diagnostic": "🧭 నిర్ధారణ పరీక్ష", "📝 Topic test": "📝 అంశ పరీక్ష", "Your results": "మీ ఫలితాలు", "Retake": "మళ్లీ రాయండి", "Type a topic first.": "ముందుగా ఒక అంశాన్ని టైప్ చేయండి.", "Type a topic.": "ఒక అంశాన్ని టైప్ చేయండి.", "Preparing your questions…": "మీ ప్రశ్నలు సిద్ధమవుతున్నాయి…", "Could not start": "ప్రారంభించలేకపోయాం", "Guided questions": "మార్గదర్శక ప్రశ్నలు", "How well do you know each area of": "ప్రతి విభాగం మీకు ఎంత తెలుసు:", "? Be honest — the quiz will check.": "? నిజాయితీగా చెప్పండి — క్విజ్ పరీక్షిస్తుంది.", "Never studied": "ఎప్పుడూ చదవలేదు", "Heard of it": "విన్నాను", "Have used it": "ఉపయోగించాను", "Confident": "నమ్మకం ఉంది", "Start adaptive quiz": "అనుకూల క్విజ్ ప్రారంభించండి", "Question {0} of {1}": "ప్రశ్న {0} / {1}", "Easy": "సులభం", "Medium": "మధ్యస్థం", "Hard": "కఠినం", "✅ Correct.": "✅ సరైనది.", "❌ Not quite.": "❌ సరిగ్గా లేదు.", "🔊 Listen": "🔊 వినండి", "Next question": "తదుపరి ప్రశ్న", "See result": "ఫలితం చూడండి", "Beginner": "ప్రారంభ", "Intermediate": "మధ్యస్థ", "Advanced": "అధునాతన", "{0} level": "{0} స్థాయి", "✅ Mastery validated": "✅ నైపుణ్యం ధృవీకరించబడింది", "Not yet validated": "ఇంకా ధృవీకరించలేదు", "🔁 Revise first": "🔁 ముందుగా పునశ్చరణ చేయండి", "⏭️ Skip ahead": "⏭️ ముందుకు వెళ్లండి", "▶️ Continue from your level": "▶️ మీ స్థాయి నుండి కొనసాగించండి", "Resume at:": "ఇక్కడి నుండి కొనసాగించండి:", "Your score (25%) shows the fundamentals are not solid yet. Revise from “Syntax & data types” first; a short re-test will validate mastery before new topics.": "మీ స్కోరు పునాది ఇంకా బలంగా లేదని చూపిస్తోంది. ముందు పునశ్చరణ చేయండి; కొత్త అంశాల ముందు చిన్న రీ-టెస్ట్ నైపుణ్యాన్ని ధృవీకరిస్తుంది.", "Mark matching roadmap topics done": "సరిపోలే రోడ్‌మ్యాప్ అంశాలను పూర్తి చేయండి", "📚 Resources for my level": "📚 నా స్థాయికి వనరులు", "🗓 Build a plan": "🗓 ప్రణాళిక రూపొందించండి", "✨ Go deeper (AI)": "✨ మరింత లోతుగా (AI)", "Needs work: ": "మెరుగుపడాలి: ", "Strong: ": "బలమైనవి: ", "No questions available": "ప్రశ్నలు అందుబాటులో లేవు", "Find how you learn best": "మీరు ఎలా బాగా నేర్చుకుంటారో తెలుసుకోండి", "Retake the quiz": "క్విజ్ మళ్లీ రాయండి", "See my style": "నా శైలి చూడండి", "8 quick questions. Your result re-orders resources, study sessions and read-aloud features.": "8 చిన్న ప్రశ్నలు. ఫలితం వనరుల క్రమం, అధ్యయన సెషన్లు, చదివి వినిపించే ఫీచర్లను మారుస్తుంది.", "Applied to: resource order, study-session mix, listen buttons, project steps.": "వర్తింపు: వనరుల క్రమం, అధ్యయన సెషన్ల మిశ్రమం, వినే బటన్లు, ప్రాజెక్ట్ దశలు.", "Visual": "దృశ్య", "Auditory": "శ్రవణ", "Reading / Writing": "చదవడం / రాయడం", "Kinesthetic": "క్రియాత్మక", "Learn from diagrams, mind maps, flowcharts and video walkthroughs.": "చిత్రాలు, మైండ్ మ్యాప్‌లు, ఫ్లోచార్టులు, వీడియోల ద్వారా నేర్చుకోండి.", "Learn by doing: coding challenges, projects and experiments first, theory after.": "చేసి నేర్చుకోండి: ముందు కోడింగ్ సవాళ్లు, ప్రాజెక్టులు, ప్రయోగాలు; తర్వాత సిద్ధాంతం.", "Learn by listening and discussing: lectures, podcasts, read-aloud notes and explaining topics out loud.": "వినడం, చర్చించడం ద్వారా నేర్చుకోండి: ఉపన్యాసాలు, పాడ్‌కాస్ట్‌లు, గట్టిగా చదివే నోట్స్, గట్టిగా వివరించడం.", "Learn from docs, books and your own written notes and summaries.": "డాక్స్, పుస్తకాలు, మీ స్వంత నోట్స్, సారాంశాల ద్వారా నేర్చుకోండి.", "Start with a diagram or video, then practise.": "ముందు చిత్రం లేదా వీడియో చూడండి, తర్వాత ప్రాక్టీస్ చేయండి.", "Start by doing a small task, then read theory.": "ముందు చిన్న పని చేయండి, తర్వాత సిద్ధాంతం చదవండి.", "Read the docs, then write a short summary.": "డాక్స్ చదివి, చిన్న సారాంశం రాయండి.", "Listen or explain it out loud, then practise.": "వినండి లేదా గట్టిగా వివరించండి, తర్వాత ప్రాక్టీస్ చేయండి.", "Your study time": "మీ అధ్యయన సమయం", "Hours per day": "రోజుకు గంటలు", "Days per week": "వారానికి రోజులు", "Pace": "వేగం", "Relaxed": "నెమ్మదిగా", "Steady": "స్థిరంగా", "Intense": "తీవ్రంగా", "✨ Generate my plan": "✨ నా ప్రణాళిక రూపొందించండి", "🔄 Rebuild plan": "🔄 ప్రణాళికను మళ్లీ రూపొందించండి", "📅 Today": "📅 ఈ రోజు", "Catch up": "వెనుకబడినవి పూర్తి చేయండి", "Nothing scheduled today — rest, or revise something.": "ఈ రోజు ఏమీ షెడ్యూల్ కాలేదు — విశ్రాంతి తీసుకోండి లేదా ఏదైనా పునశ్చరణ చేయండి.", "🗓 Next 7 days": "🗓 తదుపరి 7 రోజులు", "Nothing else scheduled this week.": "ఈ వారం మరేమీ షెడ్యూల్ కాలేదు.", "🏁 Milestones & revision": "🏁 మైలురాళ్లు & పునశ్చరణ", "Milestones appear after every 4 topics.": "ప్రతి 4 అంశాల తర్వాత మైలురాళ్లు వస్తాయి.", "Pick a career first": "ముందుగా కెరీర్ ఎంచుకోండి", "Choose a career": "కెరీర్ ఎంచుకోండి", "Learn": "నేర్చుకోండి", "Practice": "ప్రాక్టీస్", "Mastery check": "నైపుణ్య తనిఖీ", "Revision": "పునశ్చరణ", "Milestone": "మైలురాయి", "Start": "ప్రారంభించండి", "Plan ready.": "ప్రణాళిక సిద్ధం.", "Topic complete — roadmap updated.": "అంశం పూర్తి — రోడ్‌మ్యాప్ నవీకరించబడింది.", "Find the right material": "సరైన మెటీరియల్ కనుగొనండి", "Recommendations match your level and learning style.": "సూచనలు మీ స్థాయి, నేర్చుకునే శైలికి సరిపోతాయి.", "Show resources": "వనరులు చూపండి", "Resources · {0}": "వనరులు · {0}", "Level: {0}": "స్థాయి: {0}", "Take the style quiz to personalise": "వ్యక్తిగతీకరణకు శైలి క్విజ్ రాయండి", "{0} learner": "{0} అభ్యాసకుడు", "📘 Official documentation": "📘 అధికారిక డాక్యుమెంటేషన్", "🎬 Video tutorial": "🎬 వీడియో ట్యుటోరియల్", "🎓 Online course": "🎓 ఆన్‌లైన్ కోర్సు", "📚 Book": "📚 పుస్తకం", "🧪 Practice platform": "🧪 ప్రాక్టీస్ ప్లాట్‌ఫామ్", "💻 Coding website": "💻 కోడింగ్ వెబ్‌సైట్", "🔬 Research paper": "🔬 పరిశోధన పత్రం", "👥 Community": "👥 కమ్యూనిటీ", "Links open trusted sites or searches; check dates and reviews before you commit.": "లింకులు నమ్మదగిన సైట్లు లేదా శోధనలను తెరుస్తాయి; ఎంచుకునే ముందు తేదీలు, సమీక్షలు చూడండి.", "👁️ See it": "👁️ చూడండి", "🎧 Hear it": "🎧 వినండి", "🔊 Read overview aloud": "🔊 సారాంశాన్ని గట్టిగా చదవండి", "🎧 Find lectures & podcasts": "🎧 ఉపన్యాసాలు & పాడ్‌కాస్ట్‌లు కనుగొనండి", "Redraw this map from memory tomorrow.": "రేపు ఈ మ్యాప్‌ను గుర్తుతో మళ్లీ గీయండి.", "Then explain each part out loud in your own words.": "తర్వాత ప్రతి భాగాన్ని మీ మాటల్లో గట్టిగా వివరించండి.", "💻 Open coding challenges": "💻 కోడింగ్ సవాళ్లు తెరవండి", "Project recommendations": "ప్రాజెక్ట్ సూచనలు", "Projects for {0}": "{0} కోసం ప్రాజెక్టులు", "Ordered from beginner to industry-level. Your current level:": "ప్రారంభ నుండి పరిశ్రమ స్థాయి వరకు క్రమంలో. మీ ప్రస్తుత స్థాయి:", "(based on assessments and finished projects). Finish a project to unlock the next.": "(అంచనాలు, పూర్తి చేసిన ప్రాజెక్టుల ఆధారంగా). తదుపరిది తెరవడానికి ఒక ప్రాజెక్ట్ పూర్తి చేయండి.", "Recommended": "సిఫార్సు", "✅ Done": "✅ పూర్తయింది", "🔒 Locked": "🔒 లాక్", "Start project": "ప్రాజెక్ట్ ప్రారంభించండి", "Continue": "కొనసాగించండి", "Review": "సమీక్ష", "Locked until you finish the previous project": "మునుపటి ప్రాజెక్ట్ పూర్తయ్యే వరకు లాక్", "Level 1 · Foundation": "స్థాయి 1 · పునాది", "Level 2 · Portfolio-ready": "స్థాయి 2 · పోర్ట్‌ఫోలియో సిద్ధం", "Level 3 · Interview-worthy": "స్థాయి 3 · ఇంటర్వ్యూకు తగినది", "Level 4 · Industry-level": "స్థాయి 4 · పరిశ్రమ స్థాయి", "Practical assignment — milestones": "ప్రాక్టికల్ అసైన్‌మెంట్ — దశలు", "Tick each milestone when finished. Completing all of them validates the project.": "ప్రతి దశ పూర్తయ్యాక టిక్ చేయండి. అన్నీ పూర్తయితే ప్రాజెక్ట్ ధృవీకరించబడుతుంది.", "Learn what you need": "మీకు కావలసినది నేర్చుకోండి", "Tip: sketch a wireframe or architecture diagram first.": "సూచన: ముందు వైర్‌ఫ్రేమ్ లేదా ఆర్కిటెక్చర్ చిత్రం గీయండి.", "Tip: start with a tiny working prototype.": "సూచన: చిన్న పనిచేసే ప్రోటోటైప్‌తో ప్రారంభించండి.", "Tip: write the README as you build.": "సూచన: నిర్మిస్తూనే README రాయండి.", "Tip: record a 2-minute voice walkthrough of each milestone.": "సూచన: ప్రతి దశకు 2 నిమిషాల వాయిస్ వాక్‌త్రూ రికార్డ్ చేయండి.", "Project complete — skills updated and the next project unlocks.": "ప్రాజెక్ట్ పూర్తి — నైపుణ్యాలు నవీకరించబడ్డాయి, తదుపరి ప్రాజెక్ట్ తెరవబడింది.", "Coding challenges": "కోడింగ్ సవాళ్లు", "Practice in JavaScript": "JavaScript లో ప్రాక్టీస్", "Challenges unlock harder levels as you solve them. Your code runs safely on your device — it works offline.": "పరిష్కరించే కొద్దీ కఠిన స్థాయిలు తెరుచుకుంటాయి. మీ కోడ్ మీ పరికరంలో సురక్షితంగా నడుస్తుంది — ఆఫ్‌లైన్‌లో కూడా.", "{0} / {1} solved": "{0} / {1} పరిష్కరించారు", "Current level: {0}": "ప్రస్తుత స్థాయి: {0}", "Not tried": "ప్రయత్నించలేదు", "✅ Solved": "✅ పరిష్కరించారు", "Solve": "పరిష్కరించండి", "▶ Run tests": "▶ టెస్టులు నడపండి", "💡 Hint": "💡 సూచన", "Reset": "రీసెట్", "❌ Not yet": "❌ ఇంకా కాదు", "A reference solution unlocks after 3 attempts or when you pass.": "3 ప్రయత్నాల తర్వాత లేదా పాస్ అయ్యాక రిఫరెన్స్ పరిష్కారం తెరుచుకుంటుంది.", "Show a reference solution": "రిఫరెన్స్ పరిష్కారం చూపండి", "Upload or paste your resume": "మీ రెజ్యూమె అప్‌లోడ్ చేయండి లేదా పేస్ట్ చేయండి", "Target career": "లక్ష్య కెరీర్", "📄 Choose PDF / DOCX / TXT": "📄 PDF / DOCX / TXT ఎంచుకోండి", "or paste text": "లేదా టెక్స్ట్ పేస్ట్ చేయండి", "Paste your resume text here": "మీ రెజ్యూమె టెక్స్ట్‌ను ఇక్కడ పేస్ట్ చేయండి", "Analyze resume": "రెజ్యూమెను విశ్లేషించండి", "Your resume is analysed on this device. Only the scores and gaps are saved — never the resume text.": "మీ రెజ్యూమె ఈ పరికరంలోనే విశ్లేషించబడుతుంది. స్కోర్లు, లోపాలు మాత్రమే సేవ్ అవుతాయి — రెజ్యూమె టెక్స్ట్ ఎప్పుడూ కాదు.", "Last analysis": "చివరి విశ్లేషణ", "Quality score": "నాణ్యత స్కోరు", "ATS compatibility": "ATS అనుకూలత", "Resume quality": "రెజ్యూమె నాణ్యత", "Resume report": "రెజ్యూమె నివేదిక", "Score breakdown": "స్కోరు వివరాలు", "Contact info": "సంప్రదింపు సమాచారం", "Structure & sections": "నిర్మాణం & విభాగాలు", "Content quality": "కంటెంట్ నాణ్యత", "Length": "నిడివి", "Role keywords": "పాత్ర కీవర్డ్స్", "Projects & certificates": "ప్రాజెక్టులు & సర్టిఫికెట్లు", "Skills for {0}": "{0} కోసం నైపుణ్యాలు", "Found": "కనుగొన్నవి", "Missing technical skills": "లేని సాంకేతిక నైపుణ్యాలు", "Projects & certifications": "ప్రాజెక్టులు & సర్టిఫికేషన్లు", "Projects found": "కనుగొన్న ప్రాజెక్టులు", "Certifications / courses": "సర్టిఫికేషన్లు / కోర్సులు", "Employability gaps ({0})": "ఉపాధి అర్హత లోపాలు ({0})", "How to close the gaps": "లోపాలను ఎలా పూరించాలి", "📚 Learn": "📚 నేర్చుకోండి", "🏅 Certifications": "🏅 సర్టిఫికేషన్లు", "🛠 Projects": "🛠 ప్రాజెక్టులు", "🤝 Activities": "🤝 కార్యకలాపాలు", "Open project plan": "ప్రాజెక్ట్ ప్రణాళిక తెరవండి", "Fix:": "పరిష్కారం:", "High:": "అధిక:", "Medium:": "మధ్యస్థ:", "Low:": "తక్కువ:", "Get AI feedback": "AI అభిప్రాయం పొందండి", "Skill gaps to close": "పూరించాల్సిన నైపుణ్య లోపాలు", "🧭 Take a diagnostic": "🧭 నిర్ధారణ పరీక్ష రాయండి", "Ask your mentor": "మీ మెంటర్‌ను అడగండి", "Ask": "అడగండి", "e.g. Should I switch to data science?": "ఉదా. నేను డేటా సైన్స్‌కు మారాలా?", "What should I learn next?": "నేను తర్వాత ఏమి నేర్చుకోవాలి?", "Which career suits me?": "నాకు ఏ కెరీర్ సరిపోతుంది?", "Which certifications should I do?": "నేను ఏ సర్టిఫికేషన్లు చేయాలి?", "How do I prepare for interviews?": "ఇంటర్వ్యూలకు ఎలా సిద్ధం కావాలి?", "Recommended career paths": "సిఫార్సు చేసిన కెరీర్ మార్గాలు", "Matched against the skills you have shown in assessments, your resume and completed topics. Not a job-market prediction.": "అంచనాలు, రెజ్యూమె, పూర్తి చేసిన అంశాల్లో చూపిన నైపుణ్యాలతో సరిపోలిక. ఇది ఉద్యోగ మార్కెట్ అంచనా కాదు.", "Switch": "మారండి", "Current": "ప్రస్తుతం", "Next steps": "తదుపరి దశలు", "🎤 Interview prep plan": "🎤 ఇంటర్వ్యూ సన్నాహక ప్రణాళిక", "💼 Internships": "💼 ఇంటర్న్‌షిప్‌లు", "Why this recommendation?": "ఈ సిఫార్సు ఎందుకు?", "Next:": "తదుపరి:", "No skills data yet — take a diagnostic or analyse your resume to unlock personalised matches.": "ఇంకా నైపుణ్య డేటా లేదు — వ్యక్తిగత సరిపోలికల కోసం నిర్ధారణ పరీక్ష రాయండి లేదా రెజ్యూమెను విశ్లేషించండి.", "Interview prep": "ఇంటర్వ్యూ సన్నాహం", "Practice questions": "ప్రాక్టీస్ ప్రశ్నలు", "Internships": "ఇంటర్న్‌షిప్‌లు", "Find internships": "ఇంటర్న్‌షిప్‌లు కనుగొనండి", "Before you apply": "దరఖాస్తు చేసే ముందు", "Certifications": "సర్టిఫికేషన్లు", "7-day plan for {0}": "{0} కోసం 7 రోజుల ప్రణాళిక", "Recommended for {0}": "{0} కోసం సిఫార్సు", "Open resume analyzer": "రెజ్యూమె విశ్లేషణ తెరవండి", "Learning analytics": "అభ్యాస విశ్లేషణ", "👩‍🎓 Student": "👩‍🎓 విద్యార్థి", "👩‍🏫 Educator": "👩‍🏫 అధ్యాపకుడు", "Readiness": "సంసిద్ధత", "Streak": "వరుస రోజులు", "Avg score": "సగటు స్కోరు", "Roadmap progress": "రోడ్‌మ్యాప్ పురోగతి", "Skill mastery": "నైపుణ్య ప్రావీణ్యం", "Resume readiness": "రెజ్యూమె సంసిద్ధత", "Consistency": "స్థిరత్వం", "Topic completion": "అంశ పూర్తి", "Study consistency": "అధ్యయన స్థిరత్వం", "Assessment performance": "అంచనా పనితీరు", "Skill development": "నైపుణ్య అభివృద్ధి", "Done {0}": "పూర్తి {0}", "Pending {0}": "పెండింగ్ {0}", "Skipped {0}": "దాటవేసినవి {0}", "⬇ Download my report (JSON)": "⬇ నా నివేదిక డౌన్‌లోడ్ చేయండి (JSON)", "🖨 Print / save PDF": "🖨 ప్రింట్ / PDF సేవ్", "Class dashboard": "తరగతి డాష్‌బోర్డ్", "📥 Import student reports": "📥 విద్యార్థి నివేదికలు దిగుమతి చేయండి", "➕ Add my own report": "➕ నా నివేదిక జోడించండి", "Students": "విద్యార్థులు", "Avg readiness": "సగటు సంసిద్ధత", "Need support": "సహాయం అవసరం", "Students export their report from their Analytics screen and share the file with you. Import several files to compare progress and spot who needs help. Data stays on this device.": "విద్యార్థులు తమ Analytics స్క్రీన్ నుండి నివేదికను ఎగుమతి చేసి ఫైల్‌ను మీకు పంపుతారు. పురోగతిని పోల్చడానికి, సహాయం కావలసిన వారిని గుర్తించడానికి అనేక ఫైళ్లను దిగుమతి చేయండి. డేటా ఈ పరికరంలోనే ఉంటుంది.", "Common gaps across the class": "తరగతిలో సాధారణ లోపాలు", "Hear": "వినండి", "Mon": "సోమ", "Tue": "మంగళ", "Wed": "బుధ", "Thu": "గురు", "Fri": "శుక్ర", "Sat": "శని", "Sun": "ఆది", "Diagnostic · {0}": "నిర్ధారణ · {0}", "Topic test · {0}": "అంశ పరీక్ష · {0}", "AI test · {0}": "AI పరీక్ష · {0}", "Needs work:": "మెరుగుపడాలి:", "Strong:": "బలమైనవి:", "Soft skills evidenced:": "కనిపించిన సాఫ్ట్ స్కిల్స్:", "Software Engineer": "సాఫ్ట్‌వేర్ ఇంజనీర్"});
+
+/* ===== assessments: diagnostic + adaptive topic tests ===== */
+function topicChoices(){
+  const out=[],seen=new Set(); const c=curCareer();
+  try{ (c&&c.syllabus||[]).slice(0,14).forEach(s=>{ const t=String(s.title||'').split(/[—–-]/)[0].trim()||s.title; const k=keyOf(t); if(k&&!seen.has(k)){ seen.add(k); out.push(t); } }); }catch(e){}
+  BANK_KEYS.forEach(k=>{ const n=BANK[k].n; if(!seen.has(keyOf(n))){ seen.add(keyOf(n)); out.push(n); } });
+  return out;
+}
+function genericSub(topic){ return ['Fundamentals of '+topic,'Core concepts','Applied practice','Advanced topics']; }
+async function getPool(topic,force){
+  const key=bankKeyFor(topic);
+  if(key&&!force){ const B=BANK[key]; return {key,sub:B.sub,source:'bank',pool:B.q.map(r=>mkQ(r[0],r[1],r[2],r[3],r[4],r[5]))}; }
+  if(!aiOk()) return {key:null,sub:genericSub(topic),source:'none',pool:[]};
+  const g=await llm(`Create a diagnostic question pool for the topic "${topic}" for a student targeting ${careerLabel()}.
+Return ONLY JSON {"subtopics":["","","",""],"questions":[{"lv":1,"st":0,"q":"","options":["","","",""],"correct":0,"explain":""}]}.
+Write 12 multiple-choice questions: 4 at lv 1 (recall), 4 at lv 2 (applied), 4 at lv 3 (tricky / advanced). "st" is the 0-based index of the subtopic each question belongs to. Exactly one correct option, 4 options, no "all of the above". Only facts you are certain of.`);
+  const pool=(g.questions||[]).filter(x=>x&&x.q&&Array.isArray(x.options)&&x.options.length===4&&Number.isInteger(x.correct)&&x.correct>=0&&x.correct<4).map(x=>mkQ(clamp(+x.lv||2,1,3),clamp(+x.st||0,0,3),String(x.q),x.options.map(String),x.correct,String(x.explain||'')));
+  if(pool.length<4) throw new Error('The AI did not return enough usable questions. Try again.');
+  const sub=(Array.isArray(g.subtopics)&&g.subtopics.length?g.subtopics:genericSub(topic)).slice(0,4).map(String);
+  return {key:null,sub,source:'ai',pool};
+}
+function mkQ(lv,st,qq,opts,correct,ex){ const idx=shuf([0,1,2,3]); return {lv,st,q:qq,options:idx.map(i=>opts[i]),correct:idx.indexOf(correct),explain:ex}; }
+function pickNext(c){ const unused=c.pool.filter(x=>!c.used.has(x)); if(!unused.length) return null;
+  const exact=unused.filter(x=>x.lv===c.lv); if(exact.length) return rnd(exact);
+  unused.sort((a,b)=>Math.abs(a.lv-c.lv)-Math.abs(b.lv-c.lv)); return unused[0]; }
+function speak(txt){ try{ const u=new SpeechSynthesisUtterance(txt); u.lang={en:'en-IN',hi:'hi-IN',te:'te-IN'}[S().lang]||'en-IN'; speechSynthesis.cancel(); speechSynthesis.speak(u); }catch(e){ toast('Read-aloud is not supported on this device.'); } }
+
+function assessHome(){
+  openView('Assess your knowledge',(b,h)=>{
+    const s=S(),tops=topicChoices(),known=Object.values(s.know).sort((a,b)=>b.at-a.at);
+    b.innerHTML=card(`<h3>Know what you already know</h3><p class="smDim">Pick a topic. A diagnostic asks what you have studied, then adapts question difficulty to find your real level — so you resume at the right stage instead of starting over.</p>
+      <label class="smLbl">Topic</label><select id="smTopic" class="smIn">${tops.map(t=>`<option value="${E(t)}">${E(t)}${bankKeyFor(t)||aiOk()?'':' (needs AI)'}</option>`).join('')}<option value="__custom">Other (type your own)…</option></select>
+      <input id="smTopicCustom" class="smIn" placeholder="e.g. Docker, Thermodynamics, Marketing" style="display:none;margin-top:8px">
+      <div class="smRow" style="margin-top:12px">${btn('🧭 Diagnostic','diag','smPrimary')}${btn('📝 Topic test','test')}</div>`)+
+      (known.length?card('<h3>Your results</h3>'+known.map(k=>`<div class="smLine"><div><b>${E(k.topic)}</b><div class="smDim">${E(k.level)} · ${k.score}% · ${recLabel(k.rec)}${k.validated?' · ✅ validated':''}</div></div>${btn('Retake','retake','smSm','data-t="'+E(k.topic)+'"')}</div>`).join('')):'');
+    const sel=$('#smTopic',b),cu=$('#smTopicCustom',b);
+    sel.onchange=()=>{ cu.style.display=sel.value==='__custom'?'':'none'; };
+    const get=()=>{ const t=sel.value==='__custom'?cu.value.trim():sel.value; if(!t){ toast('Type a topic first.'); return null; } return t; };
+    h.diag=()=>{ const t=get(); if(t) startAssess(t,'diag'); };
+    h.test=()=>{ const t=get(); if(t) startAssess(t,'test'); };
+    h.retake=(el)=>startAssess(el.dataset.t,'test');
+  });
+}
+const recLabel=r=>({skip:'Skip — mastered',continue:'Continue from your level',revise:'Revise the basics'}[r]||'');
+function startAssess(topic,mode){
+  const c={topic,mode,phase:'load',self:[],used:new Set(),ans:[],lv:2,n:mode==='diag'?6:5,pool:[],sub:[],key:null,msg:'',cur:null,picked:-1};
+  openView((mode==='diag'?'Diagnostic · ':'Topic test · ')+topic,(b,h)=>renderAssess(c,b,h));
+  getPool(topic).then(p=>{ c.pool=p.pool; c.sub=p.sub; c.key=p.key; c.source=p.source; c.phase=mode==='diag'?'self':'ask';
+    if(c.phase==='ask'){ const k=S().know[keyOf(topic)]; c.lv=k?(k.score>=70?3:k.score>=40?2:1):2; if(!c.pool.length) c.phase='nopool'; else c.cur=pickNext(c); }
+    refresh(c); }).catch(e=>{ c.phase='err'; c.msg=e.message||'Could not prepare questions.'; refresh(c); });
+}
+function refresh(c){ if(stack.length&&stack[stack.length-1].fn.__c===c) repaint(); }
+function renderAssess(c,b,h){
+  renderAssess.cur=c; stack[stack.length-1].fn.__c=c;
+  if(c.phase==='load'){ b.innerHTML=card('<div class="smSpin"></div><p class="smDim" style="text-align:center">Preparing your questions…</p>'); return; }
+  if(c.phase==='err'){ b.innerHTML=card(`<h3>Could not start</h3><p>${E(c.msg)}</p>${btn('Back','back2')}`); h.back2=()=>back(); return; }
+  if(c.phase==='self'){
+    b.innerHTML=card(`<h3>Guided questions</h3><p class="smDim">How well do you know each area of <b>${E(c.topic)}</b>? Be honest — the quiz will check.</p>`+
+      c.sub.map((s,i)=>`<div class="smSelf"><div><b>${E(s)}</b></div><div class="smSeg">${['Never studied','Heard of it','Have used it','Confident'].map((l,j)=>`<label><input type="radio" name="sf${i}" value="${j}" ${j===0?'checked':''}><span>${l}</span></label>`).join('')}</div></div>`).join('')+
+      (c.pool.length?'':'<p class="smWarn">No offline questions exist for this topic, and AI is not available right now — your result will be based on your self-assessment only.</p>')+btn('Start adaptive quiz','go','smPrimary'));
+    h.go=()=>{ c.self=c.sub.map((s,i)=>+(b.querySelector(`input[name=sf${i}]:checked`)||{value:0}).value); const avg=c.self.reduce((a,x)=>a+x,0)/Math.max(1,c.self.length);
+      c.lv=avg<1.2?1:avg<2.2?2:3; if(!c.pool.length){ finishAssess(c); return; } c.cur=pickNext(c); c.phase='ask'; repaint(); }; return; }
+  if(c.phase==='nopool'){ b.innerHTML=card(`<h3>No questions available</h3><p>There is no offline question set for <b>${E(c.topic)}</b>. Connect AI (AI Studio) to generate them, or pick a topic from the list.</p>${btn('Back','back2')}`); h.back2=()=>back(); return; }
+  if(c.phase==='ask'){ const x=c.cur, n=c.ans.length;
+    b.innerHTML=card(`<div class="smMeta">${chip('Question '+(n+1)+' of '+c.n)}${chip(['','Easy','Medium','Hard'][x.lv],'lv'+x.lv)}</div>${bar(n/c.n*100)}<h3 class="smQ" data-nt>${E(x.q)}</h3>`+
+      x.options.map((o,i)=>`<button class="smOpt ${c.picked>=0?(i===x.correct?'good':i===c.picked?'bad':''):''}" data-a="pick" data-n="${i}" ${c.picked>=0?'disabled':''} data-nt>${E(o)}</button>`).join('')+
+      (c.picked>=0?`<div class="smExp">${c.picked===x.correct?'✅ Correct. ':'❌ Not quite. '}<span data-nt>${E(x.explain)}</span> ${(styleKey()==='A'||S().style===null)?'<button class="smSm smBtn" data-a="say">🔊 Listen</button>':''}</div>${btn(n+1>=c.n||!c.pool.some(p=>!c.used.has(p))&&true?'See result':'Next question','next','smPrimary')}`:''));
+    h.pick=el=>{ if(c.picked>=0) return; c.picked=+el.dataset.n; repaint(true); };
+    h.say=()=>speak(x.q+'. '+(x.options[x.correct])+'. '+x.explain);
+    h.next=()=>{ const ok=c.picked===x.correct; c.ans.push({lv:x.lv,st:x.st,ok}); c.used.add(x); c.lv=ok?Math.min(3,c.lv+1):Math.max(1,c.lv-1); c.picked=-1;
+      const nx=c.ans.length<c.n?pickNext(c):null; if(!nx){ finishAssess(c); return; } c.cur=nx; repaint(); }; return; }
+  if(c.phase==='result'){ const r=c.res;
+    const tr=resolveSyllabusMatch(c.topic,c.key);
+    b.innerHTML=card(`<div class="smResultHead"><div class="smRing" style="--p:${r.score}"><b>${r.score}%</b></div><div><h3>${E(r.level)} level</h3><div class="smDim">${E(c.topic)} · ${r.asked} questions</div>${r.validated?chip('✅ Mastery validated','good'):chip('Not yet validated','warn')}</div></div>`)+
+      card(`<h3>${r.rec==='skip'?'⏭️ Skip ahead':r.rec==='continue'?'▶️ Continue from your level':'🔁 Revise first'}</h3><p>${E(r.explain)}</p>${r.resumeAt?`<p><b>Resume at:</b> ${E(r.resumeAt)}</p>`:''}${r.weak.length?`<p class="smDim">Needs work: ${r.weak.map(E).join(', ')}</p>`:''}${r.strong.length?`<p class="smDim">Strong: ${r.strong.map(E).join(', ')}</p>`:''}`)+
+      `<div class="smRow">${tr.length&&r.rec==='skip'?btn('Mark matching roadmap topics done','apply','smPrimary'):''}${btn('📚 Resources for my level','res')}${btn('🗓 Build a plan','plan')}${aiOk()&&c.source==='bank'?btn('✨ Go deeper (AI)','deeper'):''}</div>`;
+    h.apply=()=>{ const t=curTrack(); let n=0; tr.forEach(i=>{ if(t.days[i].status!=='done'){ t.days[i].status='done'; t.days[i].diag=true; n++; } }); persist(); try{ renderRoadmap(); }catch(e){} toast(n+' roadmap topic(s) marked done — you resume from the next one.'); repaint(true); };
+    h.res=()=>openResources(c.topic,r.score); h.plan=()=>openPlan(); h.deeper=()=>{ stack.pop(); startAssessAI(c.topic); }; return; }
+}
+function startAssessAI(topic){ const c={topic,mode:'test',phase:'load',self:[],used:new Set(),ans:[],lv:2,n:6,pool:[],sub:[],key:null,msg:'',cur:null,picked:-1,forceAI:true};
+  openView('AI test · '+topic,(b,h)=>renderAssess(c,b,h));
+  getPool(topic,true).then(p=>{ c.pool=p.pool; c.sub=p.sub; c.source='ai'; c.phase='ask'; c.cur=pickNext(c); refresh(c); }).catch(e=>{ c.phase='err'; c.msg=e.message; refresh(c); }); }
+function resolveSyllabusMatch(topic,key){ const t=curTrack(),c=curCareer(); if(!t||!c) return []; const kt=keyOf(topic),out=[];
+  t.days.forEach((d,i)=>{ const ch=(c.syllabus||[]).find(s=>s.id===d.chapterId); if(!ch) return; const kc=keyOf(ch.title);
+    if((kt.length>2&&kc.includes(kt))||(kc.length>3&&kt.includes(kc))||(key&&bankKeyFor(ch.title)===key)) out.push(i); });
+  return out; }
+function finishAssess(c){
+  const a=c.ans, asked=a.length, s=S();
+  const avgSelf=c.self.length?c.self.reduce((x,y)=>x+y,0)/c.self.length:null;
+  let score;
+  if(asked){ const tot=a.reduce((x,y)=>x+y.lv,0), got=a.reduce((x,y)=>x+(y.ok?y.lv:0),0); score=Math.round(got/tot*100); }
+  else score=Math.round((avgSelf||0)/3*60);
+  const subSc=c.sub.map((n,i)=>{ const q=a.filter(x=>x.st===i); return {n,asked:q.length,ok:q.filter(x=>x.ok).length,self:c.self[i]}; });
+  const weak=subSc.filter(x=>(x.asked&&x.ok<x.asked)||(!x.asked&&x.self!=null&&x.self<=1)).map(x=>x.n);
+  const strong=subSc.filter(x=>x.asked&&x.ok===x.asked&&(x.self==null||x.self>=1)).map(x=>x.n);
+  const hardOk=a.some(x=>x.lv===3&&x.ok), validated=score>=70&&(asked===0?false:true);
+  let rec=score>=80&&(hardOk||asked<3)?'skip':score>=50?'continue':'revise';
+  if(!asked&&rec==='skip') rec='continue';
+  const first=subSc.find(x=>weak.includes(x.n)); const resumeAt=rec==='skip'?'the next topic in your roadmap':(first?first.n:c.sub[0]);
+  const explain=rec==='skip'?`You answered the harder questions correctly (${score}%). Re-studying this would repeat what you know — move on and revisit it only in your scheduled revision.`
+    :rec==='continue'?`You have a working grasp (${score}%) but some gaps. Start from “${resumeAt}” rather than the beginning, and finish the weak areas before moving on.`
+    :`Your score (${score}%) shows the fundamentals are not solid yet. Revise from “${resumeAt}” first; a short re-test will validate mastery before new topics.`;
+  c.res={score,level:level(score),asked,rec,weak,strong,resumeAt,explain,validated};
+  const k=keyOf(c.topic); s.know[k]={topic:c.topic,key:c.key,score,level:level(score),rec,at:Date.now(),validated,resumeAt,weak,self:avgSelf};
+  s.assess.push({at:Date.now(),topic:c.topic,score,mode:c.mode,n:asked}); if(s.assess.length>200) s.assess.shift();
+  updSkill(c.topic,score); subSc.forEach(x=>{ if(x.asked) updSkill(x.n,Math.round(x.ok/x.asked*100)); });
+  addLog(Math.max(5,asked*2)); persist(); c.phase='result'; repaint(); }
+
+/* ===== learning style quiz ===== */
+function styleQuiz(){
+  openView('Learning style',(b,h)=>{
+    const st=S().style;
+    let html=''; if(st) html+=styleResultHTML(st);
+    html+=card(`<h3>${st?'Retake the quiz':'Find how you learn best'}</h3><p class="smDim">8 quick questions. Your result re-orders resources, study sessions and read-aloud features.</p>`+
+      VARK.map((v,i)=>`<div class="smSelf"><b>${i+1}. ${E(v[0])}</b>${v[1].map((o,j)=>`<label class="smRadio"><input type="radio" name="v${i}" value="${'VARK'[j]}"><span>${E(o)}</span></label>`).join('')}</div>`).join('')+btn('See my style','sv','smPrimary'));
+    b.innerHTML=html;
+    h.sv=()=>{ const sc={V:0,A:0,R:0,K:0}; let n=0; for(let i=0;i<VARK.length;i++){ const r=b.querySelector(`input[name=v${i}]:checked`); if(r){ sc[r.value]++; n++; } }
+      if(n<VARK.length){ toast('Please answer all '+VARK.length+' questions.'); return; }
+      const order=Object.keys(sc).sort((a,c)=>sc[c]-sc[a]); S().style={scores:sc,order,at:Date.now()}; persist(); repaint(); toast('Learning style saved.'); };
+  });
+}
+function styleResultHTML(st){ const top=STYLE[st.order[0]],tot=Object.values(st.scores).reduce((a,b)=>a+b,0)||1;
+  return card(`<h3>${top.e} You learn best: ${top.n}</h3><p>${E(top.tip)}</p>`+Object.keys(st.scores).map(k=>`<div class="smLine"><span>${STYLE[k].e} ${STYLE[k].n}</span><span>${Math.round(st.scores[k]/tot*100)}%</span></div>${bar(st.scores[k]/tot*100)}`).join('')+`<p class="smDim" style="margin-top:10px">Applied to: resource order, study-session mix, listen buttons, project steps.</p>`); }
+function styleHint(){ const k=styleKey(); return k?({V:'Start with a diagram or video, then practise.',A:'Listen or explain it out loud, then practise.',R:'Read the docs, then write a short summary.',K:'Start by doing a small task, then read theory.'}[k]):'Take the learning-style quiz to personalise this.'; }
+
+/* ===== coding challenges ===== */
+function runTests(code,ch){ return new Promise(res=>{
+  const src=`onmessage=function(e){var d=e.data,out=[];try{var f=new Function(d.code+';return typeof '+d.fn+'==="function"?'+d.fn+':undefined;')();if(!f)throw new Error('Define a function named '+d.fn);for(var i=0;i<d.tests.length;i++){var t=d.tests[i];try{var r=f.apply(null,JSON.parse(JSON.stringify(t[0])));out.push({ok:JSON.stringify(r)===JSON.stringify(t[1]),got:r===undefined?'undefined':r,exp:t[1],args:t[0]});}catch(er){out.push({ok:false,err:String(er),args:t[0],exp:t[1]});}}}catch(er){out.push({ok:false,err:String(er)});}postMessage(out);};`;
+  let w; try{ w=new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'}))); }catch(e){ res([{ok:false,err:'This browser cannot run code challenges.'}]); return; }
+  const tm=setTimeout(()=>{ w.terminate(); res([{ok:false,err:'Timed out after 3 seconds — check for an infinite loop.'}]); },3000);
+  w.onmessage=e=>{ clearTimeout(tm); w.terminate(); res(e.data); }; w.onerror=e=>{ clearTimeout(tm); w.terminate(); res([{ok:false,err:String(e.message||'Error in your code')}]); };
+  w.postMessage({code,fn:ch.fn,tests:ch.tests}); }); }
+function codeHome(){
+  openView('Coding challenges',(b,h)=>{
+    const s=S(),solved=CHALLENGES.filter(c=>(s.code[c.id]||{}).solved).length, lvl=Math.min(3,1+Math.floor(solved/3));
+    const rec=CHALLENGES.find(c=>c.lv<=lvl&&!(s.code[c.id]||{}).solved)||CHALLENGES.find(c=>!(s.code[c.id]||{}).solved);
+    b.innerHTML=card(`<h3>Practice in JavaScript</h3><p class="smDim">Challenges unlock harder levels as you solve them. Your code runs safely on your device — it works offline.</p><div class="smMeta">${chip(solved+' / '+CHALLENGES.length+' solved')}${chip('Current level: '+['','Easy','Medium','Hard'][lvl])}</div>${bar(solved/CHALLENGES.length*100)}`)+
+      [1,2,3].map(l=>card(`<h3>${['','Easy','Medium','Hard'][l]}</h3>`+CHALLENGES.filter(c=>c.lv===l).map(c=>{ const st=s.code[c.id]||{}; return `<div class="smLine"><div><b>${E(c.t)}</b>${rec&&rec.id===c.id?' '+chip('Recommended','good'):''}<div class="smDim">${st.solved?'✅ Solved':st.tries?st.tries+' attempt(s)':'Not tried'}</div></div>${btn(st.solved?'Review':'Solve','open','smSm','data-id="'+c.id+'"')}</div>`; }).join(''),l>lvl&&solved<(l-1)*3?'smLocked':''));
+    h.open=el=>codeEditor(el.dataset.id);
+  });
+}
+function codeEditor(id){ const ch=CHALLENGES.find(c=>c.id===id);
+  openView(ch.t,(b,h)=>{ const s=S(),st=s.code[id]||{};
+    b.innerHTML=card(`<div class="smMeta">${chip(['','Easy','Medium','Hard'][ch.lv],'lv'+ch.lv)}${st.solved?chip('Solved','good'):''}</div><p>${E(ch.d)}</p><textarea id="smCode" class="smCode" spellcheck="false" autocapitalize="off" data-nt>${E(st.code||ch.st)}</textarea><div class="smRow">${btn('▶ Run tests','run','smPrimary')}${btn('💡 Hint','hint')}${btn('Reset','reset')}</div><div id="smOut"></div>`);
+    const ta=$('#smCode',b); ta.addEventListener('keydown',e=>{ if(e.key==='Tab'){ e.preventDefault(); const p=ta.selectionStart; ta.value=ta.value.slice(0,p)+'  '+ta.value.slice(ta.selectionEnd); ta.selectionStart=ta.selectionEnd=p+2; } });
+    h.hint=()=>{ $('#smOut',b).innerHTML=card('💡 '+E(ch.hint)); };
+    h.reset=()=>{ ta.value=ch.st; };
+    h.run=async()=>{ const out=$('#smOut',b); out.innerHTML='<div class="smSpin"></div>'; const res=await runTests(ta.value,ch);
+      const ok=res.length>0&&res.every(r=>r.ok); const st2=s.code[id]=s.code[id]||{}; st2.tries=(st2.tries||0)+1; st2.code=ta.value; if(ok&&!st2.solved){ st2.solved=true; st2.at=Date.now(); }
+      const solved=CHALLENGES.filter(c=>(s.code[c.id]||{}).solved).length; updSkill('Coding challenges',Math.round(solved/CHALLENGES.length*100)); addLog(8); persist();
+      out.innerHTML=card((ok?'<h3>✅ All tests passed</h3><p>Great work — the next level unlocks as you solve more.</p>':'<h3>❌ Not yet</h3>')+res.map((r,i)=>`<div class="smTest ${r.ok?'good':'bad'}" data-nt>${r.ok?'✔':'✘'} ${r.err?E(r.err):'Test '+(i+1)+': input '+E(JSON.stringify(r.args))+' → expected '+E(JSON.stringify(r.exp))+(r.ok?'':', got '+E(JSON.stringify(r.got)))}</div>`).join('')+(ok||st2.tries>=3?`<details><summary>Show a reference solution</summary><pre class="smPre" data-nt>${E(ch.sol)}</pre></details>`:'<p class="smDim">A reference solution unlocks after 3 attempts or when you pass.</p>'));
+    };
+  }); }
+
+/* ===== resources ===== */
+function resourceList(topic,score){
+  const key=bankKeyFor(topic),lvl=level(score==null?(S().know[keyOf(topic)]||{score:20}).score:score),t=topic;
+  const tech=!!key||domainFor(careerLabel())!=='general';
+  const out=[];
+  out.push({k:'docs',i:'📘',type:'Official documentation',label:RES_DOC[key]?('Official docs / guide for '+t):('Official documentation search: '+t),url:RES_DOC[key]||'https://www.google.com/search?q='+q(t+' official documentation'),why:lvl==='Beginner'?'Skim the getting-started section only.':'Your go-to reference at this level.'});
+  out.push({k:'video',i:'🎬',type:'Video tutorial',label:lvl==='Beginner'?t+' for beginners — full course':lvl==='Intermediate'?t+' in depth / project-based tutorial':t+' advanced concepts & interview deep-dive',url:'https://www.youtube.com/results?search_query='+q(t+(lvl==='Beginner'?' full course for beginners':lvl==='Intermediate'?' project tutorial':' advanced explained')),why:'Pick a recent video with good reviews, 1–3 hours.'});
+  out.push({k:'course',i:'🎓',type:'Online course',label:'Courses on '+t+' (Coursera)',url:'https://www.coursera.org/search?query='+q(t),why:'Free to audit; certificates are optional.'});
+  out.push({k:'course',i:'🎓',type:'Online course',label:'NPTEL / SWAYAM courses (free, Indian institutes)',url:'https://nptel.ac.in/courses',why:'Search the course list for “'+t+'”.'});
+  out.push({k:'book',i:'📚',type:'Book',label:RES_BOOK[key]||('Best-rated books on '+t),url:'https://www.google.com/search?tbm=bks&q='+q(RES_BOOK[key]||t),why:lvl==='Beginner'?'Read selected chapters, not the whole book.':'Use as a reference alongside practice.'});
+  if(tech){ const pr=RES_PRACTICE[key]; if(pr) out.push({k:'practice',i:'🧪',type:'Practice platform',label:pr[0],url:pr[1],why:'Short exercises with instant feedback.'});
+    out.push({k:'coding',i:'💻',type:'Coding website',label:lvl==='Beginner'?'HackerRank — easy problems':lvl==='Intermediate'?'LeetCode — medium problems':'Codeforces / CodeChef — contests',url:lvl==='Beginner'?'https://www.hackerrank.com/domains/tutorials/10-days-of-javascript':lvl==='Intermediate'?'https://leetcode.com/problemset/':'https://codeforces.com/problemset',why:'Aim for 2–3 problems per session.'}); }
+  else out.push({k:'practice',i:'🧪',type:'Practice platform',label:'Quizlet / past-paper practice for '+t,url:'https://quizlet.com/search?query='+q(t)+'&type=sets',why:'Active recall beats re-reading.'});
+  out.push({k:'paper',i:'🔬',type:'Research paper',label:lvl==='Beginner'?'Survey papers on '+t+' (read later)':'Recent papers & surveys on '+t,url:'https://scholar.google.com/scholar?q='+q(t+(lvl==='Beginner'?' introduction survey':' survey')),why:lvl==='Beginner'?'Optional now — bookmark for when you reach Intermediate.':'Read abstract + conclusion first.'});
+  out.push({k:'community',i:'👥',type:'Community',label:'Stack Overflow questions on '+t,url:'https://stackoverflow.com/search?q='+q(t),why:'Search before asking; show your attempt.'});
+  out.push({k:'community',i:'👥',type:'Community',label:'Reddit & GitHub communities for '+t,url:'https://www.reddit.com/search/?q='+q(t+' learning'),why:'Find study groups and open-source projects.'});
+  const pref={V:['video','course'],A:['video','course'],R:['docs','book','paper'],K:['practice','coding','community']}[styleKey()||'']||[];
+  out.sort((a,b)=>(pref.includes(a.k)?0:1)-(pref.includes(b.k)?0:1));
+  return {lvl,key,items:out}; }
+function mindMapSVG(topic,sub){
+  const n=sub.length,cx=150,cy=110,R=82,nodes=sub.map((s,i)=>{ const a=-Math.PI/2+i*2*Math.PI/n; return {x:cx+R*1.35*Math.cos(a),y:cy+R*Math.sin(a),s}; });
+  const wrap=(s,l)=>{ const w=String(s).split(' '),lines=[],cur=[]; let c=''; w.forEach(x=>{ if((c+' '+x).trim().length>l){ lines.push(c.trim()); c=x; } else c=(c+' '+x); }); lines.push(c.trim()); return lines.slice(0,3); };
+  return `<svg viewBox="0 0 300 220" class="smMap" role="img" aria-label="Mind map of ${E(topic)}"><g stroke="currentColor" stroke-opacity=".3" fill="none">${nodes.map(o=>`<line x1="${cx}" y1="${cy}" x2="${o.x}" y2="${o.y}"/>`).join('')}</g>
+  <ellipse cx="${cx}" cy="${cy}" rx="44" ry="26" fill="var(--accent)"/><text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--accent-ink,#fff)">${E(topic.length>16?topic.slice(0,15)+'…':topic)}</text>
+  ${nodes.map(o=>`<rect x="${o.x-45}" y="${o.y-16}" width="90" height="32" rx="10" fill="var(--panel)" stroke="var(--accent)"/><text text-anchor="middle" font-size="9" fill="currentColor">${wrap(o.s,16).map((l,i,a)=>`<tspan x="${o.x}" y="${o.y+3-(a.length-1)*5+i*10}">${E(l)}</tspan>`).join('')}</text>`).join('')}</svg>`; }
+function adaptedCards(topic,key){
+  const sub=key?BANK[key].sub:genericSub(topic),k=styleKey()||'V';
+  const cards={
+    V:()=>card(`<h4>${STYLE.V.e} See it</h4>${mindMapSVG(topic,sub)}<p class="smDim">Redraw this map from memory tomorrow.</p>`),
+    A:()=>card(`<h4>${STYLE.A.e} Hear it</h4><p>${E(topic)} covers: ${sub.map(E).join('; ')}.</p>${btn('🔊 Read overview aloud','say','smSm')} ${link('🎧 Find lectures & podcasts','https://www.youtube.com/results?search_query='+q(topic+' lecture explained'))}<p class="smDim">Then explain each part out loud in your own words.</p>`),
+    R:()=>card(`<h4>${STYLE.R.e} Read & write it</h4><ol>${sub.map(s=>`<li>Read about <b>${E(s)}</b>, then write 3 sentences in your own words.</li>`).join('')}</ol>`),
+    K:()=>card(`<h4>${STYLE.K.e} Do it</h4><ol>${sub.map(s=>`<li>Build or solve one small task using <b>${E(s)}</b> before reading theory.</li>`).join('')}</ol>${btn('💻 Open coding challenges','code','smSm')}`)};
+  const order=styleOrder(); return {html:order.slice(0,S().style?2:1).map(x=>cards[x]()).join(''),sub}; }
+function openResources(topic,score){
+  openView('Resources · '+topic,(b,h)=>{
+    const r=resourceList(topic,score),ad=adaptedCards(topic,r.key);
+    b.innerHTML=card(`<div class="smMeta">${chip('Level: '+r.lvl)}${S().style?chip(STYLE[S().style.order[0]].e+' '+STYLE[S().style.order[0]].n+' learner'):chip('Take the style quiz to personalise','warn')}</div><p class="smDim">${E(styleHint())}</p>`)+ad.html+
+      `<div class="smGrid">`+r.items.map(x=>`<a class="smRes" href="${E(x.url)}" target="_blank" rel="noopener noreferrer"><div class="smResT">${x.i} ${x.type}</div><div class="smResL" data-nt>${E(x.label)}</div><div class="smDim">${E(x.why)}</div></a>`).join('')+`</div><p class="smDim">Links open trusted sites or searches; check dates and reviews before you commit.</p>`;
+    h.say=()=>speak(topic+'. '+ad.sub.join('. ')); h.code=()=>codeHome(); }); }
+function resourcesHome(){
+  openView('Resources',(b,h)=>{ const tops=topicChoices();
+    b.innerHTML=card(`<h3>Find the right material</h3><p class="smDim">Recommendations match your level and learning style.</p><select id="smRT" class="smIn">${tops.map(t=>`<option>${E(t)}</option>`).join('')}<option value="__c">Other…</option></select><input id="smRC" class="smIn" style="display:none;margin-top:8px" placeholder="Type a topic">${btn('Show resources','go','smPrimary')}`);
+    const sel=$('#smRT',b),ci=$('#smRC',b); sel.onchange=()=>{ ci.style.display=sel.value==='__c'?'':'none'; };
+    h.go=()=>{ const t=sel.value==='__c'?ci.value.trim():sel.value; if(!t){ toast('Type a topic.'); return; } const k=S().know[keyOf(t)]; openResources(t,k?k.score:undefined); }; }); }
+
+/* ===== study plan ===== */
+const PACE={relaxed:360,steady:240,intense:180};
+const WD={3:[1,3,5],4:[1,2,4,5],5:[1,2,3,4,5],6:[1,2,3,4,5,6],7:[0,1,2,3,4,5,6]};
+function planTopics(){ const t=curTrack(),c=curCareer(); if(!t||!c) return []; const out=[];
+  t.days.forEach((d,i)=>{ if(d.status==='done') return; const ch=(c.syllabus||[]).find(s=>s.id===d.chapterId); if(!ch) return; const title=String(ch.title).split(/[—–]/)[0].trim()||ch.title; out.push({title:String(ch.title),short:title,chapterId:d.chapterId,idx:i}); }); return out; }
+function knowFor(title){ const s=S(),k=s.know[keyOf(title)]; if(k) return k; const key=bankKeyFor(title); if(key) return Object.values(s.know).find(x=>x.key===key)||null; return null; }
+function buildPlan(){
+  const s=S(),p=s.plan,cap=Math.round(p.hrs*60),wd=WD[p.days]||WD[5],pace=PACE[p.pace]||240,K=styleKey();
+  const prShare=K==='K'?.5:K==='R'?.25:.3, topics=planTopics().filter(t=>{ const k=knowFor(t.title); return !(k&&k.rec==='skip'); }).slice(0,14);
+  const verb={V:'Watch & sketch',A:'Listen & discuss',R:'Read & take notes on',K:'Build-along:'}[K]||'Study';
+  const queue=[],revQ=[]; let mc=0;
+  topics.forEach((t,ti)=>{ const k=knowFor(t.title); let total=pace*(k&&k.rec==='continue'?.7:1); const tk=keyOf(t.title);
+    if(k&&k.rec==='revise') queue.push({type:'learn',topic:t.short,tk,min:Math.round(total*.25),label:'Revise basics: '+t.short});
+    const learn=Math.round(total*(1-prShare)),pr=Math.round(total*prShare);
+    for(let m=learn;m>0;m-=cap){ queue.push({type:'learn',topic:t.short,tk,min:Math.min(cap,m),label:verb+' '+t.short}); }
+    for(let m=pr;m>0;m-=cap){ queue.push({type:'practice',topic:t.short,tk,min:Math.min(cap,m),label:(K==='K'?'Hands-on practice: ':'Practice: ')+t.short}); }
+    queue.push({type:'check',topic:t.short,tk,min:15,label:'Mastery check: '+t.short,last:true,chapterId:t.chapterId});
+    if((ti+1)%4===0) queue.push({type:'milestone',topic:'Milestone '+(++mc),tk:'ms'+mc,min:Math.min(cap,60),label:'Milestone '+mc+': mock test + mini-project review'}); });
+  const items=[],start=new Date(); start.setHours(0,0,0,0); let guard=0;
+  for(let d=0;d<70&&(queue.length||revQ.length);d++){ const date=addDays(start,d),ds=ymd(date); if(!wd.includes(date.getDay())&&!revQ.some(r=>r.due<=ds&&false)) { continue; }
+    let left=cap,n=0;
+    for(let i=revQ.length-1;i>=0;i--){ const r=revQ[i]; if(r.due<=ds&&left>=15){ items.push({id:ds+'|revise|'+r.tk+'|'+r.k,date:ds,type:'revise',topic:r.topic,min:15,label:'Revise ('+r.k+'): '+r.topic}); left-=15; revQ.splice(i,1); } }
+    while(queue.length&&left>0){ const it=queue[0]; if(it.min>left&&left<cap*.5&&n>0) break; const use=Math.min(it.min,left); queue.shift();
+      items.push({id:ds+'|'+it.type+'|'+it.tk+'|'+(n++),date:ds,type:it.type,topic:it.topic,min:use,label:it.label,chapterId:it.chapterId});
+      left-=use; if(it.last){ [['D+1',1],['D+3',3],['D+7',7],['D+14',14]].forEach(([k,off])=>revQ.push({tk:it.tk,topic:it.topic,k,due:ymd(addDays(date,off))})); } }
+    if(++guard>200) break; }
+  revQ.sort((a,b)=>a.due<b.due?-1:1).slice(0,0);
+  const prev=p.done||{},done={}; items.forEach(i=>{ if(prev[i.id]) done[i.id]=true; });
+  p.items=items; p.done=done; p.start=today(); p.topics=topics.map(t=>({title:t.title,short:t.short,chapterId:t.chapterId})); persist(); }
+function openPlan(){
+  openView('Study plan',(b,h)=>{
+    const s=S(),p=s.plan,t=curTrack(),c=curCareer();
+    if(!t||!c){ b.innerHTML=card(`<h3>Pick a career first</h3><p>Your plan is built from your roadmap. Choose a goal and I will sequence it around your time and your diagnostic results.</p>${btn('Choose a career','pick','smPrimary')}`); h.pick=()=>{ closeAll(); try{ showView('view-landing'); }catch(e){} }; return; }
+    const td=today(),items=p.items||[],byDate={}; items.forEach(i=>{ (byDate[i.date]=byDate[i.date]||[]).push(i); });
+    const over=items.filter(i=>i.date<td&&!p.done[i.id]).slice(-4);
+    const gate=i=>{ if(i.type!=='learn'||!p.topics) return ''; const ix=p.topics.findIndex(x=>x.short===i.topic); if(ix<1) return ''; const pv=p.topics[ix-1],k=knowFor(pv.title); const ck=items.find(x=>x.type==='check'&&x.topic===pv.short); if((k&&k.validated)||(ck&&p.done[ck.id])) return ''; return '<div class="smWarn">🔒 Pass the mastery check for “'+E(pv.short)+'” first</div>'; };
+    const row=i=>`<div class="smLine ${p.done[i.id]?'smDone':''}"><label class="smChk"><input type="checkbox" data-c="tog" data-id="${E(i.id)}" ${p.done[i.id]?'checked':''}><span><b data-nt>${E(i.label)}</b><div class="smDim">${i.min} min · ${{learn:'Learn',practice:'Practice',check:'Mastery check',revise:'Revision',milestone:'Milestone'}[i.type]}</div>${gate(i)}</span></label>${btn(i.type==='learn'?'Resources':i.type==='practice'?'Practice':i.type==='milestone'?'Projects':'Start','go','smSm','data-id="'+E(i.id)+'"')}</div>`;
+    const hasPlan=items.length>0;
+    b.innerHTML=card(`<h3>Your study time</h3><div class="smForm"><label>Hours per day<select id="pH" class="smIn">${[.5,1,1.5,2,3,4,6].map(v=>`<option value="${v}" ${v==p.hrs?'selected':''}>${v}</option>`).join('')}</select></label><label>Days per week<select id="pD" class="smIn">${[3,4,5,6,7].map(v=>`<option ${v==p.days?'selected':''}>${v}</option>`).join('')}</select></label><label>Pace<select id="pP" class="smIn">${[['relaxed','Relaxed'],['steady','Steady'],['intense','Intense']].map(a=>`<option value="${a[0]}" ${a[0]==p.pace?'selected':''}>${a[1]}</option>`).join('')}</select></label></div><p class="smDim">${(function(){ const sk=Object.values(s.know).filter(k=>k.rec==='skip').length; return (sk?sk+' mastered topic(s) skipped. ':'')+'Style: '+(styleKey()?STYLE[styleKey()].n:'not set — take the style quiz')+'.'; })()}</p>${btn(hasPlan?'🔄 Rebuild plan':'✨ Generate my plan','gen','smPrimary')}`)+
+    (hasPlan?card(`<h3>📅 Today</h3>${(byDate[td]||[]).map(row).join('')||'<p class="smDim">Nothing scheduled today — rest, or revise something.</p>'}${over.length?`<h4>Catch up</h4>${over.map(row).join('')}`:''}`)+
+      card('<h3>🗓 Next 7 days</h3>'+[1,2,3,4,5,6,7].map(n=>{ const ds=ymd(addDays(new Date(),n)),L=byDate[ds]||[]; return L.length?`<div class="smDay"><b>${new Date(ds+'T00:00').toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'})}</b> ${L.map(i=>`<div class="smDim" data-nt>${i.min}m · ${E(i.label)}</div>`).join('')}</div>`:''; }).join('')||'<p class="smDim">Nothing else scheduled this week.</p>')+
+      card('<h3>🏁 Milestones & revision</h3>'+(items.filter(i=>i.type==='milestone').slice(0,4).map(i=>`<div class="smLine"><span data-nt>${E(i.label)}</span><span class="smDim">${i.date}</span></div>`).join('')||'<p class="smDim">Milestones appear after every 4 topics.</p>')+`<p class="smDim">Revision is scheduled 1, 3, 7 and 14 days after each topic (spaced repetition): ${items.filter(i=>i.type==='revise').length} revision slots planned.</p>`):'');
+    const rd=()=>{ p.hrs=+$('#pH',b).value; p.days=+$('#pD',b).value; p.pace=$('#pP',b).value; };
+    h.gen=()=>{ rd(); buildPlan(); toast('Plan ready.'); repaint(); };
+    h.tog=el=>{ const id=el.dataset.id,it=items.find(x=>x.id===id); if(!it) return; if(el.checked){ p.done[id]=true; addLog(it.min);
+        if(it.type==='check'&&it.chapterId&&t){ const d=t.days.find(x=>x.chapterId===it.chapterId); if(d&&d.status==='pending'){ d.status='done'; t.streak=(t.streak||0)+1; try{ renderRoadmap(); }catch(e){} toast('Topic complete — roadmap updated.'); } } }
+      else delete p.done[id]; persist(); repaint(true); };
+    h.go=el=>{ const it=items.find(x=>x.id===el.dataset.id); if(!it) return; if(it.type==='learn') openResources(it.topic); else if(it.type==='practice') (bankKeyFor(it.topic)==='javascript'||!bankKeyFor(it.topic)?codeHome():startAssess(it.topic,'test')); else if(it.type==='milestone') openProjects(); else startAssess(it.topic,'test'); };
+  }); }
+
+/* ===== projects ===== */
+function userLevel(){ const s=S(),v=Object.values(s.skills).map(x=>x.score); const avg=v.length?v.reduce((a,b)=>a+b,0)/v.length:0;
+  const done=Object.values(s.proj).filter(p=>p.done).length; return Math.min(4,Math.max(avg<40?1:avg<60?2:avg<80?3:4,1+Math.min(3,done))); }
+function openProjects(){
+  openView('Project recommendations',(b,h)=>{
+    const s=S(),c=curCareer(),dom=domainFor(c?c.name+' '+(c.skills||[]).join(' '):'general'),L=PROJ[dom],lv=userLevel(),tags=['','Foundation','Portfolio-ready','Interview-worthy','Industry-level'];
+    const done=id=>(s.proj[id]||{}).done;
+    b.innerHTML=card(`<h3>Projects for ${E(c?c.name:'your field')}</h3><p class="smDim">Ordered from beginner to industry-level. Your current level: <b>${['','Beginner','Intermediate','Advanced','Industry'][lv]}</b> (based on assessments and finished projects). Finish a project to unlock the next.</p>${S().style?`<p class="smDim">${E(({V:'Tip: sketch a wireframe or architecture diagram first.',A:'Tip: record a 2-minute voice walkthrough of each milestone.',R:'Tip: write the README as you build.',K:'Tip: start with a tiny working prototype.'})[styleKey()])}</p>`:''}`)+
+      L.map((p,i)=>{ const id=dom+i,unlocked=p[0]<=lv||(i>0&&done(dom+(i-1))),st=s.proj[id]||{},cnt=Object.keys(st.steps||{}).length;
+        return card(`<div class="smMeta">${chip('Level '+p[0]+' · '+tags[p[0]],'lv'+Math.min(3,p[0]))}${done(id)?chip('✅ Done','good'):unlocked&&p[0]===Math.min(lv,4)&&!done(id)?chip('Recommended','good'):''}${!unlocked?chip('🔒 Locked','warn'):''}</div><h3>${E(p[1])}</h3><p>${E(p[2])}</p><div class="smDim">Skills: ${p[3].map(E).join(', ')}</div>${cnt?bar(cnt/p[4].length*100):''}${btn(unlocked?(done(id)?'Review':cnt?'Continue':'Start project'):'Locked until you finish the previous project','open','smSm'+(unlocked?'':' smOff'),'data-i="'+i+'" '+(unlocked?'':'disabled'))}`,unlocked?'':'smLocked'); }).join('')+
+      (aiOk()?card(`<h3>✨ More ideas for you</h3><div id="smAIP"></div>${btn('Generate custom ideas (AI)','ai','smSm')}`):'');
+    h.open=el=>projectDetail(dom,+el.dataset.i);
+    h.ai=async el=>{ const out=$('#smAIP',b); out.innerHTML='<div class="smSpin"></div>'; try{ const g=await llm(`Suggest 3 project ideas for a student targeting ${careerLabel()} at skill level ${lv} of 4 (1 beginner … 4 industry). Use skills they know: ${Object.values(s.skills).slice(0,8).map(x=>x.name).join(', ')||'beginner'}. Return ONLY JSON {"projects":[{"title":"","desc":"","skills":[""],"why":""}]}`);
+        out.innerHTML=(g.projects||[]).slice(0,3).map(p=>`<div class="smLine"><div><b data-nt>${E(p.title)}</b><div class="smDim" data-nt>${E(p.desc)}</div><div class="smDim" data-nt>Why: ${E(p.why||'')}</div></div></div>`).join('')||'No ideas returned.'; }catch(e){ out.innerHTML='<p class="smWarn">'+E(e.message)+'</p>'; } };
+  }); }
+function projectDetail(dom,i){ const p=PROJ[dom][i],id=dom+i;
+  openView(p[1],(b,h)=>{ const s=S(),st=s.proj[id]=s.proj[id]||{steps:{}};
+    b.innerHTML=card(`<p>${E(p[2])}</p><div class="smDim">Skills: ${p[3].map(E).join(', ')}</div>`)+card('<h3>Practical assignment — milestones</h3>'+p[4].map((x,j)=>`<label class="smChk smLine"><input type="checkbox" data-c="step" data-j="${j}" ${st.steps[j]?'checked':''}><span>${E(x)}</span></label>`).join('')+'<p class="smDim">Tick each milestone when finished. Completing all of them validates the project.</p>')+
+      card('<h3>Learn what you need</h3>'+p[3].map(sk=>`<div class="smLine"><span>${E(sk)}</span>${btn('Resources','res','smSm','data-t="'+E(sk)+'"')}</div>`).join(''));
+    h.step=el=>{ const j=el.dataset.j; if(el.checked) st.steps[j]=true; else delete st.steps[j]; const all=p[4].every((x,k)=>st.steps[k]); if(all&&!st.done){ st.done=true; st.at=Date.now(); p[3].forEach(sk=>updSkill(sk,80)); addLog(30); toast('Project complete — skills updated and the next project unlocks.'); } else if(!all) st.done=false; persist(); };
+    h.res=el=>openResources(el.dataset.t); }); }
+
+/* ===== resume analyzer ===== */
+const SEC={summary:/^(professional |career )?(summary|objective|profile|about( me)?)\b/i,education:/^(education|academics?|academic (background|qualifications?)|qualifications?)\b/i,skills:/^((technical|key|core) )?(skills|competencies|technologies|tech stack)\b/i,experience:/^((work|professional) )?(experience|employment( history)?|internships?)\b/i,projects:/^((academic|personal|key) )?projects?\b/i,certs:/^(certifications?|certificates|licen[sc]es|courses|training)\b/i,achievements:/^(achievements?|awards?|honou?rs|extra.?curricular|activities|positions? of responsibility|leadership)\b/i};
+const SOFT_RE={leadership:/\b(led|lead|leader|leadership|captain|headed|president|secretary)\b/,teamwork:/\b(team|teams|collaborat\w*|group project|teamwork)\b/,collaboration:/\b(collaborat\w*|team)\b/,communication:/\b(present\w*|communicat\w*|public speaking|wrote|writing|blog|reports?)\b/,presentation:/\bpresent\w*\b/,'problem solving':/\b(problem|solved|solving|debug\w*|troubleshoot\w*)\b/,'time management':/\b(deadline|deadlines|time management|prioriti[sz]\w*)\b/,adaptability:/\b(adapt\w*|quick learner|self-taught|learned new)\b/,'critical thinking':/\b(analy[sz]\w*|critical)\b/,creativity:/\b(creative|innovat\w*)\b/,mentoring:/\b(mentor\w*|tutor\w*|taught)\b/,ownership:/\b(owned|ownership|end-to-end)\b/,initiative:/\b(initiative|founded|started)\b/}
+const VERBS='built developed designed implemented led created managed optimi[sz]ed analy[sz]ed improved reduced increased deployed automated collaborated delivered engineered launched organi[sz]ed trained tested integrated researched presented mentored achieved coordinated architected migrated resolved wrote conducted established'.split(' ');
+const escRe=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+const hasSkill=(low,sk)=>new RegExp('(^|[^a-z0-9+#])'+escRe(sk.toLowerCase())+'($|[^a-z0-9+#])').test(low);
+function skillFound(low,sk){ sk=sk.toLowerCase().trim(); if(hasSkill(low,sk)) return true; const toks=sk.split(/[^a-z0-9+#]+/).filter(w=>w.length>=5); return toks.length>1&&toks.every(w=>low.includes(w)); }
+function analyzeResume(text,career,kind){
+  const t=String(text||'').replace(/\r/g,''),low=t.toLowerCase(),lines=t.split('\n').map(l=>l.trim()).filter(Boolean);
+  const words=(t.match(/[A-Za-z0-9+#.'-]+/g)||[]).length;
+  const contact={email:/[\w.+-]+@[\w-]+\.[\w.-]+/.test(t),phone:/(\+?\d[\d\s().-]{8,}\d)/.test(t),linkedin:/linkedin\.com/i.test(t),github:/github\.com/i.test(t)};
+  const secs={},order=[]; let curSec=null; const body={};
+  lines.forEach(l=>{ const head=l.replace(/[:\-–—_•*|]+$/,'').replace(/^[•*\-–—\d.\s]+/,'').trim(); let hit=null;
+    if(head.length<=42) for(const k in SEC){ if(SEC[k].test(head)){ hit=k; break; } }
+    if(hit){ secs[hit]=true; curSec=hit; body[hit]=body[hit]||[]; order.push(hit); } else if(curSec) body[curSec].push(l); });
+  const isBul=l=>/^[-•*▪●◦·➢➤✓]/.test(l);
+  let bullets=lines.filter(isBul).map(l=>l.replace(/^[-•*▪●◦·➢➤✓\s]+/,''));
+  if(bullets.length<3) bullets=lines.filter(l=>l.split(' ').length>=8&&l.split(' ').length<=40);
+  const verbRe=new RegExp('^('+VERBS.join('|')+')\\b','i');
+  const withVerb=bullets.filter(b=>verbRe.test(b)||/^[A-Z][a-z]+ed\b/.test(b)).length, quant=bullets.filter(b=>/\d/.test(b)||/%/.test(b)).length;
+  const avgLen=bullets.length?bullets.reduce((a,b)=>a+b.split(/\s+/).length,0)/bullets.length:0;
+  const found=TECH_SKILLS.filter(s=>hasSkill(low,s)), soft=SOFT_SKILLS.filter(s=>(SOFT_RE[s]?SOFT_RE[s].test(low):false)||skillFound(low,s));
+  const dom=domainFor(career?career.name+' '+(career.skills||[]).join(' '):''),seenT=new Set(),target=[...(career&&career.skills||[]),...DOMAIN_SKILLS[dom]].map(x=>String(x).trim()).filter(x=>x&&x.length<=26&&!/[+]/.test(x.replace(/c\+\+/i,''))&&x.split(' ').length<=3).filter(x=>{ const k=x.toLowerCase(); if(seenT.has(k)) return false; seenT.add(k); return true; }).slice(0,14);
+  const tFound=target.filter(s=>skillFound(low,s)),tMiss=target.filter(s=>!skillFound(low,s));
+  const kwRatio=target.length?tFound.length/target.length:0;
+  const pj=body.projects||[],pEntries=Math.max(secs.projects?1:0,pj.filter(l=>!isBul(l)&&l.split(' ').length>=2&&l.split(' ').length<=14).length>6?4:pj.filter(l=>!isBul(l)&&l.split(' ').length>=2&&l.split(' ').length<=14).length);
+  const proj={count:pEntries,link:/github\.com|gitlab|\.vercel\.app|\.netlify\.app|https?:\/\//i.test(pj.join(' ')),metrics:/\d/.test(pj.join(' ')),stack:TECH_SKILLS.some(s=>hasSkill(pj.join(' ').toLowerCase(),s))};
+  const cj=(body.certs||[]).join(' ').toLowerCase(),certHits=['aws','azure','google','coursera','nptel','udemy','hackerrank','oracle','microsoft','ibm','meta','cisco','comptia','swayam','infosys','tcs','simplilearn'].filter(k=>cj.includes(k)||low.includes('certified '+k));
+  const certs={count:Math.min(10,(body.certs||[]).filter(l=>l.length>6).length),named:certHits};
+  const dates=/\b(19|20)\d{2}\b|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.? ?\d{2,4}\b/i.test(t);
+  const odd=(t.match(/[^\x00-\x7F]/g)||[]).length/Math.max(1,t.length),pipes=(t.match(/\|/g)||[]).length,tabs=(t.match(/\t/g)||[]).length;
+  /* quality (100) */
+  const sc={contact:(contact.email?4:0)+(contact.phone?3:0)+(contact.linkedin||contact.github?3:0)};
+  sc.structure=(secs.education?5:0)+(secs.skills?5:0)+(secs.experience||secs.projects?6:0)+(secs.summary?2:0)+(secs.certs||secs.achievements?2:0);
+  sc.content=Math.round(Math.min(1,bullets.length/6)*6+(bullets.length?withVerb/bullets.length:0)*8+Math.min(1,(bullets.length?quant/bullets.length:0)/.3)*7+(avgLen>=8&&avgLen<=28?4:avgLen?2:0));
+  sc.length=words>=250&&words<=800?10:(words>=150&&words<1100)?6:2;
+  sc.keywords=Math.round(kwRatio*25); sc.extras=(proj.count>=2?5:proj.count?3:0)+(certs.count||certHits.length?5:0);
+  const score=clamp(Object.values(sc).reduce((a,b)=>a+b,0),0,100);
+  /* ATS (100) */
+  const ats=clamp((contact.email&&contact.phone?20:contact.email?12:0)+Math.round(Math.min(1,(['education','skills','experience','projects','summary'].filter(k=>secs[k]).length)/4)*25)+Math.round(kwRatio*25)+((words>=250&&words<=900)?10:5)+(odd<.01&&pipes<8&&tabs<6?5:0)+(dates?5:0)+(kind==='pdf'||kind==='docx'?10:kind==='txt'?6:4),0,100);
+  /* gaps & issues */
+  const gaps=[],add=(sev,text,fix)=>gaps.push({sev,text,fix});
+  if(!contact.email) add('high','No email address found.','Add a professional email at the top.');
+  if(!contact.phone) add('med','No phone number found.','Add a reachable phone number.');
+  if(!contact.linkedin&&!contact.github) add('med','No LinkedIn or GitHub link.','Add both — recruiters check them.');
+  if(!secs.skills) add('high','No clear Skills section.','Add a “Skills” section grouped by category (languages, tools, concepts).');
+  if(!secs.education) add('high','No Education section.','Add degree, college, year and CGPA.');
+  if(!secs.projects&&!secs.experience) add('high','No Projects or Experience section.','Add 2–3 projects or internships with outcomes.');
+  if(!secs.summary) add('low','No short summary.','Add a 2-line summary naming your target role and strongest skills.');
+  if(bullets.length&&quant/bullets.length<.25) add('med','Few quantified results.','Add numbers: users, speed-ups, accuracy, team size, % improvement.');
+  if(bullets.length&&withVerb/bullets.length<.5) add('med','Bullets do not start with strong action verbs.','Start each bullet with verbs like Built, Designed, Optimised, Led.');
+  if(words<250) add('med','Resume looks thin ('+words+' words).','Aim for one full page with concrete details.'); if(words>900) add('low','Resume is long ('+words+' words).','Trim to one page for early-career roles.');
+  if(proj.count<2) add('high','Fewer than 2 projects.','Build and list at least 2 projects relevant to your target role.'); else { if(!proj.link) add('med','Projects have no links.','Link GitHub repos or live demos.'); if(!proj.stack) add('low','Projects do not name the tech stack.','State the technologies used in each project.'); }
+  if(!certs.count&&!certHits.length) add('med','No certifications or courses.','Add 1–2 relevant certificates (see recommendations).');
+  if(tMiss.length>=Math.ceil(target.length/2)) add('high','Many role keywords are missing ('+tMiss.length+' of '+target.length+').','Learn and show: '+tMiss.slice(0,5).join(', ')+'.');
+  const softMiss=['teamwork','communication','leadership','problem solving','time management','adaptability'].filter(s=>!soft.includes(s)&&!(s==='teamwork'&&soft.includes('collaboration')));
+  if(softMiss.length>=4) add('low','Soft skills are not evidenced.','Show them in bullets: led a team of 4, presented to 50+ people, etc.');
+  if(odd>=.01||pipes>=8||tabs>=6) add('med','Formatting may confuse ATS parsers (tables, columns or symbols).','Use a single-column layout with standard headings.');
+  if(!dates) add('low','No dates found.','Add months/years to education, projects and experience.');
+  const sevW={high:0,med:1,low:2}; gaps.sort((a,b)=>sevW[a.sev]-sevW[b.sev]);
+  return {score,ats,sc,words,contact,secs,found,soft,target,tFound,tMiss,softMiss,proj,certs,gaps,bullets:bullets.length,quant,withVerb,dom,kind};
+}
+function loadScript(src){ return new Promise((res,rej)=>{ if(document.querySelector('script[src="'+src+'"]')) return res(); const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=()=>rej(new Error('Could not load the file reader. Check your connection or paste your resume text instead.')); document.head.appendChild(s); }); }
+async function extractText(file){
+  const n=file.name.toLowerCase();
+  if(/\.(txt|md)$/.test(n)||file.type==='text/plain') return {text:await file.text(),kind:'txt'};
+  const buf=await file.arrayBuffer();
+  if(/\.pdf$/.test(n)){ await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'); const lib=window.pdfjsLib; lib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const pdf=await lib.getDocument({data:buf}).promise; let out=''; for(let p=1;p<=Math.min(pdf.numPages,6);p++){ const c=await (await pdf.getPage(p)).getTextContent(); let y=null,line=''; c.items.forEach(it=>{ const yy=Math.round(it.transform[5]); if(y!==null&&Math.abs(yy-y)>2){ out+=line.trim()+'\n'; line=''; } y=yy; line+=it.str+' '; }); out+=line.trim()+'\n'; }
+    return {text:out,kind:'pdf'}; }
+  if(/\.docx$/.test(n)){ await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js'); const r=await window.mammoth.extractRawText({arrayBuffer:buf}); return {text:r.value,kind:'docx'}; }
+  throw new Error('Please upload a PDF, DOCX or TXT file — or paste the text.');
+}
+function openResume(){
+  openView('Resume analyzer',(b,h)=>{
+    const s=S(),r=s.resume,c=curCareer();
+    b.innerHTML=(r?card(`<h3>Last analysis</h3><div class="smLine"><span>Quality score</span><b>${r.score}/100</b></div><div class="smLine"><span>ATS compatibility</span><b>${r.ats}/100</b></div><p class="smDim">Target: ${E(r.target)} · ${new Date(r.at).toLocaleDateString()}</p>`):'')+
+    card(`<h3>Upload or paste your resume</h3><p class="smDim">Your resume is analysed on this device. Only the scores and gaps are saved — never the resume text${aiOk()?' (unless you choose the optional AI review, which sends the text to the AI service)':''}.</p>
+      <label class="smLbl">Target career</label><select id="rsT" class="smIn">${ALL_CAREERS.map(x=>`<option value="${E(x.id)}" ${c&&c.id===x.id?'selected':''}>${E(x.name)}</option>`).join('')}</select>
+      <label class="smFile"><input type="file" id="rsF" accept=".pdf,.docx,.txt,.md"><span>📄 Choose PDF / DOCX / TXT</span></label>
+      <div class="smDim" style="text-align:center">or paste text</div><textarea id="rsP" class="smIn" rows="6" placeholder="Paste your resume text here"></textarea><div id="rsM" class="smDim"></div>${btn('Analyze resume','go','smPrimary')}`);
+    let file=null; $('#rsF',b).onchange=e=>{ file=e.target.files[0]||null; $('#rsM',b).textContent=file?file.name:''; };
+    h.go=async()=>{ const m=$('#rsM',b); let text=$('#rsP',b).value.trim(),kind='txt';
+      try{ if(file){ m.textContent='Reading '+file.name+'…'; const x=await extractText(file); text=x.text; kind=x.kind; }
+        if(text.length<80){ m.innerHTML='<span class="smWarn">Not enough text found. If your PDF is a scanned image, paste the text instead.</span>'; return; }
+        const tgt=getCareer($('#rsT',b).value)||c||ALL_CAREERS[0]; const res=analyzeResume(text,ensureCareerReady(tgt)||tgt,kind);
+        s.resume={at:Date.now(),score:res.score,ats:res.ats,target:tgt.name,found:res.found.slice(0,20),missing:res.tMiss.slice(0,10),gaps:res.gaps.slice(0,8).map(g=>g.text)}; updSkill('Resume readiness',res.score); res.found.slice(0,12).forEach(sk=>{ const k=keyOf(sk); if(!s.skills[k]) s.skills[k]={name:sk,score:35,n:0,at:Date.now(),src:'resume'}; }); persist();
+        resumeReport(res,tgt,text); }catch(e){ m.innerHTML='<span class="smWarn">'+E(e.message||'Could not read this file.')+'</span>'; } };
+  }); }
+function resumeReport(res,tgt,text){
+  openView('Resume report',(b,h)=>{
+    const sevC={high:'bad',med:'warn',low:''},lv=Math.min(3,Math.max(1,userLevel()));
+    const projs=PROJ[res.dom].filter(p=>p[3].some(x=>res.tMiss.some(m=>m.toLowerCase().includes(x.toLowerCase())||x.toLowerCase().includes(m.toLowerCase())))).slice(0,2),pr2=projs.length?projs:PROJ[res.dom].slice(0,2);
+    const acts=[]; if(!res.contact.github) acts.push('Create a GitHub profile and push your projects.'); if(res.proj.count<3) acts.push('Join a hackathon or build a weekend project to add a portfolio item.'); if(res.softMiss.includes('leadership')) acts.push('Take a role in a college club or organise a small event.'); acts.push('Contribute to an open-source “good first issue”.','Do 2 mock interviews and ask for resume feedback.','Write one short LinkedIn post about what you built.');
+    b.innerHTML=`<div class="smTwo">${card(`<div class="smRing" style="--p:${res.score}"><b>${res.score}</b></div><h4>Resume quality</h4>`,'smC')}${card(`<div class="smRing" style="--p:${res.ats}"><b>${res.ats}</b></div><h4>ATS compatibility</h4>`,'smC')}</div>`+
+    card(`<h3>Score breakdown</h3>${[['Contact info',res.sc.contact,10],['Structure & sections',res.sc.structure,20],['Content quality',res.sc.content,25],['Length',res.sc.length,10],['Role keywords',res.sc.keywords,25],['Projects & certificates',res.sc.extras,10]].map(x=>`<div class="smLine"><span>${x[0]}</span><span>${x[1]}/${x[2]}</span></div>${bar(x[1]/x[2]*100)}`).join('')}<p class="smDim">${res.words} words · ${res.bullets} bullet points · ${res.quant} with numbers</p>`)+
+    card(`<h3>Skills for ${E(tgt.name)}</h3><p class="smDim">Found</p><div class="smChips">${res.tFound.map(x=>chip(x,'good')).join('')||'<span class="smDim">None of the target skills were found.</span>'}</div><p class="smDim">Missing technical skills</p><div class="smChips">${res.tMiss.map(x=>`<button class="smChip bad smBtnChip" data-a="res" data-t="${E(x)}">${E(x)} →</button>`).join('')||'<span class="smDim">None 🎉</span>'}</div><p class="smDim">Soft skills evidenced: ${res.soft.slice(0,8).map(E).join(', ')||'none'}</p><p class="smDim">Missing soft skills: ${res.softMiss.map(E).join(', ')||'none'}</p>`)+
+    card(`<h3>Projects & certifications</h3><div class="smLine"><span>Projects found</span><b>${res.proj.count}</b></div><div class="smDim">${res.proj.link?'✔ links present':'✘ no links'} · ${res.proj.stack?'✔ tech stack named':'✘ stack not named'} · ${res.proj.metrics?'✔ outcomes/numbers':'✘ no outcomes'}</div><div class="smLine"><span>Certifications / courses</span><b>${Math.max(res.certs.count,res.certs.named.length)}</b></div><div class="smDim">${res.certs.named.length?'Mentions: '+res.certs.named.map(E).join(', '):'None recognised'}</div>`)+
+    card(`<h3>Employability gaps (${res.gaps.length})</h3>${res.gaps.map(g=>`<div class="smGap ${sevC[g.sev]}"><b>${{high:'High',med:'Medium',low:'Low'}[g.sev]}:</b> ${E(g.text)}<div class="smDim">Fix: ${E(g.fix)}</div></div>`).join('')||'<p>No major gaps found. 🎉</p>'}`)+
+    card(`<h3>How to close the gaps</h3><h4>📚 Learn</h4>${res.tMiss.slice(0,4).map(x=>`<div class="smLine"><span>${E(x)}</span>${btn('Resources','res','smSm','data-t="'+E(x)+'"')}</div>`).join('')||'<p class="smDim">Keep deepening your strongest skills.</p>'}<h4>🏅 Certifications</h4><ul>${CERTS[res.dom].slice(0,3).map(x=>`<li>${E(x)}</li>`).join('')}</ul><h4>🛠 Projects</h4>${pr2.map(p=>`<div class="smLine"><span><b>${E(p[1])}</b><div class="smDim">${E(p[2])}</div></span></div>`).join('')}${btn('Open project plan','proj','smSm')}<h4>🤝 Activities</h4><ul>${acts.slice(0,5).map(x=>`<li>${E(x)}</li>`).join('')}</ul>`)+
+    (aiOk()?card(`<h3>✨ AI review (optional)</h3><p class="smDim">Sends your resume text to the AI service for rewritten bullets and a tailored summary.</p><div id="rsAI"></div>${btn('Get AI feedback','ai','smSm')}`):'');
+    h.res=el=>openResources(el.dataset.t); h.proj=()=>openProjects();
+    h.ai=async()=>{ const o=$('#rsAI',b); o.innerHTML='<div class="smSpin"></div>'; try{ const g=await llm(`You are a recruiter for ${tgt.name} roles. Review this resume text and return ONLY JSON {"summary":"2-line professional summary","strengths":["",""],"rewrites":[{"before":"","after":""}],"next":["",""]} with up to 4 rewrites that add action verbs and measurable results, without inventing facts (use placeholders like [X%] where numbers are needed).\nRESUME:\n`+text.slice(0,6000),{noStyle:true});
+        o.innerHTML=`<p><b>Suggested summary:</b> <span data-nt>${E(g.summary||'')}</span></p><p><b>Strengths:</b> ${(g.strengths||[]).map(E).join('; ')}</p>${(g.rewrites||[]).map(r=>`<div class="smGap"><div class="smDim" data-nt>Before: ${E(r.before)}</div><div data-nt>After: ${E(r.after)}</div></div>`).join('')}<p><b>Next steps:</b> ${(g.next||[]).map(E).join('; ')}</p>`; }catch(e){ o.innerHTML='<p class="smWarn">'+E(e.message)+'</p>'; } };
+  }); }
+
+/* ===== mentor ===== */
+function userSkillKeys(){ const s=S(),set=new Set(); Object.entries(s.skills).forEach(([k,v])=>{ if(v.score>=30) set.add(k); });
+  const t=curTrack(),c=curCareer(); if(t&&c) t.days.filter(d=>d.status==='done').forEach(d=>{ const ch=(c.syllabus||[]).find(x=>x.id===d.chapterId); if(ch) set.add(keyOf(String(ch.title).split(/[—–]/)[0])); }); return [...set]; }
+function careerMatch(c,keys){ const sk=(c.skills||[]).filter(Boolean),m=[],miss=[];
+  sk.forEach(x=>{ const kx=keyOf(x); (keys.some(k=>k.length>2&&(k.includes(kx)||kx.includes(k)))?m:miss).push(x); });
+  return {score:sk.length?Math.round(m.length/sk.length*100):0,matched:m,missing:miss}; }
+function rankCareers(){ const keys=userSkillKeys(),cur=curCareer(); if(!keys.length) return cur?[{c:cur,...careerMatch(cur,[]),cur:true}]:[]; return ALL_CAREERS.map(c=>({c,...careerMatch(c,keys)})).sort((a,b)=>b.score-a.score||(a.c.name<b.c.name?-1:1)).slice(0,6).map(x=>({...x,cur:!!(cur&&cur.id===x.c.id)})); }
+function weakSkills(n){ return Object.values(S().skills).filter(x=>x.n>0).sort((a,b)=>a.score-b.score).slice(0,n||5); }
+function carryOver(){ const t=curTrack(); if(!t) return 0; let n=0; Object.values(S().know).forEach(k=>{ if(k.rec!=='skip') return; resolveSyllabusMatch(k.topic,k.key).forEach(i=>{ if(t.days[i]&&t.days[i].status!=='done'){ t.days[i].status='done'; t.days[i].diag=true; n++; } }); }); return n; }
+function interviewPlan(){ const c=curCareer(),w=weakSkills(2).map(x=>x.name),core=(c&&c.skills||[]).slice(0,3),dom=domainFor(c?c.name:''),tech=dom!=='general';
+  return [['Day 1 — Fundamentals','Revise '+(core.join(', ')||'your core subjects')+'. Write 10 one-line definitions from memory.'],
+  ['Day 2 — '+(tech?'Problem solving':'Case practice'),tech?'Solve 3 easy + 2 medium problems; explain your approach out loud.':'Practise 2 case studies from your field and structure answers (situation → analysis → recommendation).'],
+  ['Day 3 — Projects','Prepare a 2-minute walkthrough for each project: problem, your role, tech, result, what you would improve.'],
+  ['Day 4 — HR & behavioural','Prepare STAR stories: teamwork, conflict, failure, leadership, deadline pressure. Rehearse “Tell me about yourself”.'],
+  ['Day 5 — Weak areas',w.length?'Focus on: '+w.join(', ')+'. Retake the topic tests.':'Retake topic tests on your weakest subject.'],
+  ['Day 6 — Mock interview','Do a timed mock with a friend or record yourself; review pace, clarity and filler words.'],
+  ['Day 7 — Final polish','Re-read your resume line by line, prepare 3 questions to ask the interviewer, rest well.']]; }
+const SAMPLE_Q=['Tell me about yourself.','Walk me through your best project.','Why do you want this role?','Explain a concept you learned recently as if to a beginner.','Describe a time you solved a hard problem.','What are your strengths and one area you are improving?','Where do you see yourself in 3 years?','Do you have questions for us?'];
+function profileFacts(){ const s=S(),c=curCareer(),R=readiness(),sk=Object.values(s.skills).sort((a,b)=>b.score-a.score);
+  return {career:c?c.name:null,readiness:R.score,topSkills:sk.slice(0,6).map(x=>x.name+' '+x.score+'%'),weakSkills:weakSkills(5).map(x=>x.name+' '+x.score+'%'),assessments:s.assess.length,resume:s.resume?{score:s.resume.score,ats:s.resume.ats,missing:s.resume.missing}:null,style:styleKey()?STYLE[styleKey()].n:null,projectsDone:Object.values(s.proj).filter(p=>p.done).length,streak:dayStreak()}; }
+function ruleAnswer(question){ const f=profileFacts(),qq=question.toLowerCase(),why=[],next=[]; let ans='';
+  const ev=()=>{ if(f.weakSkills.length) why.push('Weakest assessed skills: '+f.weakSkills.slice(0,3).join(', ')); if(f.topSkills.length) why.push('Strongest: '+f.topSkills.slice(0,3).join(', ')); if(f.resume) why.push('Resume score '+f.resume.score+'/100, ATS '+f.resume.ats+'/100'); if(!f.assessments) why.push('You have not taken any assessment yet, so this is based on your chosen career only.'); };
+  if(/switch|change|career|path|become|job role|which role/.test(qq)){ const r=rankCareers().slice(0,3); if(!userSkillKeys().length){ ans='I need some data about your skills first. Take a diagnostic, analyse your resume, or finish a project, then I can compare you with every career path.'; ev(); next.push('Open “Know your level” and assess 2–3 topics.'); return {answer:ans,why,next}; } ans='Based on the skills you have shown so far, your closest career paths are: '+r.map(x=>x.c.name+' ('+x.score+'% match)').join('; ')+'.'; r.forEach(x=>why.push(x.c.name+': your matching skills — '+(x.matched.join(', ')||'none yet')+'; still missing — '+(x.missing.slice(0,3).join(', ')||'nothing'))); next.push('Open Career paths below and tap Switch to carry your mastered topics over.'); }
+  else if(/cert/.test(qq)){ const d=domainFor(careerLabel()); ans='Certifications that fit '+careerLabel()+': '+CERTS[d].join('; ')+'.'; ev(); next.push('Pick one and schedule it after your next milestone.'); }
+  else if(/intern/.test(qq)){ ans='Start applying while you learn: search student internships for '+careerLabel()+' and tailor your resume first.'; ev(); next.push('Use the internship links under Next steps.'); }
+  else if(/interview/.test(qq)){ ans='Follow the 7-day interview plan below, then repeat weak days.'; ev(); next.push('Open “Interview prep plan”.'); }
+  else if(/resume|cv|ats/.test(qq)){ if(f.resume){ ans='Your resume scored '+f.resume.score+'/100 (ATS '+f.resume.ats+'). Top missing keywords: '+(f.resume.missing.slice(0,5).join(', ')||'none')+'.'; } else ans='Upload your resume in the Resume analyzer to get a score, ATS check and gap list.'; ev(); next.push('Open Resume analyzer.'); }
+  else if(/project/.test(qq)){ ans='Build projects in order of difficulty; the next one unlocks as you finish the previous one.'; ev(); next.push('Open Project recommendations.'); }
+  else { const w=weakSkills(1)[0]; ans=w?'Your next best step is to strengthen “'+w.name+'” ('+w.score+'%), then take a topic test to validate it before moving on.':'Start with a diagnostic on the first topic of your roadmap so I can recommend where to begin.'; ev(); next.push('Take a diagnostic or topic test.','Check your study plan for today.'); }
+  return {answer:ans,why,next}; }
+async function askMentor(question){
+  if(aiOk()){ try{ const g=await llm(`You are an academic and career mentor. Answer the student's question using ONLY these facts about them (do not invent facts): ${JSON.stringify(profileFacts())}.
+Question: ${question}
+Return ONLY JSON {"answer":"clear advice in 3-5 sentences","why":["evidence from the facts that justifies the advice"],"next":["2-3 concrete next actions"]}. If facts are missing, say what the student should do to give you more data.`,{noStyle:true});
+    return {answer:String(g.answer||''),why:(g.why||[]).map(String),next:(g.next||[]).map(String),ai:true}; }catch(e){ const r=ruleAnswer(question); r.note='AI unavailable ('+(e.message||'error')+') — showing a rule-based answer.'; return r; } }
+  const r=ruleAnswer(question); if(!online()) r.note='Offline — rule-based answer from your saved data.'; return r; }
+function openMentor(){
+  openView('AI mentor',(b,h)=>{
+    const s=S(),R=readiness(),cr=rankCareers(),weak=weakSkills(4),cur=curCareer(),d=domainFor(careerLabel());
+    b.innerHTML=card(`<div class="smResultHead"><div class="smRing" style="--p:${R.score}"><b>${R.score}</b></div><div><h3>Career readiness</h3><div class="smDim">${E(careerLabel())}</div></div></div>${weak.length?`<h4>Skill gaps to close</h4>${weak.map(x=>`<div class="smLine"><span>${E(x.name)}</span><span>${x.score}%</span></div>${bar(x.score,x.score<40?'var(--bad,#d33)':'')}`).join('')}`:'<p class="smDim">No assessments yet — take a diagnostic so I can find your gaps.</p>'}${btn('🧭 Take a diagnostic','assess','smSm')}`)+
+    card(`<h3>Ask your mentor</h3><div class="smChat" id="mnChat">${s.chat.slice(-6).map(m=>m.r?`<div class="smMsg me" data-nt>${E(m.q)}</div><div class="smMsg bot" data-nt>${E(m.a)}</div>`:'').join('')}</div><div class="smRow"><input id="mnQ" class="smIn" placeholder="e.g. Should I switch to data science?" style="flex:1"><button class="smBtn smPrimary" data-a="ask">Ask</button></div><div class="smChips">${['What should I learn next?','Which career suits me?','Which certifications should I do?','How do I prepare for interviews?'].map(x=>`<button class="smChip smBtnChip" data-a="quick" data-q="${E(x)}">${E(x)}</button>`).join('')}</div>`)+
+    card(`<h3>Recommended career paths</h3><p class="smDim">Matched against the skills you have shown in assessments, your resume and completed topics. Not a job-market prediction.</p>`+(cr.length&&userSkillKeys().length?'':'<p class="smDim">No skills data yet — take a diagnostic or analyse your resume to unlock personalised matches.</p>')+cr.map(x=>`<div class="smPath"><div class="smLine"><div><b>${E(x.c.name)}</b> ${x.cur?chip('Current','good'):''}<div class="smDim">${x.score}% skills match</div></div>${x.cur?'':btn('Switch','sw','smSm','data-id="'+E(x.c.id)+'"')}</div>${bar(x.score)}<div class="smDim">You have: ${x.matched.map(E).join(', ')||'—'} · Gap: ${x.missing.slice(0,4).map(E).join(', ')||'none'}</div></div>`).join(''))+
+    card(`<h3>Next steps</h3><div class="smRow">${btn('🏅 Certifications','certs')}${btn('💼 Internships','intern')}${btn('🎤 Interview prep plan','intv')}</div>`)+
+    (s.switches.length?card('<h3>Career switch history</h3>'+s.switches.slice(-4).reverse().map(x=>`<div class="smLine"><span>${E(x.from||'—')} → ${E(x.to)}</span><span class="smDim">${new Date(x.at).toLocaleDateString()}</span></div>`).join('')):'');
+    h.assess=()=>assessHome();
+    const send=async(text)=>{ text=(text||'').trim(); if(!text) return; const chat=$('#mnChat',b); chat.insertAdjacentHTML('beforeend',`<div class="smMsg me" data-nt>${E(text)}</div><div class="smMsg bot" id="mnT"><div class="smSpin"></div></div>`); $('#mnQ',b).value='';
+      const r=await askMentor(text); const html=`<div data-nt>${E(r.answer)}</div>${r.why.length?`<details open><summary>Why this recommendation?</summary><ul>${r.why.map(x=>`<li data-nt>${E(x)}</li>`).join('')}</ul></details>`:''}${r.next.length?`<div><b>Next:</b><ul>${r.next.map(x=>`<li data-nt>${E(x)}</li>`).join('')}</ul></div>`:''}${r.note?`<div class="smDim">${E(r.note)}</div>`:''}`;
+      $('#mnT',b).removeAttribute('id'); chat.lastElementChild.innerHTML=html; I18N.apply(chat); s.chat.push({r:1,q:text,a:r.answer+(r.why.length?' Why: '+r.why.join(' '):'')}); if(s.chat.length>20) s.chat.shift(); persist(); };
+    h.ask=()=>send($('#mnQ',b).value); h.quick=el=>send(el.dataset.q); $('#mnQ',b).addEventListener('keydown',e=>{ if(e.key==='Enter') send(e.target.value); });
+    h.sw=el=>{ const to=getCareer(el.dataset.id); if(!to) return; if(!confirm('Switch your roadmap to “'+to.name+'”? Skills you have already mastered will carry over.')) return;
+      const from=cur?cur.name:null; if(startRoadmap('career',to.id)){ s.switches.push({at:Date.now(),from,to:to.name}); const n=carryOver(); persist(); try{ renderRoadmap(); }catch(e){} toast('Switched to '+to.name+(n?' — '+n+' topic(s) carried over.':'.')); repaint(); } };
+    h.certs=()=>openView('Certifications',(bb)=>{ bb.innerHTML=card('<h3>Recommended for '+E(careerLabel())+'</h3><ul>'+CERTS[d].map(x=>`<li><b>${E(x)}</b></li>`).join('')+'</ul><p class="smDim">Why: these are widely recognised for this domain and match the gaps in your profile'+(weak.length?' ('+weak.slice(0,2).map(x=>E(x.name)).join(', ')+')':'')+'. Prefer free-to-audit versions first.</p>'+link('Search courses','https://www.coursera.org/search?query='+q(careerLabel()+' certificate'))); });
+    h.intern=()=>openView('Internships',(bb)=>{ const n=careerLabel(); bb.innerHTML=card('<h3>Find internships</h3><p class="smDim">Apply with a tailored resume; start once you have 2 projects.</p><div class="smGrid">'+[['💼 LinkedIn internships','https://www.linkedin.com/jobs/search/?keywords='+q(n+' intern')],['🎓 Internshala','https://internshala.com/internships'],['🔎 Google search','https://www.google.com/search?q='+q(n+' internship for students')],['🏢 Company career pages','https://www.google.com/search?q='+q(n+' fresher careers')]].map(x=>`<a class="smRes" href="${E(x[1])}" target="_blank" rel="noopener noreferrer"><div class="smResT">${x[0]}</div></a>`).join('')+'</div>')+card('<h3>Before you apply</h3><ul><li>Analyse your resume for this role</li><li>Have 2 finished projects with links</li><li>Practise the interview plan</li></ul>'+btn('Open resume analyzer','rs','smSm')); H.rs=()=>openResume(); });
+    h.intv=()=>openView('Interview prep',(bb)=>{ bb.innerHTML=card('<h3>7-day plan for '+E(careerLabel())+'</h3>'+interviewPlan().map(x=>`<div class="smDay"><b data-nt>${E(x[0])}</b><div class="smDim" data-nt>${E(x[1])}</div></div>`).join(''))+card('<h3>Practice questions</h3><ol>'+SAMPLE_Q.map(x=>`<li data-nt>${E(x)}</li>`).join('')+'</ol>'); });
+  }); }
+
+/* ===== analytics ===== */
+function trackStats(){ const t=curTrack(); if(!t) return {total:0,done:0,skipped:0,pending:0}; const d=t.days; return {total:d.length,done:d.filter(x=>x.status==='done').length,skipped:d.filter(x=>x.status==='skipped').length,pending:d.filter(x=>x.status==='pending').length}; }
+function minutesLast(n){ const s=S(),out=[]; for(let i=n-1;i>=0;i--){ const d=ymd(addDays(new Date(),-i)); out.push({d,m:s.log[d]||0}); } return out; }
+function avgScore(){ const a=S().assess; return a.length?Math.round(a.reduce((x,y)=>x+y.score,0)/a.length):null; }
+function readiness(){ const s=S(),st=trackStats(),sk=Object.values(s.skills),m14=minutesLast(14).filter(x=>x.m>0).length;
+  const prog=st.total?st.done/st.total:0,mast=sk.length?sk.reduce((a,b)=>a+b.score,0)/sk.length/100:0,res=s.resume?s.resume.score/100:0,pj=Math.min(1,Object.values(s.proj).filter(p=>p.done).length/3),con=Math.min(1,m14/10);
+  const parts=[['Roadmap progress',prog,30],['Skill mastery',mast,30],['Resume readiness',res,20],['Projects',pj,10],['Consistency',con,10]];
+  return {score:Math.round(parts.reduce((a,p)=>a+p[1]*p[2],0)),parts}; }
+function trend(){ const a=S().assess.map(x=>x.score); if(a.length<4) return null; const k=Math.min(5,Math.floor(a.length/2)),rec=a.slice(-k),prev=a.slice(-2*k,-k),f=x=>x.reduce((p,c)=>p+c,0)/x.length; return Math.round(f(rec)-f(prev)); }
+function svgBars(data,h){ const W=300,H=h||120,bw=W/data.length,mx=Math.max(30,...data.map(x=>x.m));
+  return `<svg viewBox="0 0 ${W} ${H+18}" class="smChart" role="img" aria-label="Study minutes per day, last ${data.length} days"><line x1="0" y1="${H}" x2="${W}" y2="${H}" stroke="currentColor" stroke-opacity=".25"/>${data.map((x,i)=>{ const bh=x.m/mx*(H-14); return `<rect x="${i*bw+3}" y="${H-bh}" width="${bw-6}" height="${Math.max(bh,x.m?2:0)}" rx="3" fill="var(--accent)"><title>${x.d}: ${x.m} min</title></rect>${x.m?`<text x="${i*bw+bw/2}" y="${H-bh-3}" text-anchor="middle" font-size="7" fill="currentColor">${x.m}</text>`:''}`; }).join('')}<text x="2" y="${H+12}" font-size="8" fill="currentColor" opacity=".6">${data[0].d.slice(5)}</text><text x="${W-2}" y="${H+12}" text-anchor="end" font-size="8" fill="currentColor" opacity=".6">${data[data.length-1].d.slice(5)}</text></svg>`; }
+function svgLine(vals){ const W=300,H=110; if(vals.length<2) return '<p class="smDim">Take at least two assessments to see a trend.</p>'; const step=W/(vals.length-1),pts=vals.map((v,i)=>[i*step,H-6-v/100*(H-16)]);
+  return `<svg viewBox="0 0 ${W} ${H+16}" class="smChart" role="img" aria-label="Assessment score trend"><g stroke="currentColor" stroke-opacity=".15">${[0,50,100].map(v=>`<line x1="0" x2="${W}" y1="${H-6-v/100*(H-16)}" y2="${H-6-v/100*(H-16)}"/>`).join('')}</g><polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="${pts.map(p=>p.join(',')).join(' ')}"/>${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="var(--accent)"><title>${vals[i]}%</title></circle>`).join('')}<text x="2" y="${H+12}" font-size="8" fill="currentColor" opacity=".6">oldest</text><text x="${W-2}" y="${H+12}" text-anchor="end" font-size="8" fill="currentColor" opacity=".6">latest</text></svg>`; }
+function svgDonut(a){ const tot=a.reduce((x,y)=>x+y[1],0)||1,R=38,C=2*Math.PI*R; let off=0; const cols=['var(--good,#2a9d5c)','var(--accent)','var(--dim,#999)'];
+  return `<svg viewBox="0 0 120 120" class="smDonut" role="img" aria-label="Topic completion"><circle cx="60" cy="60" r="${R}" fill="none" stroke="currentColor" stroke-opacity=".12" stroke-width="14"/>${a.map((x,i)=>{ const l=x[1]/tot*C,el=`<circle cx="60" cy="60" r="${R}" fill="none" stroke="${cols[i]}" stroke-width="14" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`; off+=l; return el; }).join('')}<text x="60" y="65" text-anchor="middle" font-size="18" font-weight="700" fill="currentColor">${Math.round(a[0][1]/tot*100)}%</text></svg><div class="smLegend">${a.map((x,i)=>`<span><i style="background:${cols[i]}"></i>${x[0]} ${x[1]}</span>`).join('')}</div>`; }
+function buildReport(label){ const s=S(),st=trackStats(),R=readiness(),sk=Object.values(s.skills).sort((a,b)=>a.score-b.score);
+  return {v:1,label:label||'Student',at:new Date().toISOString(),career:careerLabel(),readiness:R.score,progress:st.total?Math.round(st.done/st.total*100):0,topicsDone:st.done,topicsTotal:st.total,avgScore:avgScore(),streak:dayStreak(),minutes14:minutesLast(14).reduce((a,b)=>a+b.m,0),activeDays14:minutesLast(14).filter(x=>x.m>0).length,style:styleKey()?STYLE[styleKey()].n:null,skills:sk.slice(0,15).map(x=>({n:x.name,s:x.score})),weak:sk.slice(0,3).map(x=>x.name),resume:s.resume?{score:s.resume.score,ats:s.resume.ats}:null,assessments:s.assess.slice(-12).map(a=>({t:a.topic,s:a.score,at:a.at}))}; }
+function download(name,text,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:type||'application/json'})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },500); }
+let cohort=[]; try{ cohort=JSON.parse(localStorage.getItem('pw_cohort')||'[]'); }catch(e){}
+function openAnalytics(mode){
+  mode=mode||'student';
+  openView('Learning analytics',(b,h)=>{
+    const s=S(),R=readiness(),st=trackStats(),m14=minutesLast(14),tr=trend(),avg=avgScore(),sk=Object.values(s.skills).sort((a,b)=>b.score-a.score);
+    const tabs=`<div class="smSeg smTabs"><label><input type="radio" name="am" ${mode==='student'?'checked':''} data-c="mode" data-m="student"><span>👩‍🎓 Student</span></label><label><input type="radio" name="am" ${mode==='educator'?'checked':''} data-c="mode" data-m="educator"><span>👩‍🏫 Educator</span></label></div>`;
+    h.mode=el=>{ stack.pop(); openAnalytics(el.dataset.m); };
+    if(mode==='student'){
+      b.innerHTML=tabs+`<div class="smKpis">${[['Readiness',R.score+'%'],['Progress',(st.total?Math.round(st.done/st.total*100):0)+'%'],['Streak',dayStreak()+'d'],['Avg score',avg==null?'—':avg+'%']].map(x=>`<div class="smKpi"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('')}</div>`+
+      card(`<h3>Career readiness</h3>${R.parts.map(p=>`<div class="smLine"><span>${p[0]}</span><span>${Math.round(p[1]*p[2])}/${p[2]}</span></div>${bar(p[1]*100)}`).join('')}`)+
+      card(`<h3>Topic completion</h3>${st.total?svgDonut([['Done',st.done],['Pending',st.pending],['Skipped',st.skipped]]):'<p class="smDim">Start a roadmap to track topics.</p>'}`)+
+      card(`<h3>Study consistency</h3>${svgBars(m14)}<p class="smDim">${m14.filter(x=>x.m>0).length} of the last 14 days active · ${m14.reduce((a,b)=>a+b.m,0)} minutes · streak ${dayStreak()} day(s)</p>`)+
+      card(`<h3>Assessment performance</h3>${svgLine(s.assess.slice(-12).map(a=>a.score))}${tr==null?'':`<p class="smTrend ${tr>=0?'up':'down'}">${tr>=0?'▲':'▼'} ${Math.abs(tr)} points vs. your previous attempts</p>`}`)+
+      card(`<h3>Skill development</h3>${sk.slice(0,8).map(x=>`<div class="smLine"><span>${E(x.name)}</span><span>${x.score}%</span></div>${bar(x.score)}`).join('')||'<p class="smDim">Skills appear after assessments, projects or a resume analysis.</p>'}`)+
+      `<div class="smRow">${btn('⬇ Download my report (JSON)','exp','smSm')}${btn('🖨 Print / save PDF','prt','smSm')}</div>`;
+      h.exp=()=>download('pathward-report.json',JSON.stringify(buildReport('Student'),null,2)); h.prt=()=>window.print();
+    } else {
+      const rows=cohort.slice(); const avgR=rows.length?Math.round(rows.reduce((a,b)=>a+b.readiness,0)/rows.length):0, risk=rows.filter(r=>r.readiness<40||r.streak===0);
+      const wk={}; rows.forEach(r=>(r.weak||[]).forEach(w=>wk[w]=(wk[w]||0)+1)); const common=Object.entries(wk).sort((a,b)=>b[1]-a[1]).slice(0,4);
+      b.innerHTML=tabs+card(`<h3>Class dashboard</h3><p class="smDim">Students export their report from their Analytics screen and share the file with you. Import several files to compare progress and spot who needs help. Data stays on this device.</p><label class="smFile"><input type="file" id="coF" accept=".json" multiple><span>📥 Import student reports</span></label><div class="smRow">${btn('➕ Add my own report','addme','smSm')}${rows.length?btn('⬇ Export class CSV','csv','smSm')+btn('🗑 Clear','clr','smSm'):''}</div>`)+
+      (rows.length?`<div class="smKpis">${[['Students',rows.length],['Avg readiness',avgR+'%'],['Need support',risk.length]].map(x=>`<div class="smKpi"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('')}</div>`+card(`<h3>Students</h3><div class="smTblWrap"><table class="smTbl"><tr><th>Student</th><th>Ready</th><th>Progress</th><th>Avg</th><th>Streak</th><th>Weakest</th></tr>${rows.map(r=>`<tr class="${r.readiness<40||r.streak===0?'risk':''}"><td>${E(r.label)}</td><td>${r.readiness}%</td><td>${r.progress}%</td><td>${r.avgScore==null?'—':r.avgScore+'%'}</td><td>${r.streak}d</td><td>${E((r.weak||[])[0]||'—')}</td></tr>`).join('')}</table></div><p class="smDim">Highlighted rows have readiness below 40% or no current streak.</p>`)+card(`<h3>Common gaps across the class</h3>${common.map(x=>`<div class="smLine"><span>${E(x[0])}</span><span>${x[1]} student(s)</span></div>`).join('')||'<p class="smDim">No skill data yet.</p>'}<p class="smDim">Suggestion: run a short group revision on the top gap.</p>`):card('<p class="smDim">No students yet — import reports or add your own to preview the dashboard.</p>'));
+      const save=()=>{ try{ localStorage.setItem('pw_cohort',JSON.stringify(cohort)); }catch(e){} };
+      const fi=$('#coF',b); if(fi) fi.onchange=async e=>{ for(const f of e.target.files){ try{ const j=JSON.parse(await f.text()); if(j&&j.v===1&&typeof j.readiness==='number'){ j.label=String(j.label||f.name.replace(/\.json$/,'')).slice(0,40); cohort=cohort.filter(x=>x.label!==j.label); cohort.push(j); } }catch(er){} } save(); stack.pop(); openAnalytics('educator'); };
+      h.addme=()=>{ const l=prompt('Name or label for this report','Student')||'Student'; const r=buildReport(l.slice(0,40)); cohort=cohort.filter(x=>x.label!==r.label); cohort.push(r); save(); stack.pop(); openAnalytics('educator'); };
+      h.clr=()=>{ if(confirm('Clear all imported reports?')){ cohort=[]; save(); stack.pop(); openAnalytics('educator'); } };
+      h.csv=()=>download('class-report.csv',['Student,Readiness,Progress,AvgScore,Streak,Weakest'].concat(cohort.map(r=>[r.label,r.readiness,r.progress,r.avgScore==null?'':r.avgScore,r.streak,(r.weak||[])[0]||''].map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','))).join('\n'),'text/csv');
+    }
+  }); }
+
+/* ===== hub, tab, language, init ===== */
+function openLang(){
+  openView('Language',(b,h)=>{ const cur=S().lang;
+    b.innerHTML=card('<h3>Choose your language</h3><p class="smDim">Changes the interface. When AI is connected, generated questions, advice and explanations are written in this language too.</p>'+Object.keys(LANGS).map(k=>`<label class="smRadio"><input type="radio" name="lg" value="${k}" data-c="lang" ${k===cur?'checked':''}><span data-nt>${LANGS[k]}</span></label>`).join(''));
+    h.lang=el=>{ I18N.set(el.value); updateLangRow(); renderCoachPanel(); paint(); toast(I18N.tr('Language updated.')); }; }); }
+const ACTIONS={assess:assessHome,style:styleQuiz,plan:openPlan,res:resourcesHome,proj:openProjects,code:codeHome,resume:openResume,mentor:openMentor,stats:()=>openAnalytics('student'),lang:openLang};
+function hubHTML(){ const s=S(),R=readiness(),k=styleKey(),known=Object.keys(s.know).length,tiles=[
+  ['assess','🧭','Know your level',known?known+' topic(s) assessed':'Diagnostic & adaptive tests'],
+  ['plan','🗓','Study plan','Daily & weekly schedule'],
+  ['res','📚','Resources','Docs, videos, books, practice'],
+  ['proj','🛠','Projects','Beginner → industry-level'],
+  ['code','💻','Coding practice','Challenges that adapt to you'],
+  ['resume','📄','Resume analyzer',s.resume?'Score '+s.resume.score+'/100':'ATS check & gap report'],
+  ['mentor','🤖','AI mentor','Careers, certifications, interviews'],
+  ['stats','📊','Analytics','Progress, consistency, trends'],
+  ['style','🎨','Learning style',k?STYLE[k].n+' learner':'2-minute quiz'],
+  ['lang','🌐','Language',LANGS[s.lang]]];
+  return `<div class="smHub"><div class="smResultHead"><div class="smRing" style="--p:${R.score}"><b>${R.score}</b></div><div><h3>Smart Coach</h3><div class="smDim">Career readiness · ${E(careerLabel())}</div><div class="smMeta">${online()?'':chip('Offline','warn')}${s.plan.items&&s.plan.items.some(i=>i.date===today()&&!s.plan.done[i.id])?chip('Tasks due today'):''}</div></div></div><div class="smTiles">${tiles.map(t=>`<button class="smTile" data-a="${t[0]}"><span class="smTileI">${t[1]}</span><b>${t[2]}</b><span class="smDim">${E(t[3])}</span></button>`).join('')}</div></div>`; }
+function openHub(){ openView('Smart Coach',(b,h)=>{ b.innerHTML=hubHTML(); Object.keys(ACTIONS).forEach(a=>{ h[a]=()=>ACTIONS[a](); }); }); }
+function renderCoachPanel(){ const p=$('#panel-coach'); if(!p) return; p.innerHTML=hubHTML(); I18N.apply(p); }
+function updateLangRow(){ const el=$('#langCur'); if(el) el.textContent=LANGS[S().lang]; }
+function initSmart(){
+  const tabs=$('#dashTabs'); if(tabs) tabs.addEventListener('click',e=>{ const b=e.target.closest('.tabBtn'); if(!b) return; const p=$('#panel-coach'); if(!p) return; const on=b.dataset.tab==='coach'; p.style.display=on?'':'none'; if(on) renderCoachPanel(); });
+  const p=$('#panel-coach'); if(p) p.addEventListener('click',e=>{ const a=e.target.closest('[data-a]'); if(a&&ACTIONS[a.dataset.a]) ACTIONS[a.dataset.a](); });
+  const cb=$('#coachBtn'); if(cb) cb.addEventListener('click',openHub);
+  const so=$('#settingsOverlay'); const go=id=>{ if(so) so.classList.remove('open'); if(so) so.setAttribute('aria-hidden','true'); (id==='coach'?openHub:openLang)(); };
+  const r1=$('#coachRowBtn'); if(r1) r1.addEventListener('click',()=>go('coach')); const r2=$('#langRowBtn'); if(r2) r2.addEventListener('click',()=>go('lang'));
+  document.documentElement.lang=S().lang; updateLangRow(); I18N.start(); I18N.apply(document.body); window.SM_banner(); renderCoachPanel();
+  window.SM={open:openHub,analyzeResume,runTests,CHALLENGES,BANK,readiness,S,I18N,openView,ACTIONS}; }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initSmart); else initSmart();
+
+
 })();
 </script>
 
