@@ -1,24 +1,9 @@
-/* Pathward service worker. Bump VERSION on every upload so phones fetch the new app. */
-const VERSION = 'pathward-v1';
-const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
-
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
-});
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
-});
-self.addEventListener('fetch', e => {
-  const req = e.request, url = new URL(req.url);
-  if (req.method !== 'GET' || url.origin !== location.origin) return;   // never touch Firebase / AI / font requests
-  const isPage = req.mode === 'navigate' || url.pathname.endsWith('.html');
-  if (isPage) {            // pages: network first, so updates show up; cache is the offline fallback
-    e.respondWith(fetch(req).then(r => { const c = r.clone(); caches.open(VERSION).then(x => x.put(req, c)); return r; })
-      .catch(() => caches.match(req).then(r => r || caches.match('index.html'))));
-  } else {                 // icons etc.: cache first
-    e.respondWith(caches.match(req).then(r => r || fetch(req).then(n => { const c = n.clone(); caches.open(VERSION).then(x => x.put(req, c)); return n; })));
-  }
-});
+/* Pathward service worker: offline app shell + runtime cache */
+const V='pathward-v3',SHELL=['./','index.html','manifest.webmanifest'];
+self.addEventListener('install',e=>{ e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL).catch(()=>{})).then(()=>self.skipWaiting())); });
+self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim())); });
+const SKIP=/firebaseio\.com|googleapis\.com\/(v1beta|identitytoolkit)|identitytoolkit|securetoken|\/api\/|vercel\.app|anthropic\.com|openrouter|openai/i;
+self.addEventListener('fetch',e=>{ const r=e.request; if(r.method!=='GET'||SKIP.test(r.url)) return; const u=new URL(r.url);
+  if(r.mode==='navigate'){ e.respondWith(fetch(r).then(x=>{ const cp=x.clone(); caches.open(V).then(c=>c.put('index.html',cp)); return x; }).catch(()=>caches.match('index.html').then(m=>m||caches.match('./')))); return; }
+  const cdn=/cdnjs\.cloudflare\.com|gstatic\.com|fonts\.googleapis\.com|jsdelivr|unpkg/.test(u.host);
+  if(u.origin===location.origin||cdn){ e.respondWith(caches.match(r).then(m=>{ const net=fetch(r).then(x=>{ if(x&&(x.ok||x.type==='opaque')){ const cp=x.clone(); caches.open(V).then(c=>c.put(r,cp)); } return x; }).catch(()=>m); return m||net; })); } });
