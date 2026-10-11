@@ -2033,11 +2033,11 @@ var authUser=null, fb=null;
 const FB_CFG_KEY='pathward_fbcfg', PROFILE_KEY='pathward_profile', FB_VER='10.12.2';
 /* ===== FIREBASE CONFIG — fill these in once (Firebase console → Project settings → Your apps → Web app) ===== */
 const FIREBASE_CONFIG={
-  apiKey:"",
-  authDomain:"",
-  databaseURL:"",
-  projectId:"",
-  appId:""
+  apiKey:"AIzaSyCdAIxu9Kez5c3SBM72dL-ShswyqYxFds0",
+  authDomain:"carrer-mapper.firebaseapp.com",
+  databaseURL:"https://carrer-mapper-default-rtdb.firebaseio.com",
+  projectId:"carrer-mapper",
+  appId:"1:164688567222:web:290d6c6645c9aa069dff17"
 };
 /* ===== end of config ===== */
 const RULES_SNIPPET='"pathward_users": {\n  "$uid": {\n    ".read": "auth != null && auth.uid === $uid",\n    ".write": "auth != null && auth.uid === $uid"\n  }\n}';
