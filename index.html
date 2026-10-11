@@ -4036,7 +4036,32 @@ async function saveAiKey(){
   try{ await llm('Reply with ONLY this JSON: {"ok":true}'); aiOut('✅ Connected to '+esc(PROV[prov].n)+'. Saved in this browser.'); }
   catch(e){ aiOut('⚠️ Saved, but the test failed: '+esc(e.message||'unknown error')+'<br><small>Check the key, model name'+(prov==='custom'?', base URL':'')+' and that the provider allows browser requests.</small>'); }
 }
-function parseJSON(t){ t=String(t).replace(/```json|```/g,''); return JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1)); }
+function parseJSON(t){t = String(t)
+        .replace(/^\uFEFF/, "")
+        .replace(/```(?:json)?/gi, "")
+        .trim();
+
+    // Find the JSON object in the AI response.
+    const start = t.indexOf("{");
+    const end = t.lastIndexOf("}");
+
+    if (start === -1 || end === -1 || end < start) {
+        throw new Error("AI did not return a JSON object. Please try again.");
+    }
+
+    const jsonText = t.slice(start, end + 1);
+
+    try {
+        return JSON.parse(jsonText);
+    } catch (error) {
+        console.error("Invalid AI JSON:", jsonText);
+        console.error("JSON parsing error:", error);
+
+        throw new Error(
+            "The AI returned invalid JSON. Please click Generate again. " +
+            error.message
+        );
+    }}
 async function llm(prompt,o){
   if(cloud.sample) return cloud.sample.json(prompt,{modelTier:'complex',cache:false});
   const k=aiCfg(); if(!k.key) throw new Error('Add your API key in AI Studio → 🔑 Setup first.');
@@ -4074,7 +4099,16 @@ async function genMock(c,o){
   const scope=o.chapter?`the chapter "${o.chapter.title}" of the subject "${o.subject.title}"`:`the subject "${o.subject.title}", spread across: ${o.subject.chapters.map(x=>x.title).join('; ')}`;
   const g=await llm(`You are a senior paper-setter for ${c.name}. Write ${ask} ${o.diff} multiple-choice questions on ${scope}.
 Rules: mirror the latest exam pattern and trends of the last 5 years${live?' and use web search for anything recent or time-sensitive':' (state only facts you are certain of; avoid very recent events you cannot be sure about)'}; each question has exactly 4 options and ONE unambiguously correct answer; no "all of the above"; the explanation must give the reasoning or working and say why the other options are wrong; if you are unsure of a fact, do not use it. ${o.extra?'Extra instructions: '+o.extra:''}${o.slot?` This is mock #${o.slot} of 10 for this chapter at this level, so cover different sub-topics and angles than the other mocks.`:''}${o.avoid&&o.avoid.length?` Never repeat or rephrase any of these existing questions: ${o.avoid.slice(-60).map(x=>x.slice(0,90)).join(' | ')}`:''}
-Return ONLY JSON: {"questions":[{"q":"","options":["","","",""],"correct":0,"topic":"","explain":""}]} where "correct" is the 0-based index.`,{search:live});
+Return ONLY one valid JSON object with this structure:
+{"questions":[{"q":"Question text","options":["Option A","Option B","Option C","Option D"],"correct":0,"topic":"Topic","explain":"Explanation"}]};
+
+Strict JSON rules:
+- Use double quotes for all JSON keys and string values.
+- Escape quotation marks inside strings as \".
+- Escape backslashes inside strings as \\.
+- Do not include literal line breaks inside JSON strings.
+- Do not include Markdown fences or text outside the JSON object.
+- "correct" must be an integer from 0 to 3.;
   const qs=(g.questions||[]).filter(q=>q&&q.q&&Array.isArray(q.options)&&q.options.length===4&&Number.isInteger(q.correct)&&q.correct>=0&&q.correct<4);
   if(!qs.length) throw new Error('AI returned no usable questions. Try again.');
   const v=await llm(`Solve each multiple-choice question independently and carefully. Return ONLY JSON {"answers":[{"i":0,"pick":0,"conf":"high"}]} with pick = 0-based option index and conf = "high" or "low" (use "low" if the question is ambiguous, wrong, or you are unsure).\n`+JSON.stringify(qs.map((q,i)=>({i,q:q.q,options:q.options}))),{search:live});
